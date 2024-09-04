@@ -1,0 +1,1303 @@
+/* ============================================================= */
+/*                        Variables de Color                     */
+/* ============================================================= */
+:root {
+    --primary-color: #5fcf80;
+    --secondary-color: #880fb8e5;
+    --accent-color: #5fcf80;
+    --background-color: #f4f5f7;
+    --surface-color: #ffffff;
+    --text-color: #333333;
+    --heading-font: "Poppins", sans-serif;
+    --default-font: "Roboto", sans-serif;
+    --transition-speed: 0.3s;
+    --border-radius: 10px;
+    --container-padding: 60px;
+    --font-size-small: 0.875rem;
+    --font-size-medium: 1rem;
+    --font-size-large: 1.5rem;
+    --navbar-height: 80px;
+}
+
+
+/* ============================================================= */
+/*                          Estilos Globales                     */
+/* ============================================================= */
+
+body {
+    font-family: var(--default-font);
+    background-color: var(--background-color);
+    color: var(--text-color);
+    margin: 0;
+    padding-top: var(--navbar-height); /* Ajuste dinámico del padding-top */
+    overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--heading-font);
+    color: var(--secondary-color);
+    margin-bottom: 20px;
+}
+
+p {
+    font-size: var(--font-size-medium);
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.container {
+    max-width: 1250px;
+    margin: 0 auto;
+    padding: 10px 5px;
+}
+
+/* ============================================================= */
+/*                          Navbar                               */
+/* ============================================================= */
+
+.navbar {
+    height: var(--navbar-height);
+    background-color: var(--surface-color);
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 2rem 10rem;
+    transition: all 0.3s ease;
+}
+
+.navbar-brand {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--primary-color);
+    display: flex;
+    align-items: center;
+}
+
+.navbar-brand span {
+    font-size: 1.7rem; /* Tamaño de la letra del título */
+    font-weight: bold; /* Aumenta o disminuye el grosor de la letra */
+    color: #5fcf80; /* Color del título */
+    transition: color 0.3s ease; /* Suave transición para el cambio de color */
+}
+
+.navbar-brand:hover span {
+    color: #880fb8e5; /* Cambia el color del texto junto al logo cuando se pasa el cursor. */
+}
+
+.navbar-brand img {
+    height: 35px;
+    margin-right: 10px;
+}
+
+.navbar-toggler {
+    border: none; /* Elimina el borde por defecto */
+    padding: 0.25rem 0.75rem; /* Ajusta el padding para que sea más compacto */
+    outline: none; /* Elimina el borde de enfoque */
+}
+
+.navbar-toggler-icon {
+    background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 100 80" width="30" height="30" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="10" rx="8" fill="%23880fb8e5"></rect><rect y="30" width="100" height="10" rx="8" fill="%23880fb8e5"></rect><rect y="60" width="100" height="10" rx="8" fill="%23880fb8e5"></rect></svg>');
+    width: 30px;
+    height: 30px;
+    background-size: contain;
+}
+
+.navbar-toggler:focus,
+.navbar-toggler:hover {
+    background-color: #f4f5f7; /* Agrega un fondo sutil al hacer hover o focus */
+    border-radius: 8px; /* Bordes redondeados para un estilo más amigable */
+}
+
+.navbar-toggler:focus,
+.navbar-toggler:active {
+    outline: none; /* Elimina el borde de enfoque por defecto */
+    box-shadow: 0 0 0 3px rgba(95, 207, 128, 0.5); /* Añade un borde verde suave alrededor del botón */
+    border-radius: 8px; /* Mantiene los bordes redondeados */
+}
+
+.navbar-nav .nav-link {
+    font-size: 1rem; /* Ajusta el tamaño de la letra de los enlaces del navbar */
+    white-space: nowrap; /* Evita que los textos se dividan en varias líneas */
+}
+
+.navbar-nav {
+    flex-wrap: nowrap; /* Evita que los elementos se muevan a la siguiente línea */
+    gap: 10px; /* Define el espacio entre cada elemento del navbar */
+}
+.offcanvas {
+    background-color: var(--surface-color);
+}
+
+.offcanvas-header {
+    border-bottom: 1px;
+}
+
+.nav-link {
+    color: var(--text-color);
+    font-weight: 500;
+    padding: 10px 15px;
+    transition: color 0.3s ease;
+}
+
+.nav-link:hover, .nav-link.active {
+    color: var(--primary-color);
+}
+
+@media (max-width: 1500px) {
+    .navbar {
+        padding: 0 1rem;
+        height: var(--navbar-height);
+    }
+}
+/* ============================================================= */
+/*                          Botones                              */
+/* ============================================================= */
+
+.btn-login {
+    background: linear-gradient(135deg, #72d684, #5fcf80); /* Gradiente de color verde más claro */
+    color: #ffffff; /* Texto blanco para buen contraste */
+    padding: 0.5rem 1.5rem; /* Aumenta el padding para un botón más grande */
+    font-weight: bold;
+    font-size: 1.1rem; /* Tamaño de fuente más grande */
+    border-radius: 30px; /* Bordes redondeados */
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2); /* Sombra para darle profundidad */
+    display: inline-flex;
+    align-items: center; /* Centra el contenido verticalmente */
+    gap: 10px; /* Espacio entre el texto y el ícono */
+    transition: background 0.3s ease, transform 0.2s ease, color 0.3s ease;
+    white-space: nowrap; /* Evita que las letras del botón se compriman */
+}
+
+.btn-login:hover {
+    background: linear-gradient(135deg, #5fcf80, #4bc671); /* Gradiente más oscuro en hover */
+    color: #880fb8e5; /* Cambia el color del texto a morado oscuro al pasar el cursor */
+    transform: translateY(-3px); /* Efecto de elevación al pasar el cursor */
+    box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.3); /* Sombra más intensa en hover */
+}
+
+.btn-login i {
+    font-size: 1.2rem; /* Tamaño del ícono */
+    color: inherit; /* Asegura que el ícono herede el color del texto */
+}
+
+.btn-primary {
+    background-color: var(--primary-color); /* Fondo del botón primario */
+    border: none; /* Sin borde */
+    padding: 0.5rem 1.5rem; /* Tamaño del botón */
+    font-weight: bold; /* Negrita para el botón */
+}
+
+.btn-primary:hover {
+    background-color: var(--accent-color); /* Cambio de color al pasar el cursor */
+}
+  
+/* ============================================================= */
+/*                          Hero Section                         */
+/* ============================================================= */
+
+#hero {
+    height: calc(80vh - var(--navbar-height));
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    color: #ffffff;
+    text-align: left;
+    position: relative;
+    padding-left: 2rem;
+    overflow: hidden;
+}
+
+#hero::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.4)); /* Gradiente más oscuro para mayor contraste */
+    z-index: 1;
+    animation: gradientShift 6s ease-in-out infinite; /* Aumenta la velocidad de desplazamiento del gradiente */
+}
+
+#hero .container {
+    position: relative;
+    z-index: 2;
+    animation: slideInLeft 1s ease-in-out forwards; /* Entrada más rápida */
+}
+
+.hero-title {
+    font-size: 3.5rem; /* Tamaño ligeramente mayor */
+    font-weight: 900;
+    color: #ffffff;
+    line-height: 1.2;
+    margin-bottom: 1.5rem;
+    text-shadow: 3px 6px 20px rgba(0, 0, 0, 0.9); /* Sombra más intensa */
+    opacity: 0;
+    transform: translateY(-20px);
+    animation: fadeInUp 1.5s ease-in-out forwards, textGlow 3s ease-in-out infinite alternate; /* Animación más rápida */
+    margin-left: -100px;
+}
+
+.hero-subtitle {
+    font-size: 1.8rem;
+    color: #e0e0e0;
+    margin-bottom: 2.5rem;
+    text-shadow: 2px 4px 12px rgba(0, 0, 0, 0.7); /* Sombra más pronunciada */
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 2s ease-in-out forwards 0.3s, subtitleGlow 4s ease-in-out infinite alternate; /* Animación más rápida e intensa */
+    margin-left: -100px;
+}
+
+.btn-get-started {
+    display: inline-block;
+    padding: 14px 35px;
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #ffffff;
+    background-color: var(--primary-color);
+    border-radius: 30px;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: all 0.4s ease-in-out;
+    box-shadow: 0px 8px 25px rgba(0, 0, 0, 0.3);
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    background: linear-gradient(90deg, rgba(136, 15, 184, 0.8), rgba(95, 207, 128, 0.8));
+    background-size: 200%;
+    margin-left: -100px;
+}
+
+.btn-get-started::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0));
+    transition: transform 0.5s ease-in-out;
+    border-radius: 50%;
+    z-index: 0;
+}
+
+.btn-get-started:hover::before {
+    transform: scale(1.5);
+}
+
+.btn-get-started:hover {
+    color: #ffffff;
+    background-position: right;
+    transform: translateY(-3px);
+    box-shadow: 0px 12px 35px rgba(136, 15, 184, 0.6), 0px 20px 50px rgba(95, 207, 128, 0.6);
+}
+
+.btn-get-started span {
+    z-index: 1;
+    transition: color 0.3s ease-in-out;
+}
+
+.btn-get-started:hover span {
+    color: #ffffff; /* Asegura que el texto permanezca visible en el estado hover */
+}
+
+/* Animaciones personalizadas */
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-100%);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes textGlow {
+    0%, 100% {
+        text-shadow: 3px 6px 20px rgba(136, 15, 184, 0.9), 0 0 15px rgba(136, 15, 184, 0.7); /* Mayor intensidad en las sombras y el brillo */
+    }
+    50% {
+        text-shadow: 3px 6px 20px rgba(95, 207, 128, 0.9), 0 0 30px rgba(95, 207, 128, 0.7); /* Intensificación del efecto durante la animación */
+    }
+}
+
+@keyframes subtitleGlow {
+    0%, 100% {
+        text-shadow: 2px 4px 12px rgba(136, 15, 184, 0.9), 0 0 10px rgba(136, 15, 184, 0.7); /* Mayor intensidad en las sombras y el brillo */
+    }
+    50% {
+        text-shadow: 2px 4px 12px rgba(95, 207, 128, 0.9), 0 0 20px rgba(95, 207, 128, 0.7); /* Intensificación del efecto durante la animación */
+    }
+}
+
+@keyframes pulseGlow {
+    0% {
+        box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.4);
+    }
+    50% {
+        box-shadow: 0px 10px 30px rgba(136, 15, 184, 0.7); /* Más intensidad en el efecto de pulso */
+    }
+    100% {
+        box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.4);
+    }
+}
+
+/* ============================================================= */
+/*                          About Section                        */
+/* ============================================================= */
+
+.about {
+    padding: 80px 0;
+    background-color: var(--background-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.about .content h3 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: var(--secondary-color);
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    animation: fadeInUp 1s ease-in-out;
+}
+
+.about .content p.fst-italic {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    color: var(--text-color);
+    animation: fadeInUp 1.2s ease-in-out;
+}
+
+.about .content ul {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 30px;
+    animation: fadeInUp 1.4s ease-in-out;
+}
+
+.about .content ul li {
+    font-size: 1rem;
+    color: var(--text-color);
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+}
+
+.about .content ul li i {
+    font-size: 1.5rem;
+    color: var(--primary-color);
+    margin-right: 10px;
+}
+
+.about .content .read-more {
+    font-size: 1rem;
+    font-weight: bold;
+    color: var(--primary-color);
+    text-transform: uppercase;
+    display: inline-flex;
+    align-items: center;
+    transition: color 0.3s ease;
+    text-decoration: none;
+    animation: fadeInUp 1.6s ease-in-out;
+}
+
+.about .content .read-more i {
+    margin-left: 5px;
+    transition: transform 0.3s ease;
+}
+
+.about .content .read-more:hover {
+    color: var(--accent-color);
+}
+
+.about .content .read-more:hover i {
+    transform: translateX(5px);
+}
+
+.about img {
+    max-width: 100%;
+    height: auto;
+    border-radius: var(--border-radius);
+    box-shadow: 0px 8px 25px rgba(0, 0, 0, 0.15);
+    animation: fadeIn 1s ease-in-out;
+}
+
+/* ============================================================= */
+/*                          Counts Section                       */
+/* ============================================================= */
+
+.counts {
+    padding: 80px 0;
+    background-color: var(--surface-color);
+    text-align: center;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap: 2rem;
+}
+
+.counts .stats-item {
+    padding: 30px;
+    background-color: var(--background-color);
+    border-radius: var(--border-radius);
+    box-shadow: 0px 8px 25px rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    flex: 1;
+    text-align: center;
+    animation: fadeInUp 1s ease-in-out;
+}
+
+.counts .stats-item:hover {
+    transform: translateY(-10px);
+    box-shadow: 0px 15px 35px rgba(0, 0, 0, 0.2);
+}
+
+.counts .stats-item span {
+    font-size: 3rem;
+    color: var(--secondary-color);
+    font-weight: bold;
+}
+
+.counts .stats-item p {
+    font-size: 1.1rem;
+    color: var(--text-color);
+    margin-top: 15px;
+}
+
+/* ============================================================= */
+/*                          Why Us Section                       */
+/* ============================================================= */
+
+.why-us {
+    padding: 80px 0;
+    background-color: var(--background-color);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 2rem;
+}
+
+.why-us .why-box,
+.why-us .icon-box {
+    background-color: var(--surface-color);
+    border-radius: var(--border-radius);
+    padding: 30px;
+    box-shadow: 0px 8px 25px rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-align: center;
+    flex: 1;
+    animation: fadeInUp 1.2s ease-in-out;
+}
+
+.why-us .why-box:hover,
+.why-us .icon-box:hover {
+    transform: translateY(-10px);
+    box-shadow: 0px 15px 35px rgba(0, 0, 0, 0.2);
+}
+
+.why-us .icon-box i {
+    font-size: 3rem;
+    color: var(--primary-color);
+    margin-bottom: 20px;
+    animation: rotateIn 1s ease-in-out;
+}
+
+.why-us .icon-box h4 {
+    font-size: 1.5rem;
+    color: var(--secondary-color);
+    margin-bottom: 15px;
+    font-weight: bold;
+}
+
+.why-us .icon-box p {
+    font-size: 1rem;
+    color: var(--text-color);
+    margin-bottom: 20px;
+}
+
+.why-us .more-btn {
+    display: inline-flex;
+    align-items: center;
+    color: var(--primary-color);
+    font-weight: bold;
+    transition: color var(--transition-speed);
+}
+
+.why-us .more-btn:hover {
+    color: var(--accent-color);
+}
+
+.why-us .more-btn i {
+    margin-left: 5px;
+    transition: transform 0.3s ease;
+}
+
+.why-us .more-btn:hover i {
+    transform: translateX(5px);
+}
+
+/* ============================================================= */
+/*                          Features Section                     */
+/* ============================================================= */
+.features {
+    padding: 80px 0;
+    background-color: var(--surface-color);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    justify-content: space-between;
+    text-align: center;
+}
+
+.features .features-item {
+    padding: 30px;
+    border-radius: var(--border-radius);
+    background-color: var(--background-color);
+    box-shadow: 0px 8px 25px rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    flex: 1 1 calc(25% - 20px);
+    animation: fadeInUp 1.4s ease-in-out;
+}
+
+.features .features-item:hover {
+    transform: translateY(-10px);
+    box-shadow: 0px 15px 35px rgba(0, 0, 0, 0.2);
+}
+
+.features .features-item i {
+    font-size: 3rem;
+    color: var(--primary-color);
+    margin-bottom: 20px;
+    animation: rotateIn 1.2s ease-in-out;
+}
+
+.features .features-item h3 {
+    font-size: 1.5rem;
+    color: var(--secondary-color);
+    margin-bottom: 15px;
+    font-weight: bold;
+}
+
+.features .features-item p {
+    font-size: 1rem;
+    color: var(--text-color);
+    margin-bottom: 20px;
+}
+
+.features .features-item a {
+    color: var(--primary-color);
+    font-weight: bold;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.features .features-item a:hover {
+    color: var(--accent-color);
+}
+
+/* ============================================================= */
+/*                          Categories Section                   */
+/* ============================================================= */
+
+/* -- Título de la sección -- */
+.section-title {
+    text-align: center;
+    margin-top: 3rem;
+}
+
+.section-title h2 {
+    font-size: 3.7rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    background: linear-gradient(135deg, #5fcf80 40%, #6d29cc 60%);
+    background-size: 200%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+    animation: gradientSlide 5s ease-in-out infinite, textFadeIn 3s ease-in-out forwards;
+    opacity: 0;
+}
+
+/* Suave desplazamiento del gradiente */
+@keyframes gradientSlide {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* Animación de desvanecimiento del texto */
+@keyframes textFadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* -- Subtítulo de la sección -- */
+.section-title p {
+    font-size: 1.8rem;
+    color: #5fcf80;
+    text-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
+    margin-bottom: 2.5rem;
+    animation: subtitleFade 3s ease-in-out infinite alternate, glowEffect 4s ease-in-out infinite;
+}
+
+/* Animaciones del subtítulo */
+@keyframes subtitleFade {
+    0%, 100% {
+        color: #5fcf80;
+    }
+    50% {
+        color: #880fb8e5;
+    }
+}
+
+@keyframes glowEffect {
+    0% {
+        text-shadow: 1px 1px 5px rgba(95, 207, 128, 0.7);
+    }
+    100% {
+        text-shadow: 2px 2px 15px rgba(95, 207, 128, 0.7);
+    }
+}
+
+/* -- Contenedor de las categorías -- */
+.category-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 35px;
+    padding: 20px 0;
+}
+
+/* -- Elemento individual de la categoría -- */
+.category-item {
+    background: #ffffff;
+    border-radius: 15px;
+    flex: 1 1 calc(30% - 40px); /* Aumenta el tamaño relativo de la tarjeta en relación con su contenedor */
+    max-width: 280px; /* Aumenta el ancho máximo de la tarjeta */
+    min-width: 220px; /* Aumenta el ancho mínimo de la tarjeta */
+    height: 350px; /* Aumenta la altura de la tarjeta */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 15px;
+    text-align: center;
+    margin-bottom: 10px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Efecto de luz radial en el fondo */
+.category-item::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.2), transparent);
+    transition: transform 0.5s ease-in-out;
+    z-index: 0;
+    border-radius: 50%;
+}
+
+/* Efectos al hacer hover sobre la categoría */
+.category-item:hover {
+    box-shadow: 0 0 13px 8px var(--primary-color);
+    transform: translateY(-10px);
+    background: linear-gradient(135deg, var(--primary-color) 30%, var(--secondary-color) 100%);
+    animation: dance 0.9s infinite alternate;
+}
+
+.category-item:hover::before {
+    transform: scale(1.5);
+}
+
+/* Animación de "baile" */
+@keyframes dance {
+    0% {
+        transform: rotate(0deg) translateY(0);
+    }
+    25% {
+        transform: rotate(-5deg) translateY(-10px);
+    }
+    50% {
+        transform: rotate(5deg) translateY(0);
+    }
+    75% {
+        transform: rotate(-5deg) translateY(10px);
+    }
+    100% {
+        transform: rotate(0deg) translateY(0);
+    }
+}
+
+/* -- Imagen dentro de la categoría -- */
+.category-item img {
+    width: 235px;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 15px;
+    transition: transform 0.4s ease, filter 0.4s ease;
+    margin-bottom: 10px;
+    filter: brightness(0.5); /* Oscurece ligeramente la imagen por defecto */
+}
+
+.category-item:hover img {
+    transform: scale(1.2);
+    filter: brightness(0.9);
+}
+
+/* -- Contenido de la categoría (texto) -- */
+.category-content h3 {
+    font-size: 20px;
+    color: #5fcf80;
+    font-weight: 700;
+    margin: 8px 0 10px;
+    transition: color 0.3s ease, transform 0.3s ease;
+    position: relative;
+    z-index: 2;
+    animation: subtitleFade 3s ease-in-out infinite alternate, glowEffect 4s ease-in-out infinite;
+}
+
+/* Efecto de subrayado en hover */
+.category-content h3::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: -10px;
+    width: 0;
+    height: 2px;
+    background-color: var(--primary-color);
+    transition: width 0.3s ease;
+}
+
+.category-item:hover .category-content h3::after {
+    width: 80%;
+    left: 10%;
+}
+
+/* Efectos al hacer hover sobre el título */
+.category-content h3:hover {
+    color: var(--secondary-color);
+    transform: translateY(-3px);
+}
+
+.category-content h3 a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* Efectos durante el hover de la categoría */
+.category-item:hover .category-content h3,
+.category-item:hover .category-content p {
+    color: var(--secondary-color) !important;
+    transform: translateY(-5px);
+}
+
+/* Descripción de la categoría */
+.category-content p {
+    font-size: 16px;
+    color: #666666;
+    margin-bottom: 15px;
+    transition: color 0.3s ease, transform 0.3s ease;
+    position: relative;
+    z-index: 2;
+}
+
+.category-item:hover .category-content p {
+    color: #ffffff;
+    transform: translateY(-3px);
+}
+
+/* -- Contador de productos -- */
+.product-count {
+    position: absolute;
+    bottom: 15px;
+    left: 15px;
+    background-color: var(--primary-color);
+    color: white;
+    padding: 7px 12px;
+    border-radius: 20px;
+    font-size: 14px;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    opacity: 0.9;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.product-count::before {
+    content: "\f06e";
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    margin-right: 5px;
+}
+
+.category-item:hover .product-count {
+    transform: translateY(-5px);
+    opacity: 1;
+}
+
+/* ============================================================= */
+/*                          Animations                           */
+/* ============================================================= */
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes rotateIn {
+    from {
+        transform: rotate(-360deg);
+        opacity: 0;
+    }
+    to {
+        transform: rotate(0deg);
+        opacity: 1;
+    }
+}
+
+@media (max-width: 992px) {
+    .about, .counts, .why-us, .features, .category-container {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .about .content, .why-us .why-box, .features .features-item, .category-item {
+        max-width: 100%;
+        margin: 0 auto 30px;
+    }
+} 
+  
+  /* ============================================================= */
+  /*                          Footer                               */
+  /* ============================================================= */
+  
+  .footer {
+      background-color: var(--surface-color); /* Fondo del pie de página */
+      color: var(--text-color); /* Color del texto en el pie de página */
+      padding: 2rem 0; /* Espaciado interno */
+      border-top: 1px solid rgba(0, 0, 0, 0.1); /* Línea superior sutil */
+  }
+  
+  .footer h4 {
+      color: var(--text-color); /* Color de los encabezados en el pie de página */
+      font-weight: bold; /* Negrita */
+      margin-bottom: 1rem; /* Espaciado inferior */
+  }
+  
+  .footer a {
+      color: var(--text-color); /* Color de los enlaces en el pie de página */
+      text-decoration: none; /* Sin subrayado */
+      transition: color var(--transition-speed); /* Transición suave */
+  }
+  
+  .footer a:hover {
+      color: var(--primary-color); /* Color de los enlaces al pasar el cursor */
+  }
+  
+  .footer .social-links a {
+      color: var(--text-color); /* Color de los íconos de redes sociales */
+      font-size: 1.2rem; /* Tamaño de los íconos de redes sociales */
+      transition: color var(--transition-speed); /* Transición suave */
+      margin-right: 1rem; /* Espaciado entre los íconos */
+  }
+  
+  .footer .social-links a:hover {
+      color: var(--primary-color); /* Cambio de color de los íconos al pasar el cursor */
+  }
+  
+  .footer p {
+      margin-bottom: 0.5rem; /* Espaciado inferior del texto en el pie de página */
+  }
+  /* ============================================================= */
+/*                       Media Queries                           */
+/* ============================================================= */
+
+
+@media (max-width: 1670px) {
+    .hero-title {
+        font-size: 2.5rem;
+        margin-left: 5px;
+    }
+    .hero-subtitle {
+        font-size: 1.5rem;
+        margin-left: 5px;
+    }
+    .btn-get-started {
+        margin-left: 10px;
+    }
+} 
+
+@media (max-width: 1120px) {
+    .navbar-brand {
+        font-size: 1.2rem;
+    }
+
+    .hero-title {
+        font-size: 2rem;
+        margin-left: 5px;
+    }
+
+    .hero-subtitle {
+        font-size: 1rem;
+        margin-left: 5px;
+    }
+
+    .btn-get-started {
+        font-size: 1rem;
+        padding: 10px 20px;
+        margin-left: 10px;
+    }
+
+    .about h3 {
+        font-size: 2rem;
+    }
+
+    .counts .stats-item span {
+        font-size: 2rem;
+    }
+
+    .footer h4 {
+        font-size: 1.2rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .navbar-brand {
+        font-size: 1rem;
+    }
+
+    .hero-title {
+        font-size: 2rem;
+    }
+
+    .hero-subtitle {
+        font-size: 1.1rem;
+    }
+
+    .btn-get-started {
+        font-size: 1rem;
+        padding: 8px 15px;
+    }
+
+    .about h3 {
+        font-size: 1.8rem;
+    }
+
+    .counts .stats-item span {
+        font-size: 1.8rem;
+    }
+
+    .footer h4 {
+        font-size: 1rem;
+    }
+}
+
+  /* ============================================================= */
+  /*                          Formularios                          */
+  /* ============================================================= */
+  
+  input[type="email"] {
+      border-radius: 0; /* Sin redondeo en los bordes de los inputs de tipo email */
+  }
+  
+/* ============================================================= */
+/*                  Product Cards (Similar to Categories)        */
+/* ============================================================= */
+
+.productos-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 45px;
+    padding: 20px 0;
+    justify-content: center;
+}
+
+.producto-item {
+    background: #ffffff;
+    border-radius: 15px;
+    flex: 1 1 calc(30% - 40px); /* Ajusta el tamaño de las tarjetas */
+    max-width: 280px;
+    min-width: 220px;
+    height: 380px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 15px;
+    text-align: center;
+    margin-bottom: 10px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Efecto de luz radial en el fondo */
+.producto-item::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.2), transparent);
+    transition: transform 0.5s ease-in-out;
+    z-index: 0;
+    border-radius: 50%;
+}
+
+/* Efectos al hacer hover sobre la tarjeta */
+.producto-item:hover {
+    box-shadow: 0 0 13px 8px var(--primary-color);
+    transform: translateY(-10px);
+    background: linear-gradient(135deg, var(--primary-color) 30%, var(--secondary-color) 100%);
+    animation: dance 0.9s infinite alternate;
+}
+
+.producto-item:hover::before {
+    transform: scale(1.5);
+}
+
+/* Imagen dentro de la tarjeta */
+.producto-item img {
+    width: 235px;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 15px;
+    transition: transform 0.4s ease, filter 0.4s ease;
+    margin-bottom: 10px;
+    filter: brightness(0.5); /* Oscurece ligeramente la imagen por defecto */
+}
+
+.producto-item:hover img {
+    transform: scale(1.2);
+    filter: brightness(0.9);
+}
+
+/* Contenido de la tarjeta (texto) */
+.producto-content h3 {
+    font-size: 20px;
+    color: #5fcf80;
+    font-weight: 700;
+    margin: 8px 0 10px;
+    transition: color 0.3s ease, transform 0.3s ease;
+    position: relative;
+    z-index: 2;
+    animation: subtitleFade 3s ease-in-out infinite alternate, glowEffect 4s ease-in-out infinite;
+}
+
+/* Efecto de subrayado en hover */
+.producto-content h3::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: -10px;
+    width: 0;
+    height: 2px;
+    background-color: var(--primary-color);
+    transition: width 0.3s ease;
+}
+
+.producto-item:hover .producto-content h3::after {
+    width: 80%;
+    left: 10%;
+}
+
+/* Efectos al hacer hover sobre el título */
+.producto-content h3:hover {
+    color: var(--secondary-color);
+    transform: translateY(-3px);
+}
+
+.producto-content h3 a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* Efectos durante el hover de la tarjeta */
+.producto-item:hover .producto-content h3,
+.producto-item:hover .producto-content p {
+    color: var(--secondary-color) !important;
+    transform: translateY(-5px);
+}
+
+/* Descripción del producto */
+.producto-content p {
+    font-size: 16px;
+    color: #666666;
+    margin-bottom: 15px;
+    transition: color 0.3s ease, transform 0.3s ease;
+    position: relative;
+    z-index: 2;
+}
+
+.producto-item:hover .producto-content p {
+    color: #ffffff;
+    transform: translateY(-3px);
+}
+
+/* Línea divisoria entre el título y el subtítulo */
+.title-divider {
+    width: 60px;
+    height: 4px;
+    background-color: var(--primary-color);
+    margin: 10px auto 20px;
+}
+
+/* Barra de herramientas */
+.toolbar {
+    padding: 10px 0;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+/* Estilo del botón de volver al inicio */
+.btn-return-home {
+    padding: 10px 20px;
+    background-color: var(--primary-color);
+    color: #ffffff;
+    border-radius: 30px;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    border: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.btn-return-home:hover {
+    background-color: var(--secondary-color);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Estilo de los botones de filtro */
+.btn-filter {
+    padding: 10px 20px;
+    background-color: #ffffff;
+    color: var(--primary-color);
+    border-radius: 30px;
+    font-size: 1rem;
+    font-weight: bold;
+    border: 2px solid var(--primary-color);
+    transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.btn-filter:hover {
+    background-color: var(--primary-color);
+    color: #ffffff;
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Añadir iconos a los botones */
+.btn-filter::before {
+    content: "\f078"; /* Icono de FontAwesome (puedes cambiarlo según la necesidad) */
+    font-family: "Font Awesome 5 Free"; 
+    font-weight: 900;
+    margin-right: 8px;
+    transition: margin-right 0.3s ease;
+}
+
+.btn-filter:hover::before {
+    margin-right: 12px;
+}
+
+.btn-return-home::before {
+    content: "\f015"; /* Icono de FontAwesome (puedes cambiarlo según la necesidad) */
+    font-family: "Font Awesome 5 Free"; 
+    font-weight: 900;
+    margin-right: 8px;
+    transition: margin-right 0.3s ease;
+}
+
+.btn-return-home:hover::before {
+    margin-right: 12px;
+}
+
+/* Estilo del botón del dropdown de categorías */
+.btn-category-dropdown {
+    padding: 10px 20px;
+    background-color: #ffffff;
+    color: var(--primary-color);
+    border-radius: 30px;
+    font-size: 1rem;
+    font-weight: bold;
+    border: 2px solid var(--primary-color);
+    transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.btn-category-dropdown:hover {
+    background-color: var(--secondary-color);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Estilo del menú desplegable */
+.dropdown-menu {
+    border-radius: 15px;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Añadir icono al botón de Categorías */
+.btn-category-dropdown::before {
+    content: "\f03a"; /* Puedes cambiar el icono según lo que consideres adecuado */
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    margin-right: 8px;
+    transition: margin-right 0.3s ease;
+}
+
+.btn-category-dropdown:hover::before {
+    margin-right: 12px;
+}
+
+.dropdown-item {
+    font-size: 1rem;
+    color: var(--text-color);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.dropdown-item:hover {
+    background-color: var(--primary-color);
+    color: #ffffff;
+    border-radius: 10px;
+}
+
+  /* ============================================================= */
+  /*                        Fin del Archivo                        */
+  /* ============================================================= */
