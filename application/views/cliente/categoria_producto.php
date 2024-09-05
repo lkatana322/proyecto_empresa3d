@@ -33,27 +33,29 @@
         </div>
     </div>
 
-
     <div class="container productos-container">
-        <div class="d-flex flex-wrap justify-content-center gap-4">
-            <?php if (!empty($productos)): ?>
-                <?php foreach ($productos as $producto): ?>
-                    <div class="producto-item" data-aos="zoom-in" data-aos-delay="100">
+    <div class="d-flex flex-wrap justify-content-center gap-4">
+        <?php if (!empty($productos)): ?>
+            <?php foreach ($productos as $producto): ?>
+                <div class="producto-item" data-aos="zoom-in" data-aos-delay="100">
+                    <a href="<?php echo base_url('producto/detalle/' . $producto->id); ?>">
                         <img src="<?php echo base_url(isset($producto->imagen) ? trim($producto->imagen) : 'ruta/por/defecto.jpg'); ?>" class="img-fluid rounded mb-3" alt="<?php echo isset($producto->nombre) ? $producto->nombre : 'Producto'; ?>">
-                        <div class="producto-content">
-                            <h3><a href="<?php echo base_url('producto/detalle/' . $producto->id); ?>"><?php echo $producto->nombre; ?></a></h3>
-                            <p><?php echo $producto->descripcion; ?></p>
-                            <p><strong>Cantidad en stock:</strong> <?php echo $producto->stock; ?></p>
-                            <p><strong>Precio:</strong> <?php echo $producto->precio; ?> Bs</p>
-                        </div>
+                    </a>
+                    <div class="producto-content">
+                        <h3><a href="<?php echo base_url('producto/detalle/' . $producto->id); ?>"><?php echo $producto->nombre; ?></a></h3>
+                        <p><?php echo $producto->descripcion; ?></p>
+                        <p><strong>Cantidad en stock:</strong> <?php echo $producto->stock; ?></p>
+                        <p><strong>Precio:</strong> <?php echo $producto->precio; ?> Bs</p>
                     </div>
-                <?php endforeach; ?>
-            <?php else: ?>
-                <div class="col-12">
-                    <p>No hay productos disponibles en esta categoría.</p>
                 </div>
-            <?php endif; ?>
-        </div>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <div class="col-12">
+                <p>No hay productos disponibles en esta categoría.</p>
+            </div>
+        <?php endif; ?>
     </div>
+</div>
+
 </section>
 <!-- /Category Products Section -->

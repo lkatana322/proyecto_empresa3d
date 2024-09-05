@@ -2,7 +2,7 @@
 <main id="main" class="main">
 
   <div class="pagetitle">
-    <h1>Panel Principal</h1>
+    <h1 style="color: #5fcf80;">Panel Principal</h1>
     <nav>
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="<?php echo base_url('admin'); ?>">Inicio</a></li>

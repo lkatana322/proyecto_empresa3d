@@ -38,7 +38,9 @@
             <?php if (!empty($productos)): ?>
                 <?php foreach ($productos as $producto): ?>
                     <div class="producto-item" data-aos="zoom-in" data-aos-delay="100">
-                        <img src="<?php echo base_url(isset($producto->imagen) ? trim($producto->imagen) : 'ruta/por/defecto.jpg'); ?>" class="img-fluid rounded mb-3" alt="<?php echo isset($producto->nombre) ? $producto->nombre : 'Producto'; ?>">
+                        <a href="<?php echo base_url('producto/detalle/' . $producto->id); ?>">
+                            <img src="<?php echo base_url(isset($producto->imagen) ? trim($producto->imagen) : 'ruta/por/defecto.jpg'); ?>" class="img-fluid rounded mb-3" alt="<?php echo isset($producto->nombre) ? $producto->nombre : 'Producto'; ?>">
+                        </a>
                         <div class="producto-content">
                             <h3><a href="<?php echo base_url('producto/detalle/' . $producto->id); ?>"><?php echo $producto->nombre; ?></a></h3>
                             <p><?php echo $producto->descripcion; ?></p>
