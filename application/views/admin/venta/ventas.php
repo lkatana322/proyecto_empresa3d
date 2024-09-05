@@ -42,7 +42,7 @@
                       <td>
                         <?php echo !empty(trim($venta->cliente_nombre . ' ' . $venta->cliente_apellido)) ? $venta->cliente_nombre . ' ' . $venta->cliente_apellido : 'Cliente no definido'; ?>
                       </td>
-                      <td><?php echo $venta->rol_nombre . ' - ' . $venta->usuario_nombre . ' ' . $venta->usuario_apellido; ?></td> <!-- Mostrar el rol y el nombre del vendedor -->
+                      <td><?php echo $venta->usuario_nombre . ' ' . $venta->usuario_apellido; ?></td>
                       <td><?php echo $venta->fecha_venta; ?></td>
                       <td><?php echo $venta->total; ?></td>
                       <td><?php echo ucfirst($venta->estado); ?></td>
@@ -92,7 +92,7 @@
 </div>
 
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function() {
     const viewButtons = document.querySelectorAll('.view-details');
     
     viewButtons.forEach(button => {
@@ -107,7 +107,7 @@
           let detallesHTML = `
             <table class="table">
               <tr><th>Cliente:</th><td>${data.cliente_nombre || data.cliente_apellido ? `${data.cliente_nombre} ${data.cliente_apellido}` : 'Cliente no definido'}</td></tr>
-              <tr><th>Vendedor:</th><td>${data.rol_nombre} - ${data.empleado_nombre} ${data.empleado_apellido}</td></tr>
+              <tr><th>Vendedor:</th><td>${data.empleado_nombre} ${data.empleado_apellido}</td></tr>
               <tr><th>Fecha de Venta:</th><td>${data.fecha_venta}</td></tr>
               <tr><th>Total:</th><td>${data.total}</td></tr>
               <tr><th>Estado:</th><td>${data.estado}</td></tr>
@@ -141,25 +141,14 @@
           });
 
           detallesHTML += '</tbody></table>';
-
-          data.detalles_productos.forEach(detalle => {
-            const subtotal = detalle.cantidad * detalle.precio_unitario;
-            detallesHTML += `
-              <tr>
-                <td>${detalle.producto_nombre}</td>
-                <td>${detalle.cantidad}</td>
-                <td>${detalle.precio_unitario}</td>
-                <td>${subtotal}</td>
-              </tr>
-            `;
-          });
-
-          detallesHTML += '</tbody></table>';
           
           modalBody.innerHTML = detallesHTML;
 
           const modal = new bootstrap.Modal(document.getElementById('ventaDetailsModal'));
           modal.show();
+        })
+        .catch(error => {
+          console.error('Error al obtener los detalles de la venta:', error);
         });
       });
     });
@@ -189,4 +178,5 @@
       });
     });
   });
+
 </script>

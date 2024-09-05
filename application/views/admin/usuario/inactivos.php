@@ -43,7 +43,7 @@
                       <td><?php echo $usuario->apellido; ?></td>
                       <td><?php echo isset($usuario->segundo_apellido) ? $usuario->segundo_apellido : 'N/A'; ?></td>
                       <td><?php echo $usuario->email; ?></td>
-                      <td><?php echo $usuario->rol_nombre; ?></td>
+                      <td><?php echo $usuario->rol; ?></td>
                       <td><?php echo isset($usuario->telefono) ? $usuario->telefono : 'N/A'; ?></td>
                       <td><?php echo isset($usuario->direccion) ? $usuario->direccion : 'N/A'; ?></td>
                       <td><?php echo $usuario->estado; ?></td>
@@ -114,7 +114,7 @@
                 <tr><th>Rol:</th><td>${data.rol}</td></tr>
                 <tr><th>Teléfono:</th><td>${data.telefono ? data.telefono : 'N/A'}</td></tr>
                 <tr><th>Dirección:</th><td>${data.direccion ? data.direccion : 'N/A'}</td></tr>
-                <tr><th>Edad:</th><td>${data.edad ? data.edad : 'N/A'}</td></tr>
+                <tr><th>Fecha de Nacimiento:</th><td>${data.fecha_nacimiento ? data.fecha_nacimiento : 'N/A'}</td></tr>
                 <tr><th>Fecha de Contratación:</th><td>${data.fecha_contratacion ? data.fecha_contratacion : 'N/A'}</td></tr>
                 <tr><th>Fecha de Creación:</th><td>${data.fecha_creacion}</td></tr>
                 <tr><th>Fecha de Actualización:</th><td>${data.fecha_actualizacion}</td></tr>

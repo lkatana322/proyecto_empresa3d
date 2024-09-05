@@ -13,6 +13,14 @@ class Admin extends CI_Controller {
         $this->load->model('Actividad_model');
     }
 
+    private function check_permissions() {
+        $user_role = $this->session->userdata('rol'); // Obtener el rol del usuario desde la sesión
+        if ($user_role == 'cliente') { // Verificar si el rol es 'cliente'
+            $this->session->set_flashdata('error', 'No tienes permiso para realizar esta acción.');
+            redirect('admin'); // Redirige al dashboard si intentan acceder
+        }
+    }
+    
     private function check_login() {
         if (!$this->session->userdata('user_id')) {
             $this->session->set_flashdata('error', 'Debes iniciar sesión para acceder a esta página.');

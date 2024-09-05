@@ -17,12 +17,12 @@ class Categorias extends CI_Controller {
     }
 
     private function check_permissions() {
-        $user_role = $this->session->userdata('rol_id');
-        if ($user_role == 3) { // Cliente no puede acceder
+        $user_role = $this->session->userdata('rol'); // Obtener el rol del usuario desde la sesión
+        if ($user_role == 'cliente') { // Verificar si el rol es 'cliente'
             $this->session->set_flashdata('error', 'No tienes permiso para realizar esta acción.');
             redirect('admin'); // Redirige al dashboard si intentan acceder
         }
-    }
+    }    
     
     public function index() {
         $this->check_permissions();
@@ -163,8 +163,8 @@ class Categorias extends CI_Controller {
 
     public function ver_ajax($id) {
         $this->db->select('c.*, u.nombre as actualizador_nombre, u.apellido as actualizador_apellido');
-        $this->db->from('categorias c');
-        $this->db->join('usuarios u', 'c.usuario_actualizacion_id = u.id', 'left');
+        $this->db->from('categoria c');
+        $this->db->join('usuario u', 'c.usuario_actualizacion_id = u.id', 'left');
         $this->db->where('c.id', $id);
         $query = $this->db->get();
         echo json_encode($query->row());

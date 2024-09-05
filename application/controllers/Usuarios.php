@@ -17,12 +17,12 @@ class Usuarios extends CI_Controller {
     }
 
     private function check_permissions() {
-        $user_role = $this->session->userdata('rol_id');
-        if ($user_role == 3) { // Cliente no puede acceder
+        $user_role = $this->session->userdata('rol'); // Obtener el rol del usuario desde la sesión
+        if ($user_role == 'cliente') { // Verificar si el rol es 'cliente'
             $this->session->set_flashdata('error', 'No tienes permiso para realizar esta acción.');
             redirect('admin'); // Redirige al dashboard si intentan acceder
         }
-    }
+    }    
 
     public function index() {
         $this->check_permissions();
@@ -324,7 +324,7 @@ class Usuarios extends CI_Controller {
 
     public function empleados() {
         $this->check_permissions();
-        $data['empleados'] = $this->Usuario_model->get_usuarios_by_rol_activos(2); // 2 es el rol_id de empleado
+        $data['empleados'] = $this->Usuario_model->get_usuarios_by_rol_activos('empleado'); 
         $this->load->view('admin/template/header');
         $this->load->view('admin/template/navbar');
         $this->load->view('admin/template/sidebar');
@@ -334,7 +334,7 @@ class Usuarios extends CI_Controller {
 
     public function clientes() {
         $this->check_permissions();
-        $data['clientes'] = $this->Usuario_model->get_usuarios_by_rol_activos(3); // 3 es el rol_id de cliente
+        $data['clientes'] = $this->Usuario_model->get_usuarios_by_rol_activos('cliente'); 
         $this->load->view('admin/template/header');
         $this->load->view('admin/template/navbar');
         $this->load->view('admin/template/sidebar');
@@ -344,7 +344,7 @@ class Usuarios extends CI_Controller {
 
     public function empleados_inactivos() {
         $this->check_permissions();
-        $data['empleados'] = $this->Usuario_model->get_usuarios_by_estado_y_rol('inactivo', 2); // 2 es el rol_id de empleado
+        $data['empleados'] = $this->Usuario_model->get_usuarios_by_estado_y_rol('inactivo', 'empleado'); 
         $this->load->view('admin/template/header');
         $this->load->view('admin/template/navbar');
         $this->load->view('admin/template/sidebar');
@@ -354,7 +354,7 @@ class Usuarios extends CI_Controller {
 
     public function clientes_inactivos() {
         $this->check_permissions();
-        $data['clientes'] = $this->Usuario_model->get_usuarios_by_estado_y_rol('inactivo', 3); // 3 es el rol_id de cliente
+        $data['clientes'] = $this->Usuario_model->get_usuarios_by_estado_y_rol('inactivo', 'cliente'); 
         $this->load->view('admin/template/header');
         $this->load->view('admin/template/navbar');
         $this->load->view('admin/template/sidebar');

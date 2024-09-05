@@ -101,7 +101,7 @@
 
 <!-- Scripts adicionales -->
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function() {
     const viewButtons = document.querySelectorAll('.view-details');
     
     viewButtons.forEach(button => {
@@ -112,18 +112,27 @@
         .then(response => response.json())
         .then(data => {
           const modalBody = document.querySelector('#categoryDetailsModal .modal-body');
-          modalBody.innerHTML = `
-            <table class="table">
-              <tr><th>Nombre:</th><td>${data.nombre}</td></tr>
-              <tr><th>Descripción:</th><td>${data.descripcion}</td></tr>
-              <tr><th>Estado:</th><td>${data.estado}</td></tr>
-              <tr><th>Fecha de Creación:</th><td>${data.fecha_creacion}</td></tr>
-              <tr><th>Fecha de Actualización:</th><td>${data.fecha_actualizacion}</td></tr>
-              <tr><th>Usuario que realizó la última actualización:</th><td>${data.actualizador_nombre ? data.actualizador_nombre + ' ' + data.actualizador_apellido : 'N/A'}</td></tr>
-            </table>
-          `;
+
+          if (data.error) {
+            modalBody.innerHTML = `<p class="text-danger">${data.error}</p>`;
+          } else {
+            modalBody.innerHTML = `
+              <table class="table">
+                <tr><th>Nombre:</th><td>${data.nombre}</td></tr>
+                <tr><th>Descripción:</th><td>${data.descripcion}</td></tr>
+                <tr><th>Estado:</th><td>${data.estado}</td></tr>
+                <tr><th>Fecha de Creación:</th><td>${data.fecha_creacion}</td></tr>
+                <tr><th>Fecha de Actualización:</th><td>${data.fecha_actualizacion}</td></tr>
+                <tr><th>Usuario que realizó la última actualización:</th><td>${data.actualizador_nombre ? data.actualizador_nombre + ' ' + data.actualizador_apellido : 'N/A'}</td></tr>
+              </table>
+            `;
+          }
+          
           const modal = new bootstrap.Modal(document.getElementById('categoryDetailsModal'));
           modal.show();
+        })
+        .catch(error => {
+          console.error('Error al obtener los detalles de la categoría:', error);
         });
 
       });

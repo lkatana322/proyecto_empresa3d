@@ -23,7 +23,7 @@
           <?php endif; ?>
 
             <h2 class="profile-name"><?= $usuario->nombre . ' ' . $usuario->apellido?></h2>
-            <h3 class="profile-role"><?= isset($usuario->rol_nombre) ? ucfirst($usuario->rol_nombre) : 'Rol no definido' ?></h3>
+            <h3 class="profile-role"><?= isset($usuario->rol) ? ucfirst($usuario->rol) : 'Rol no definido' ?></h3>
             <div class="social-links mt-2">
               <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
               <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
@@ -67,7 +67,7 @@
                 </div>
                 <div class="row">
                   <div class="col-lg-3 col-md-4 label">Rol</div>
-                  <div class="col-lg-9 col-md-8"><?= ucfirst($usuario->rol_nombre ?? ''); ?></div>
+                  <div class="col-lg-9 col-md-8"><?= ucfirst($usuario->rol ?? ''); ?></div>
                 </div>
                 <div class="row">
                   <div class="col-lg-3 col-md-4 label">Edad</div>
@@ -78,7 +78,7 @@
               <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
                 <!-- Formulario de Editar Perfil -->
                 <form class="row g-3 needs-validation" novalidate action="<?= base_url('perfil/actualizar'); ?>" method="post" enctype="multipart/form-data" id="editarPerfilFormCustom">
-                  <input type="hidden" id="rol_usuario" value="<?= $usuario->rol_nombre ?>">
+                  <input type="hidden" id="rol_usuario" value="<?= $usuario->rol?>">
                   <input type="hidden" name="email_original" value="<?= $usuario->email ?>">
                   
                   <div class="col-md-6">
@@ -100,9 +100,9 @@
                   </div>
 
                   <div class="col-md-6">
-                    <label for="edad_custom" class="form-label">Edad</label>
-                    <input name="edad" type="number" class="form-control" id="edad_custom" value="<?= $usuario->edad ?>" min="1" max="120">
-                    <div class="invalid-feedback">¡Por favor, ingrese una edad válida!</div>
+                      <label for="fecha_nacimiento_custom" class="form-label">Fecha de Nacimiento</label>
+                      <input name="fecha_nacimiento" type="date" class="form-control" id="fecha_nacimiento_custom" value="<?= $usuario->fecha_nacimiento ?>" required>
+                      <div class="invalid-feedback">¡Por favor, ingrese una fecha de nacimiento válida!</div>
                   </div>
 
                   <div class="col-md-6">

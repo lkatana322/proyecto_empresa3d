@@ -18,24 +18,35 @@ class Perfil extends CI_Controller {
     }
 
     private function check_permissions() {
-        $user_role = $this->session->userdata('rol_id');
-        if ($user_role == 3) { // Cliente no puede acceder
+        $user_role = $this->session->userdata('rol'); // Obtener el rol del usuario desde la sesión
+        if ($user_role == 'cliente') { // Verificar si el rol es 'cliente'
             $this->session->set_flashdata('error', 'No tienes permiso para realizar esta acción.');
             redirect('admin'); // Redirige al dashboard si intentan acceder
         }
-    }    
+    }     
 
     public function index()
     {
         $this->check_permissions();
         $data['usuario'] = $this->Usuario_model->get_usuario_by_id($this->session->userdata('user_id'));
+        
+        // Calcular la edad basada en la fecha de nacimiento
+        if ($data['usuario']->fecha_nacimiento) {
+            $fecha_nacimiento = new DateTime($data['usuario']->fecha_nacimiento);
+            $hoy = new DateTime();
+            $edad = $hoy->diff($fecha_nacimiento)->y;
+            $data['usuario']->edad = $edad;
+        } else {
+            $data['usuario']->edad = 'No especificado';
+        }
+    
         $this->load->view('admin/template/header');
         $this->load->view('admin/template/navbar');
         $this->load->view('admin/template/sidebar');
         $this->load->view('admin/usuario/perfil', $data);
         $this->load->view('admin/template/footer');
     }
-
+    
     public function actualizar()
     {
         $id = $this->session->userdata('user_id');
@@ -45,10 +56,10 @@ class Perfil extends CI_Controller {
         $this->form_validation->set_rules('nombre', 'Nombre', 'required|alpha');
         $this->form_validation->set_rules('apellido', 'Apellido', 'required|alpha');
         $this->form_validation->set_rules('segundo_apellido', 'Segundo Apellido', 'alpha');
-        $this->form_validation->set_rules('edad', 'Edad', 'numeric');
+        $this->form_validation->set_rules('fecha_nacimiento', 'Fecha de Nacimiento', 'required');
         $this->form_validation->set_rules('email', 'Correo Electrónico', 'required|valid_email');
     
-        if ($usuario->rol_nombre == 'admin' || $usuario->rol_nombre == 'empleado') {
+        if ($usuario->rol == 'admin' || $usuario->rol == 'empleado') {
             $this->form_validation->set_rules('telefono', 'Teléfono', 'required|numeric');
             $this->form_validation->set_rules('direccion', 'Dirección', 'required');
         }
@@ -91,21 +102,25 @@ class Perfil extends CI_Controller {
                 }
             }
     
+            // Asignar valores al array $data_usuario para actualizar el registro
             $data_usuario['nombre'] = strtoupper($this->input->post('nombre'));
             $data_usuario['apellido'] = strtoupper($this->input->post('apellido'));
             $data_usuario['segundo_apellido'] = strtoupper($this->input->post('segundo_apellido'));
-            $data_usuario['edad'] = $this->input->post('edad');
+            $data_usuario['fecha_nacimiento'] = $this->input->post('fecha_nacimiento');
             $data_usuario['email'] = $this->input->post('email');
             $data_usuario['telefono'] = $this->input->post('telefono');
             $data_usuario['direccion'] = $this->input->post('direccion');
     
             // Si se proporcionó una nueva contraseña, actualizarla
+            $new_password_plain = null;
             if ($new_password) {
+                $new_password_plain = $new_password; // Guardar la contraseña en texto plano
                 $data_usuario['contraseña'] = password_hash($new_password, PASSWORD_DEFAULT);
             }
     
             $this->Usuario_model->update_usuario($id, $data_usuario);
     
+            // Si el email ha cambiado, enviar un correo de confirmación con la nueva contraseña si corresponde
             if ($this->input->post('email') !== $this->input->post('email_original')) {
                 $config = array(
                     'protocol' => 'smtp',
@@ -125,7 +140,13 @@ class Perfil extends CI_Controller {
                 $this->email->from('alvarez.brandon.13353@gmail.com', '3D Print Shop');
                 $this->email->to($this->input->post('email'));
                 $this->email->subject('Confirmación de Actualización');
-                $this->email->message('Tu información ha sido actualizada exitosamente.');
+                
+                $message = 'Tu información ha sido actualizada exitosamente.';
+                if ($new_password_plain) {
+                    $message .= '<br>Tu nueva contraseña es: ' . $new_password_plain;
+                }
+    
+                $this->email->message($message);
     
                 if (!$this->email->send()) {
                     show_error($this->email->print_debugger());

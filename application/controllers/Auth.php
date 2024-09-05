@@ -70,7 +70,7 @@ class Auth extends CI_Controller {
         $this->form_validation->set_rules('nombre', 'Nombre', 'required');
         $this->form_validation->set_rules('apellido', 'Apellido', 'required');
         $this->form_validation->set_rules('segundo_apellido', 'Segundo Apellido');
-        $this->form_validation->set_rules('edad', 'Edad', 'numeric');
+        $this->form_validation->set_rules('fecha_nacimiento', 'Fecha de Nacimiento',);
         $this->form_validation->set_rules('imagen', 'Imagen');
         $this->form_validation->set_rules('email', 'Correo Electrónico', 'required|valid_email|is_unique[usuario.email]');
         $this->form_validation->set_rules('password', 'Contraseña', 'required|min_length[8]');
@@ -82,7 +82,7 @@ class Auth extends CI_Controller {
             $nombre = strtoupper($this->input->post('nombre'));
             $apellido = strtoupper($this->input->post('apellido'));
             $segundo_apellido = strtoupper($this->input->post('segundo_apellido'));
-            $edad = $this->input->post('edad');
+            $fecha_nacimiento = $this->input->post('fecha_nacimiento');
             $imagen = $this->input->post('imagen');
             $email = $this->input->post('email');
             $password = password_hash($this->input->post('password'), PASSWORD_BCRYPT);
@@ -94,7 +94,7 @@ class Auth extends CI_Controller {
                 'nombre' => $nombre,
                 'apellido' => $apellido,
                 'segundo_apellido' => $segundo_apellido,
-                'edad' => $edad,
+                'fecha_nacimiento' => $fecha_nacimiento,
                 'imagen' => $imagen,
                 'email' => $email,
                 'contraseña' => $password,

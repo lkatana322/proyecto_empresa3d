@@ -68,27 +68,27 @@ class Usuario_model extends CI_Model {
         return $query->num_rows() > 0;
     }
 
-    public function get_usuarios_by_rol($rol_id) {
+    public function get_usuarios_by_rol($rol) {
         $this->db->select('u.*');
         $this->db->from('usuario u');
-        $this->db->where('u.rol', $rol_id);
+        $this->db->where('u.rol', $rol);
         $query = $this->db->get();
         return $query->result();
     }
 
-    public function get_usuarios_by_estado_y_rol($estado, $rol_id) {
+    public function get_usuarios_by_estado_y_rol($estado, $rol) {
         $this->db->select('u.*');
         $this->db->from('usuario u');
         $this->db->where('u.estado', $estado);
-        $this->db->where('u.rol', $rol_id);
+        $this->db->where('u.rol', $rol);
         $query = $this->db->get();
         return $query->result();
     }
     
-    public function get_usuarios_by_rol_activos($rol_id) {
+    public function get_usuarios_by_rol_activos($rol) {
         $this->db->select('u.*');
         $this->db->from('usuario u');
-        $this->db->where('u.rol', $rol_id);
+        $this->db->where('u.rol', $rol);
         $this->db->where('u.estado', 'activo');
         $query = $this->db->get();
         return $query->result();

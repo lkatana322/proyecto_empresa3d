@@ -111,7 +111,7 @@
                 <tr><th>Email:</th><td>${data.email}</td></tr>
                 <tr><th>Teléfono:</th><td>${data.telefono ? data.telefono : 'N/A'}</td></tr>
                 <tr><th>Dirección:</th><td>${data.direccion ? data.direccion : 'N/A'}</td></tr>
-                <tr><th>Edad:</th><td>${data.edad ? data.edad : 'N/A'}</td></tr>
+                <tr><th>Fecha de Nacimiento:</th><td>${data.fecha_nacimiento ? data.fecha_nacimiento : 'N/A'}</td></tr>
                 <tr><th>Fecha de Contratación:</th><td>${data.fecha_contratacion ? data.fecha_contratacion : 'N/A'}</td></tr>
                 <tr><th>Fecha de Creación:</th><td>${data.fecha_creacion}</td></tr>
                 <tr><th>Fecha de Actualización:</th><td>${data.fecha_actualizacion}</td></tr>

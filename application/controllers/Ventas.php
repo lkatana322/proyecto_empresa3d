@@ -21,12 +21,12 @@ class Ventas extends CI_Controller {
     }
 
     private function check_permissions() {
-        $user_role = $this->session->userdata('rol_id');
-        if ($user_role == 3) { // Cliente no puede acceder a esta sección
+        $user_role = $this->session->userdata('rol'); // Obtener el rol del usuario desde la sesión
+        if ($user_role == 'cliente') { // Verificar si el rol es 'cliente'
             $this->session->set_flashdata('error', 'No tienes permiso para realizar esta acción.');
-            redirect('admin');
+            redirect('admin'); // Redirige al dashboard si intentan acceder
         }
-    }
+    }    
 
     public function index() {
         $this->check_permissions();
@@ -45,6 +45,8 @@ class Ventas extends CI_Controller {
         $data['empleados'] = $this->Usuario_model->get_all_empleados();
         $data['productos'] = $this->Producto_model->get_productos_by_estado('activo'); 
         $data['categorias'] = $this->Categoria_model->get_categorias_by_estado('activo');
+        $data['usuario_logueado'] = $this->session->userdata('nombre') . ' ' . $this->session->userdata('apellido');
+        $data['rol_usuario_logueado'] = $this->session->userdata('rol');
         $this->load->view('admin/template/header');
         $this->load->view('admin/template/navbar');
         $this->load->view('admin/template/sidebar');
@@ -87,7 +89,7 @@ class Ventas extends CI_Controller {
                     $producto = $this->Producto_model->get_producto_by_id($productos[$i]);
     
                     // Validar si el producto está activo
-                    if ($producto->estado != 'activo') { // Asume que '1' es el estado activo
+                    if ($producto->estado != 'activo') {
                         throw new Exception('El producto "' . $producto->nombre . '" no está activo y no se puede vender.');
                     }
     
@@ -102,8 +104,7 @@ class Ventas extends CI_Controller {
                         'venta_id' => $venta_id,
                         'producto_id' => $productos[$i],
                         'cantidad' => $cantidades[$i],
-                        'precio_unitario' => $precios_unitarios[$i],
-                        'usuario_actualizacion_id' => $this->session->userdata('user_id')
+                        'precio_unitario' => $precios_unitarios[$i],                       
                     );
                     $this->Venta_model->insert_detalle_venta($detalle_venta);
     
@@ -138,7 +139,7 @@ class Ventas extends CI_Controller {
                 redirect('ventas/agregar');
             }
         }
-    }      
+    }    
     
     public function editar($id) {
         $this->check_permissions();
@@ -147,6 +148,8 @@ class Ventas extends CI_Controller {
         $data['empleados'] = $this->Usuario_model->get_all_empleados();
         $data['productos'] = $this->Producto_model->get_productos_by_estado('activo'); 
         $data['categorias'] = $this->Categoria_model->get_categorias_by_estado('activo');
+        $data['usuario_logueado'] = $this->session->userdata('nombre') . ' ' . $this->session->userdata('apellido');
+        $data['rol_usuario_logueado'] = $this->session->userdata('rol');
         $this->load->view('admin/template/header');
         $this->load->view('admin/template/navbar');
         $this->load->view('admin/template/sidebar');
@@ -201,7 +204,7 @@ class Ventas extends CI_Controller {
                     $producto = $this->Producto_model->get_producto_by_id($productos[$i]);
     
                     // Validar si el producto está activo
-                    if ($producto->estado != 1) { // Asume que '1' es el estado activo
+                    if ($producto->estado != 'activo') { 
                         throw new Exception('El producto "' . $producto->nombre . '" no está activo y no se puede vender.');
                     }
     
@@ -216,8 +219,7 @@ class Ventas extends CI_Controller {
                         'venta_id' => $id,
                         'producto_id' => $productos[$i],
                         'cantidad' => $cantidades[$i],
-                        'precio_unitario' => $precios_unitarios[$i],
-                        'usuario_actualizacion_id' => $this->session->userdata('user_id')
+                        'precio_unitario' => $precios_unitarios[$i],                      
                     );
                     $this->Venta_model->insert_detalle_venta($detalle_venta);
     
@@ -275,30 +277,29 @@ class Ventas extends CI_Controller {
         $this->check_permissions();
         
         // Obtener los detalles generales de la venta
-        $this->db->select('v.*, u1.nombre as cliente_nombre, u1.apellido as cliente_apellido, u2.nombre as empleado_nombre, u2.apellido as empleado_apellido, ua.nombre as actualizador_nombre, ua.apellido as actualizador_apellido, r.nombre as rol_nombre');
-        $this->db->from('ventas v');
-        $this->db->join('usuarios u1', 'v.cliente_id = u1.id', 'left'); // Cliente
-        $this->db->join('usuarios u2', 'v.usuario_id = u2.id', 'left'); // Vendedor (admin o empleado)
-        $this->db->join('usuarios ua', 'v.usuario_actualizacion_id = ua.id', 'left'); // Usuario que realizó la última actualización
-        $this->db->join('roles r', 'u2.rol_id = r.id', 'left'); // Agregar el rol del vendedor
+        $this->db->select('v.*, u1.nombre as cliente_nombre, u1.apellido as cliente_apellido, u2.nombre as empleado_nombre, u2.apellido as empleado_apellido, ua.nombre as actualizador_nombre, ua.apellido as actualizador_apellido');
+        $this->db->from('venta v');
+        $this->db->join('usuario u1', 'v.cliente_id = u1.id', 'left'); // Cliente
+        $this->db->join('usuario u2', 'v.usuario_id = u2.id', 'left'); // Vendedor (admin o empleado)
+        $this->db->join('usuario ua', 'v.usuario_actualizacion_id = ua.id', 'left'); // Usuario que realizó la última actualización
         $this->db->where('v.id', $id);
         $venta = $this->db->get()->row();
-    
+        
         // Manejar caso de cliente no definido
         if (is_null($venta->cliente_id)) {
             $venta->cliente_nombre = 'Cliente no definido';
             $venta->cliente_apellido = '';
         }
-    
+        
         // Obtener los detalles de los productos en la venta
         $this->db->select('dv.*, p.nombre as producto_nombre');
-        $this->db->from('detalles_ventas dv');
-        $this->db->join('productos p', 'dv.producto_id = p.id');
+        $this->db->from('detalle_venta dv');
+        $this->db->join('producto p', 'dv.producto_id = p.id');
         $this->db->where('dv.venta_id', $id);
         $venta->detalles_productos = $this->db->get()->result();
-    
+        
         echo json_encode($venta);
-    }    
+    }     
 
     public function pendientes() {
         $this->check_permissions();

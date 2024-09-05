@@ -32,15 +32,11 @@
               </div>
 
               <div class="col-md-6">
-                <label for="usuario_id" class="form-label">Empleado/Admin</label>
-                <select id="usuario_id" name="usuario_id" class="form-select" required>
-                  <option value="" disabled selected>Seleccione un empleado/admin</option>
-                  <?php foreach($empleados as $empleado): ?>
-                    <option value="<?php echo $empleado->id; ?>"><?php echo $empleado->nombre . ' ' . $empleado->apellido; ?></option>
-                  <?php endforeach; ?>
-                </select>
-                <div class="invalid-feedback">¡Por favor, seleccione un empleado o administrador!</div>
+                  <label for="usuario_id" class="form-label"><?= ucfirst($rol_usuario_logueado); ?></label>
+                  <input type="text" class="form-control" value="<?= $usuario_logueado; ?>" disabled>
+                  <input type="hidden" name="usuario_id" value="<?= $this->session->userdata('user_id'); ?>"> 
               </div>
+
 
               <div class="col-md-6">
                 <label for="categoria_id" class="form-label">Categoría</label>
@@ -179,6 +175,7 @@
                   }
                 });
               });
+
             </script>
 
           </div>
