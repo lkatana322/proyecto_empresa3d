@@ -45,11 +45,11 @@
               </div>
 
               <div class="row mb-3">
-                <label for="edad_usuario" class="col-md-4 col-form-label">Edad:</label>
-                <div class="col-md-8">
-                  <input type="number" class="form-control" id="edad_usuario" name="edad_usuario" value="<?php echo $usuario->edad; ?>" min="1" max="120">
-                  <div class="invalid-feedback">¡Por favor, ingrese una edad válida!</div>
-                </div>
+                  <label for="fecha_nacimiento_usuario" class="col-md-4 col-form-label">Fecha de Nacimiento:</label>
+                  <div class="col-md-8">
+                      <input type="date" class="form-control" id="fecha_nacimiento_usuario" name="fecha_nacimiento_usuario" value="<?php echo isset($usuario->fecha_nacimiento) ? $usuario->fecha_nacimiento : ''; ?>">
+                      <div class="invalid-feedback">¡Por favor, ingrese una fecha de nacimiento válida!</div>
+                  </div>
               </div>
 
               <div class="row mb-3">
@@ -61,16 +61,17 @@
               </div>
 
               <div class="row mb-3">
-                  <label for="rol_usuario" class="col-md-4 col-form-label">Rol:</label>
-                  <div class="col-md-8">
-                      <select class="form-control" id="rol_usuario" name="rol_usuario" required>
-                          <option value="1" <?php if($usuario->rol_id == 1) echo 'selected'; ?>>Admin</option>
-                          <option value="2" <?php if($usuario->rol_id == 2) echo 'selected'; ?>>Empleado</option>
-                          <option value="3" <?php if($usuario->rol_id == 3) echo 'selected'; ?>>Cliente</option>
-                      </select>
-                      <div class="invalid-feedback">¡Por favor, seleccione un rol!</div>
-                  </div>
+                <label for="rol_usuario" class="col-md-4 col-form-label">Rol:</label>
+                <div class="col-md-8">
+                    <select class="form-control" id="rol_usuario" name="rol_usuario" required>
+                        <option value="admin" <?php if($usuario->rol == 'admin') echo 'selected'; ?>>Admin</option>
+                        <option value="empleado" <?php if($usuario->rol == 'empleado') echo 'selected'; ?>>Empleado</option>
+                        <option value="cliente" <?php if($usuario->rol == 'cliente') echo 'selected'; ?>>Cliente</option>
+                    </select>
+                    <div class="invalid-feedback">¡Por favor, seleccione un rol!</div>
+                </div>
               </div>
+
 
               <div id="fecha_contratacion_group" class="row mb-3" style="display: none;">
                   <label for="fecha_contratacion_usuario" class="col-md-4 col-form-label">Fecha de Contratación:</label>
@@ -92,14 +93,6 @@
                 <div class="col-md-8">
                   <input type="text" class="form-control cliente-optional" id="direccion_usuario" name="direccion_usuario" value="<?php echo $usuario->direccion; ?>">
                   <div class="invalid-feedback">¡Por favor, ingrese la dirección!</div>
-                </div>
-              </div>
-
-              <div class="row mb-3" id="empleado_fields_usuario">
-                <label for="fecha_contratacion_usuario" class="col-md-4 col-form-label">Fecha de Contratación:</label>
-                <div class="col-md-8">
-                  <input type="date" class="form-control date-input" id="fecha_contratacion_usuario" name="fecha_contratacion_usuario" value="<?php echo $usuario->fecha_contratacion; ?>">
-                  <div class="invalid-feedback">¡Por favor, ingrese la fecha de contratación!</div>
                 </div>
               </div>
 
@@ -132,7 +125,7 @@
 
                 function toggleFechaContratacion() {
                     const selectedRole = rolSelect.value;
-                    if (selectedRole === '1' || selectedRole === '2') {
+                    if (selectedRole === 'admin' || selectedRole === 'empleado') {
                         fechaContratacionGroup.style.display = 'flex'; // Mostrar el campo
                     } else {
                         fechaContratacionGroup.style.display = 'none'; // Ocultar el campo

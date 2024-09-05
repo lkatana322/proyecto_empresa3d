@@ -14,14 +14,14 @@ class Actividad_model extends CI_Model {
             'descripcion' => $descripcion,
             'fecha_hora' => date('Y-m-d H:i:s')
         );
-        $this->db->insert('actividades', $data);
+        $this->db->insert('actividad', $data);
     }
 
     // Método para obtener las actividades recientes
     public function obtener_actividades_recientes($limite = 7) {
         $this->db->select('a.*, u.nombre as usuario_nombre, u.apellido as usuario_apellido');
-        $this->db->from('actividades a');
-        $this->db->join('usuarios u', 'a.usuario_id = u.id');
+        $this->db->from('actividad a');
+        $this->db->join('usuario u', 'a.usuario_id = u.id');
         $this->db->order_by('a.fecha_hora', 'DESC');
         $this->db->limit($limite);
         $query = $this->db->get();

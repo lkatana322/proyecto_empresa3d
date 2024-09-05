@@ -29,35 +29,25 @@ class Auth extends CI_Controller {
             }
     
             if (password_verify($password, $user->contraseña)) {
-                // Obtener el rol del usuario junto con otros datos y guardarlos en la sesión
-                $this->db->select('usuarios.*, roles.nombre as rol');
-                $this->db->from('usuarios');
-                $this->db->join('roles', 'usuarios.rol_id = roles.id');
-                $this->db->where('usuarios.email', $email);
-                $query = $this->db->get();
-
-                if ($query->num_rows() == 1) {
-                    $usuario = $query->row();
-                    $this->session->set_userdata('user_id', $usuario->id);
-                    $this->session->set_userdata('rol_id', $usuario->rol_id); 
-                    $this->session->set_userdata('rol', $usuario->rol); // Guarda el nombre del rol en la sesión
-                    $this->session->set_userdata('nombre', $usuario->nombre);
-                    $this->session->set_userdata('apellido', $usuario->apellido);
-                    $this->session->set_userdata('segundo_apellido', $usuario->segundo_apellido);
-                    $this->session->set_userdata('edad', $usuario->edad);
-                    $this->session->set_userdata('imagen', $usuario->imagen);
+                // Guardar los datos del usuario en la sesión
+                $this->session->set_userdata('user_id', $user->id);
+                $this->session->set_userdata('rol', $user->rol); // Guarda el rol en la sesión
+                $this->session->set_userdata('nombre', $user->nombre);
+                $this->session->set_userdata('apellido', $user->apellido);
+                $this->session->set_userdata('segundo_apellido', $user->segundo_apellido);
+                $this->session->set_userdata('edad', $user->edad);
+                $this->session->set_userdata('imagen', $user->imagen);
     
-                    // Redirigir según el rol del usuario
-                    if ($usuario->rol_id == 1) {
-                        redirect('admin/dashboard');
-                    } elseif ($usuario->rol_id == 2) {
-                        redirect('admin/dashboard');
-                    } elseif ($usuario->rol_id == 3) {
-                        redirect('cliente/home');
-                    } else {
-                        $this->session->set_flashdata('error', 'No tienes permiso para acceder a esta página.');
-                        redirect('auth/login');
-                    }
+                // Redirigir según el rol del usuario
+                if ($user->rol == 'admin') {
+                    redirect('admin/dashboard');
+                } elseif ($user->rol == 'empleado') {
+                    redirect('admin/dashboard');
+                } elseif ($user->rol == 'cliente') {
+                    redirect('cliente/home');
+                } else {
+                    $this->session->set_flashdata('error', 'No tienes permiso para acceder a esta página.');
+                    redirect('auth/login');
                 }
             } else {
                 // Contraseña incorrecta
@@ -82,7 +72,7 @@ class Auth extends CI_Controller {
         $this->form_validation->set_rules('segundo_apellido', 'Segundo Apellido');
         $this->form_validation->set_rules('edad', 'Edad', 'numeric');
         $this->form_validation->set_rules('imagen', 'Imagen');
-        $this->form_validation->set_rules('email', 'Correo Electrónico', 'required|valid_email|is_unique[usuarios.email]');
+        $this->form_validation->set_rules('email', 'Correo Electrónico', 'required|valid_email|is_unique[usuario.email]');
         $this->form_validation->set_rules('password', 'Contraseña', 'required|min_length[8]');
         $this->form_validation->set_rules('password_confirm', 'Confirmar Contraseña', 'required|matches[password]');
     
@@ -108,7 +98,7 @@ class Auth extends CI_Controller {
                 'imagen' => $imagen,
                 'email' => $email,
                 'contraseña' => $password,
-                'rol_id' => 3,  // Definiendo 'cliente' como rol por defecto
+                'rol' => 'cliente',  // Definiendo 'cliente' como rol por defecto
                 'estado' => 'inactivo',
                 'fecha_creacion' => date('Y-m-d H:i:s'),
                 'codigo_confirmacion' => $codigo_confirmacion,

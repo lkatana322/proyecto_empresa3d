@@ -46,7 +46,7 @@ class Usuarios extends CI_Controller {
     public function agregar() {
         $this->check_permissions();
 
-        if ($this->session->userdata('rol_id') == 2) {
+        if ($this->session->userdata('rol') == 'empleado') {
             $this->session->set_flashdata('error', 'No tienes permiso para realizar esta acción.');
             redirect('usuarios');
         }
@@ -68,20 +68,19 @@ class Usuarios extends CI_Controller {
         $this->form_validation->set_rules('nombre_usuario', 'Nombre', 'required|alpha');
         $this->form_validation->set_rules('apellido_usuario', 'Apellido', 'required|alpha');
         $this->form_validation->set_rules('segundo_apellido_usuario', 'Segundo Apellido', 'alpha');
-        $this->form_validation->set_rules('edad_usuario', 'Edad', 'numeric');
         $this->form_validation->set_rules('email_usuario', 'Correo Electrónico', 'required|valid_email');
         $this->form_validation->set_rules('rol_usuario', 'Rol', 'required');
         $this->form_validation->set_rules('estado_usuario', 'Estado', 'required');
         
-        $rol_id = $this->input->post('rol_usuario');
+        $rol = $this->input->post('rol_usuario');
 
-        if (!in_array($rol_id, [1, 2, 3])) {
+        if (!in_array($rol, ['admin', 'empleado', 'cliente'])) {
             $this->session->set_flashdata('error', 'Rol inválido seleccionado.');
             $this->agregar();
             return;
         }
 
-        if ($rol_id == 1 || $rol_id == 2) { // Admin o empleado
+        if ($rol == 'admin' || $rol == 'empleado') {
             $this->form_validation->set_rules('telefono_usuario', 'Teléfono', 'required|regex_match[/^[0-9]{8,10}$/]');
             $this->form_validation->set_rules('direccion_usuario', 'Dirección', 'required');
         } else {
@@ -106,15 +105,15 @@ class Usuarios extends CI_Controller {
                 'nombre' => strtoupper($this->input->post('nombre_usuario')),
                 'apellido' => strtoupper($this->input->post('apellido_usuario')),
                 'segundo_apellido' => strtoupper($this->input->post('segundo_apellido_usuario')),
-                'edad' => $this->input->post('edad_usuario'),
-                'email' => $email,
+                'fecha_nacimiento' => $this->input->post('fecha_nacimiento_usuario'),
+                'email' => $this->input->post('email_usuario'),
                 'contraseña' => password_hash($password, PASSWORD_DEFAULT),
-                'rol_id' => $rol_id,
+                'rol' => $rol, // Cambiado a `rol`
                 'telefono' => $this->input->post('telefono_usuario') ?: null,
                 'direccion' => $this->input->post('direccion_usuario') ?: null,
                 'fecha_contratacion' => $this->input->post('fecha_contratacion_usuario'),
                 'estado' => $this->input->post('estado_usuario')
-            );
+            );            
 
             $usuario_id = $this->Usuario_model->insert_usuario($data_usuario);
 
@@ -217,15 +216,15 @@ class Usuarios extends CI_Controller {
                 'nombre' => strtoupper($this->input->post('nombre_usuario')),
                 'apellido' => strtoupper($this->input->post('apellido_usuario')),
                 'segundo_apellido' => strtoupper($this->input->post('segundo_apellido_usuario')),
-                'edad' => $this->input->post('edad_usuario'),
+                'fecha_nacimiento' => $this->input->post('fecha_nacimiento_usuario'), // Asegúrate de que esto esté presente
                 'email' => $this->input->post('email_usuario'),
-                'rol_id' => $rol_id,
+                'rol' => $this->input->post('rol_usuario'),
                 'telefono' => $this->input->post('telefono_usuario'),
                 'direccion' => $this->input->post('direccion_usuario'),
                 'fecha_contratacion' => $this->input->post('fecha_contratacion_usuario'),
                 'estado' => $this->input->post('estado_usuario'),
                 'usuario_actualizacion_id' => $this->session->userdata('user_id')
-            );
+            );                     
 
             if ($usuario_anterior->email != $this->input->post('email_usuario')) {
                 $new_password = $this->generate_random_password();
@@ -311,10 +310,9 @@ class Usuarios extends CI_Controller {
 
     public function ver_ajax($id) {
         $this->check_permissions();
-        $this->db->select('u.*, r.nombre as rol_nombre, ua.nombre as actualizador_nombre, ua.apellido as actualizador_apellido');
-        $this->db->from('usuarios u');
-        $this->db->join('roles r', 'u.rol_id = r.id');
-        $this->db->join('usuarios ua', 'u.usuario_actualizacion_id = ua.id', 'left');
+        $this->db->select('u.*, ua.nombre as actualizador_nombre, ua.apellido as actualizador_apellido');
+        $this->db->from('usuario u');
+        $this->db->join('usuario ua', 'u.usuario_actualizacion_id = ua.id', 'left');
         $this->db->where('u.id', $id);
         $query = $this->db->get();
         echo json_encode($query->row());

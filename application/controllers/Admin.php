@@ -32,10 +32,9 @@ class Admin extends CI_Controller {
     }
 
     private function check_role($roles) {
-        $user_role_id = $this->session->userdata('rol_id');
-        $allowed_roles = $this->Usuario_model->get_roles_by_names($roles);
+        $user_role = $this->session->userdata('rol'); // El rol está ahora en la sesión como texto (admin, empleado, etc.)
     
-        if (!in_array($user_role_id, $allowed_roles)) {
+        if (!in_array($user_role, $roles)) {
             $this->session->set_flashdata('error', 'No tienes permiso para acceder a esta página.');
             redirect('auth/login');
         }

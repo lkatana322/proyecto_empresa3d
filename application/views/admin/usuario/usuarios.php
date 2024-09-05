@@ -46,7 +46,7 @@
                       <td><?php echo $usuario->apellido; ?></td>
                       <td><?php echo isset($usuario->segundo_apellido) ? $usuario->segundo_apellido : 'N/A'; ?></td>
                       <td><?php echo $usuario->email; ?></td>
-                      <td><?php echo $usuario->rol_nombre; ?></td>
+                      <td><?php echo $usuario->rol; ?></td>
                       <td><?php echo isset($usuario->telefono) ? $usuario->telefono : 'N/A'; ?></td>
                       <td><?php echo isset($usuario->direccion) ? $usuario->direccion : 'N/A'; ?></td>
                       <td><?php echo $usuario->estado; ?></td>
@@ -104,35 +104,35 @@
     const viewButtons = document.querySelectorAll('.view-details');
     
     viewButtons.forEach(button => {
-      button.addEventListener('click', function() {
-        const userId = this.getAttribute('data-id');
-        
-        fetch(`<?php echo base_url('usuarios/ver_ajax/'); ?>${userId}`)
-        .then(response => response.json())
-        .then(data => {
-          const modalBody = document.querySelector('#userDetailsModal .modal-body');
-          modalBody.innerHTML = `
-            <table class="table">
-              <tr><th>Nombre:</th><td>${data.nombre}</td></tr>
-              <tr><th>Apellido:</th><td>${data.apellido}</td></tr>
-              <tr><th>Segundo Apellido:</th><td>${data.segundo_apellido ? data.segundo_apellido : 'N/A'}</td></tr>
-              <tr><th>Email:</th><td>${data.email}</td></tr>
-              <tr><th>Rol:</th><td>${data.rol_nombre}</td></tr>
-              <tr><th>Teléfono:</th><td>${data.telefono ? data.telefono : 'N/A'}</td></tr>
-              <tr><th>Dirección:</th><td>${data.direccion ? data.direccion : 'N/A'}</td></tr>
-              <tr><th>Edad:</th><td>${data.edad ? data.edad : 'N/A'}</td></tr>
-              <tr><th>Fecha de Contratación:</th><td>${data.fecha_contratacion ? data.fecha_contratacion : 'N/A'}</td></tr>
-              <tr><th>Fecha de Creación:</th><td>${data.fecha_creacion}</td></tr>
-              <tr><th>Fecha de Actualización:</th><td>${data.fecha_actualizacion}</td></tr>
-              <tr><th>Estado:</th><td>${data.estado}</td></tr>
-              <tr><th>Usuario que realizó la última actualización:</th><td>${data.actualizador_nombre ? data.actualizador_nombre + ' ' + data.actualizador_apellido : 'N/A'}</td></tr>
-            </table>
-          `;
-          const modal = new bootstrap.Modal(document.getElementById('userDetailsModal'));
-          modal.show();
-        });
+        button.addEventListener('click', function() {
+            const userId = this.getAttribute('data-id');
+            
+            fetch(`<?php echo base_url('usuarios/ver_ajax/'); ?>${userId}`)
+            .then(response => response.json())
+            .then(data => {
+                const modalBody = document.querySelector('#userDetailsModal .modal-body');
+                modalBody.innerHTML = `
+                    <table class="table">
+                        <tr><th>Nombre:</th><td>${data.nombre}</td></tr>
+                        <tr><th>Apellido:</th><td>${data.apellido}</td></tr>
+                        <tr><th>Segundo Apellido:</th><td>${data.segundo_apellido ? data.segundo_apellido : 'N/A'}</td></tr>
+                        <tr><th>Email:</th><td>${data.email}</td></tr>
+                        <tr><th>Rol:</th><td>${data.rol}</td></tr>
+                        <tr><th>Teléfono:</th><td>${data.telefono ? data.telefono : 'N/A'}</td></tr>
+                        <tr><th>Dirección:</th><td>${data.direccion ? data.direccion : 'N/A'}</td></tr>
+                        <tr><th>Fecha de Nacimiento:</th><td>${data.fecha_nacimiento ? data.fecha_nacimiento : 'N/A'}</td></tr>
+                        <tr><th>Fecha de Contratación:</th><td>${data.fecha_contratacion ? data.fecha_contratacion : 'N/A'}</td></tr>
+                        <tr><th>Fecha de Creación:</th><td>${data.fecha_creacion}</td></tr>
+                        <tr><th>Fecha de Actualización:</th><td>${data.fecha_actualizacion}</td></tr>
+                        <tr><th>Estado:</th><td>${data.estado}</td></tr>
+                        <tr><th>Usuario que realizó la última actualización:</th><td>${data.actualizador_nombre ? data.actualizador_nombre + ' ' + data.actualizador_apellido : 'N/A'}</td></tr>
+                    </table>
+                `;
+                const modal = new bootstrap.Modal(document.getElementById('userDetailsModal'));
+                modal.show();
+            });
 
-      });
+        });
     });
 
     const deleteButtons = document.querySelectorAll('.delete-user');

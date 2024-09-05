@@ -40,9 +40,9 @@
               </div>
 
               <div class="col-md-6">
-                <label for="edad_usuario" class="form-label">Edad</label>
-                <input type="number" name="edad_usuario" class="form-control" id="edad_usuario" min="1" max="120">
-                <div class="invalid-feedback">¡Por favor, ingrese una edad válida!</div>
+                  <label for="fecha_nacimiento_usuario" class="form-label">Fecha de Nacimiento</label>
+                  <input type="date" name="fecha_nacimiento_usuario" class="form-control" id="fecha_nacimiento_usuario" required>
+                  <div class="invalid-feedback">¡Por favor, ingrese una fecha de nacimiento válida!</div>
               </div>
 
               <div class="col-md-6">
@@ -67,9 +67,9 @@
                   <label for="rol_usuario" class="form-label">Rol</label>
                   <select name="rol_usuario" class="form-select" id="rol_usuario" required>
                       <option value="" disabled selected>Seleccione un rol</option>
-                      <option value="1">Administrador</option>
-                      <option value="2">Empleado</option>
-                      <option value="3">Cliente</option>
+                      <option value="admin">Administrador</option>
+                      <option value="empleado">Empleado</option>
+                      <option value="cliente">Cliente</option>
                   </select>
                   <div class="invalid-feedback">¡Por favor, seleccione un rol!</div>
               </div>
@@ -100,43 +100,7 @@
 
             </form>
             <!-- End Formulario de Agregar Usuario -->
-
-            <script>
-              document.addEventListener('DOMContentLoaded', function() {
-                const formAgregarUsuario = document.getElementById('formAgregarUsuario');
-                const btnAgregarUsuario = document.getElementById('btnAgregarUsuario');
-                const rolSelect = document.getElementById('rol_usuario');
-                const fechaContratacionWrapper = document.getElementById('fechaContratacionWrapper');
-
-                // Mostrar/Ocultar el campo "Fecha de Contratación" basado en el rol seleccionado
-                function handleRoleChange() {
-                  const selectedRol = rolSelect.value;
-                  if (selectedRol === '1' || selectedRol === '2') { // Admin o Empleado
-                    fechaContratacionWrapper.style.display = 'block';
-                  } else {
-                    fechaContratacionWrapper.style.display = 'none';
-                  }
-                }
-
-                // Ejecutar la función al cargar la página
-                handleRoleChange();
-
-                // Escuchar cambios en el select de rol
-                rolSelect.addEventListener('change', handleRoleChange);
-
-                formAgregarUsuario.addEventListener('submit', function(event) {
-                  if (!formAgregarUsuario.checkValidity()) {
-                    event.preventDefault(); // Previene el envío del formulario si es inválido
-                    event.stopPropagation();
-                    formAgregarUsuario.classList.add('was-validated');
-                  } else {
-                    btnAgregarUsuario.disabled = true; // Deshabilita el botón
-                    btnAgregarUsuario.textContent = 'Guardando...'; // Cambia el texto del botón
-                  }
-                });
-              });
-            </script>
-
+             
           </div>
         </div>
       </div>

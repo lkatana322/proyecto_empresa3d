@@ -7,18 +7,17 @@ class Venta_model extends CI_Model {
     }
 
     public function get_all_ventas() {
-        $this->db->select('v.*, c.nombre as cliente_nombre, c.apellido as cliente_apellido, u.nombre as usuario_nombre, u.apellido as usuario_apellido, r.nombre as rol_nombre');
-        $this->db->from('ventas v');
-        $this->db->join('usuarios c', 'v.cliente_id = c.id', 'left');
-        $this->db->join('usuarios u', 'v.usuario_id = u.id', 'left');
-        $this->db->join('roles r', 'u.rol_id = r.id', 'left'); // Agregar el rol del usuario
+        $this->db->select('v.*, c.nombre as cliente_nombre, c.apellido as cliente_apellido, u.nombre as usuario_nombre, u.apellido as usuario_apellido');
+        $this->db->from('venta v');
+        $this->db->join('usuario c', 'v.cliente_id = c.id', 'left');
+        $this->db->join('usuario u', 'v.usuario_id = u.id', 'left');
         $ventas = $this->db->get()->result();
         
         foreach ($ventas as &$venta) {
             // Obtener los productos asociados a cada venta
             $this->db->select('dp.*, p.nombre as producto_nombre');
-            $this->db->from('detalles_ventas dp');
-            $this->db->join('productos p', 'dp.producto_id = p.id');
+            $this->db->from('detalle_venta dp');
+            $this->db->join('producto p', 'dp.producto_id = p.id');
             $this->db->where('dp.venta_id', $venta->id);
             $venta->productos = $this->db->get()->result();
         }
@@ -27,15 +26,15 @@ class Venta_model extends CI_Model {
     }    
 
     public function insert_venta($data) {
-        $this->db->insert('ventas', $data);
+        $this->db->insert('venta', $data);
         return $this->db->insert_id();
     }
 
     public function get_venta_by_id($id) {
         $this->db->select('v.*, c.nombre as cliente_nombre, c.apellido as cliente_apellido, u.nombre as usuario_nombre, u.apellido as usuario_apellido');
-        $this->db->from('ventas v');
-        $this->db->join('usuarios c', 'v.cliente_id = c.id', 'left');
-        $this->db->join('usuarios u', 'v.usuario_id = u.id', 'left');
+        $this->db->from('venta v');
+        $this->db->join('usuario c', 'v.cliente_id = c.id', 'left');
+        $this->db->join('usuario u', 'v.usuario_id = u.id', 'left');
         $this->db->where('v.id', $id);
         $venta = $this->db->get()->row();
     
@@ -44,8 +43,8 @@ class Venta_model extends CI_Model {
     
         // Obtener los detalles de los productos de la venta
         $this->db->select('dp.*, p.nombre as producto_nombre');
-        $this->db->from('detalles_ventas dp');
-        $this->db->join('productos p', 'dp.producto_id = p.id');
+        $this->db->from('detalle_venta dp');
+        $this->db->join('producto p', 'dp.producto_id = p.id');
         $this->db->where('dp.venta_id', $id);
         $detalles = $this->db->get()->result();
     
@@ -58,33 +57,33 @@ class Venta_model extends CI_Model {
 
     public function update_venta($id, $data) {
         $this->db->where('id', $id);
-        $this->db->update('ventas', $data);
+        $this->db->update('venta', $data);
     }
 
     public function delete_venta($id) {
-        $this->db->delete('ventas', array('id' => $id));
+        $this->db->delete('venta', array('id' => $id));
     }
 
     public function insert_detalle_venta($data) {
-        $this->db->insert('detalles_ventas', $data);
+        $this->db->insert('detalle_venta', $data);
     }
 
     public function delete_detalles_by_venta($venta_id) {
-        $this->db->delete('detalles_ventas', array('venta_id' => $venta_id));
+        $this->db->delete('detalle_venta', array('venta_id' => $venta_id));
     }
 
     public function get_venta_detalles_by_id($id) {
         $this->db->select('v.*, c.nombre as cliente_nombre, c.apellido as cliente_apellido, u.nombre as usuario_nombre, u.apellido as usuario_apellido');
-        $this->db->from('ventas v');
-        $this->db->join('usuarios c', 'v.cliente_id = c.id', 'left');
-        $this->db->join('usuarios u', 'v.usuario_id = u.id', 'left');
+        $this->db->from('venta v');
+        $this->db->join('usuario c', 'v.cliente_id = c.id', 'left');
+        $this->db->join('usuario u', 'v.usuario_id = u.id', 'left');
         $this->db->where('v.id', $id);
         $venta = $this->db->get()->row();
 
         // Obtener los detalles de los productos de la venta
         $this->db->select('dp.*, p.nombre as producto_nombre');
-        $this->db->from('detalles_ventas dp');
-        $this->db->join('productos p', 'dp.producto_id = p.id');
+        $this->db->from('detalle_venta dp');
+        $this->db->join('producto p', 'dp.producto_id = p.id');
         $this->db->where('dp.venta_id', $id);
         $venta->detalles = $this->db->get()->result();
 
@@ -92,11 +91,10 @@ class Venta_model extends CI_Model {
     }
 
     public function get_ventas_by_estado($estado) {
-        $this->db->select('v.*, u1.nombre as cliente_nombre, u1.apellido as cliente_apellido, u2.nombre as usuario_nombre, u2.apellido as usuario_apellido, r.nombre as rol_nombre');
-        $this->db->from('ventas v');
-        $this->db->join('usuarios u1', 'v.cliente_id = u1.id', 'left'); // Cliente
-        $this->db->join('usuarios u2', 'v.usuario_id = u2.id', 'left'); // Vendedor (admin o empleado)
-        $this->db->join('roles r', 'u2.rol_id = r.id', 'left'); // Rol del vendedor
+        $this->db->select('v.*, u1.nombre as cliente_nombre, u1.apellido as cliente_apellido, u2.nombre as usuario_nombre, u2.apellido as usuario_apellido');
+        $this->db->from('venta v');
+        $this->db->join('usuario u1', 'v.cliente_id = u1.id', 'left'); // Cliente
+        $this->db->join('usuario u2', 'v.usuario_id = u2.id', 'left'); // Vendedor (admin o empleado)
         $this->db->where('v.estado', $estado);
         $query = $this->db->get();
         return $query->result();
@@ -104,9 +102,9 @@ class Venta_model extends CI_Model {
 
     public function get_ventas_pendientes() {
         $this->db->select('v.*, u1.nombre as cliente_nombre, u1.apellido as cliente_apellido, u2.nombre as vendedor_nombre, u2.apellido as vendedor_apellido');
-        $this->db->from('ventas v');
-        $this->db->join('usuarios u1', 'v.cliente_id = u1.id', 'left'); // Cliente
-        $this->db->join('usuarios u2', 'v.usuario_id = u2.id', 'left'); // Vendedor (admin o empleado)
+        $this->db->from('venta v');
+        $this->db->join('usuario u1', 'v.cliente_id = u1.id', 'left'); // Cliente
+        $this->db->join('usuario u2', 'v.usuario_id = u2.id', 'left'); // Vendedor (admin o empleado)
         $this->db->where('v.estado', 'pendiente');
         $query = $this->db->get();
         return $query->result();
@@ -114,8 +112,8 @@ class Venta_model extends CI_Model {
     
     public function get_top_selling_products($limit = 5) {
         $this->db->select('p.nombre as producto_nombre, p.precio, SUM(dv.cantidad) as cantidad_vendida, SUM(dv.cantidad * dv.precio_unitario) as ingresos, p.imagen');
-        $this->db->from('detalles_ventas dv');
-        $this->db->join('productos p', 'dv.producto_id = p.id', 'left');
+        $this->db->from('detalle_venta dv');
+        $this->db->join('producto p', 'dv.producto_id = p.id', 'left');
         $this->db->group_by('dv.producto_id'); // Agrupa por producto
         $this->db->order_by('cantidad_vendida', 'DESC'); // Ordena por la cantidad vendida en orden descendente
         $this->db->limit($limit); // Limita el resultado a la cantidad de productos más vendidos que deseas mostrar
@@ -126,7 +124,7 @@ class Venta_model extends CI_Model {
     
     public function get_ventas_count_by_period($period) {
         $this->db->select('COUNT(*) as total');
-        $this->db->from('ventas');
+        $this->db->from('venta');
     
         if ($period == 'hoy') {
             $this->db->where('DATE(fecha_venta) = CURDATE()', NULL, FALSE);
@@ -143,7 +141,7 @@ class Venta_model extends CI_Model {
 
     public function get_ingresos_by_period($period) {
         $this->db->select('SUM(total) as total_ingresos');
-        $this->db->from('ventas');
+        $this->db->from('venta');
     
         if ($period == 'hoy') {
             $this->db->where('DATE(fecha_venta) = CURDATE()', NULL, FALSE);
@@ -203,7 +201,7 @@ class Venta_model extends CI_Model {
     }
 
     public function tiene_ventas_asociadas($producto_id) {
-        $this->db->from('detalles_ventas');
+        $this->db->from('detalle_venta');
         $this->db->where('producto_id', $producto_id);
         $query = $this->db->get();
     
@@ -212,7 +210,7 @@ class Venta_model extends CI_Model {
     
     public function delete_detalles_by_producto($producto_id) {
         $this->db->where('producto_id', $producto_id);
-        $this->db->delete('detalles_ventas');
+        $this->db->delete('detalle_venta');
     }
     
 }

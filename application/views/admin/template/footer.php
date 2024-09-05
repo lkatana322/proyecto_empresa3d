@@ -45,7 +45,7 @@
 <script src="<?php echo base_url('assets_admin/vendor/php-email-form/validate.js'); ?>"></script>
 
 <!-- Custom JS Files -->
-<script src="<?= base_url('assets_admin/js/validaciones_usuarios.js'); ?>"></script>
+<script src="<?= base_url('assets_admin/js/validaciones_usuario.js'); ?>"></script>
 
 <!-- Template Main JS File -->
 <script src="<?php echo base_url('assets_admin/js/main.js'); ?>"></script>
