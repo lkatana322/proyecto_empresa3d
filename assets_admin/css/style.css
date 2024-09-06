@@ -546,7 +546,7 @@ h1, h2, h3, h4, h5, h6 {
   padding: 6px 8px;
   border-radius: 20px;
   transition: background-color 0.3s ease-in-out, transform 0.4s ease-in-out;
-  margin-right: 120px;
+  margin-right: 90px;
   font-weight: bold;
   font-family: 'Arial', sans-serif;
 }
@@ -563,7 +563,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .nav-profile:hover .dropdown-toggle {
   color: #880fb8e5;
-  text-shadow: 0 0 8px rgba(255, 0, 127, 0.8);
+  text-shadow: 0 0 8px rgba(146, 13, 223, 0.8);
 }
 
 /* Imagen del perfil */
@@ -614,7 +614,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .nav-profile .dropdown-toggle:hover {
   color: #880fb8e5;
-  text-shadow: 0 0 8px rgba(255, 0, 127, 0.8);
+  text-shadow: 0 0 8px rgba(150, 13, 230, 0.8);
 }
 
 /* Opciones del menú desplegable */
