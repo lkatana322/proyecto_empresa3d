@@ -17,32 +17,27 @@
   </div>
 
   <nav class="header-nav ms-auto">
-    <ul class="d-flex align-items-center">
-      <li class="nav-item d-block d-lg-none">
-        <a class="nav-link nav-icon search-bar-toggle" href="#">
-          <i class="bi bi-search"></i>
-        </a>
-      </li>
+  <ul class="d-flex align-items-center">
+    <li class="nav-item dropdown pe-3">
+      <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">
+        <img src="<?= base_url($this->session->userdata('imagen')) ?>" alt="Profile" class="rounded-circle profile-img" width="40" height="40">
+        <span class="d-none d-md-block dropdown-toggle ps-2"><?= $this->session->userdata('nombre') . ' ' . $this->session->userdata('apellido') ?></span>
+      </a>
+      <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile-menu">
+        <li class="dropdown-header">
+          <h6><?= $this->session->userdata('nombre') . ' ' . $this->session->userdata('apellido') ?></h6>
+          <span><?= ucfirst($this->session->userdata('rol') ?: 'Rol no definido') ?></span>
+        </li>
+        <li><hr class="dropdown-divider"></li>
+        <li><a class="dropdown-item d-flex align-items-center" href="<?= base_url('perfil'); ?>"><i class="bi bi-person"></i>Mi Perfil</a></li>
+        <li><a class="dropdown-item d-flex align-items-center" href="<?= base_url('perfil'); ?>"><i class="bi bi-gear"></i>Configuración de Cuenta</a></li>
+        <li><a class="dropdown-item d-flex align-items-center" href="#"><i class="bi bi-question-circle"></i>¿Necesitas Ayuda?</a></li>
+        <li><a class="dropdown-item d-flex align-items-center" href="#" onclick="confirmLogout(event)"><i class="bi bi-box-arrow-right"></i>Cerrar Sesión</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
 
-      <li class="nav-item dropdown pe-3">
-        <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-          <img src="<?= base_url($this->session->userdata('imagen')) ?>" alt="Profile" class="rounded-circle profile-img">
-          <span class="d-none d-md-block dropdown-toggle ps-2"><?= $this->session->userdata('nombre') . ' ' . $this->session->userdata('apellido') ?></span>
-        </a>
-        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile-menu">
-          <li class="dropdown-header">
-            <h6><?= $this->session->userdata('nombre') . ' ' . $this->session->userdata('apellido') ?></h6>
-            <span><?= ucfirst($this->session->userdata('rol') ?: 'Rol no definido') ?></span>
-          </li>
-          <li><hr class="dropdown-divider"></li>
-          <li><a class="dropdown-item d-flex align-items-center" href="<?= base_url('perfil'); ?>"><i class="bi bi-person"></i>Mi Perfil</a></li>
-          <li><a class="dropdown-item d-flex align-items-center" href="<?= base_url('perfil'); ?>"><i class="bi bi-gear"></i>Configuración de Cuenta</a></li>
-          <li><a class="dropdown-item d-flex align-items-center" href="#"><i class="bi bi-question-circle"></i>¿Necesitas Ayuda?</a></li>
-          <li><a class="dropdown-item d-flex align-items-center" href="#" onclick="confirmLogout(event)"><i class="bi bi-box-arrow-right"></i>Cerrar Sesión</a></li>
-        </ul>
-      </li>
-    </ul>
-  </nav>
 </header>
 
 <script>

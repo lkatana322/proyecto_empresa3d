@@ -44,6 +44,7 @@ h1, h2, h3, h4, h5, h6 {
   margin-top: 60px;
   padding: 20px 30px;
   transition: all 0.3s;
+  z-index: 1; /* Asegúrate de que el contenido principal esté detrás del sidebar */
 }
 
 @media (max-width: 1199px) {
@@ -357,24 +358,13 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Logo y animación */
 .logo-title {
-  font-size: 1.4rem; /* Hacemos el título un poco más pequeño */
+  font-size: 1.6rem;
   font-weight: bold;
   color: #5fcf80;
-  transition: color 0.5s ease-in-out, transform 0.5s ease-in-out, text-shadow 0.5s ease-in-out;
-  margin-left: 10px;
-  text-shadow: 0 0 10px rgba(95, 207, 128, 0.5); /* Sombras más fuertes */
-}
-
-/* Animación sin hover */
-.logo-title {
-  animation: impactTitle 1s infinite alternate ease-in-out;
-}
-
-/* Animación al hacer hover */
-.logo-title:hover {
-  color: #880fb8e5;
-  transform: scale(1.2); /* Mayor impacto al hacer hover */
-  text-shadow: 0 0 20px rgba(136, 15, 184, 0.7); /* Sombras más fuertes en hover */
+  animation: dynamicTitle 4s infinite ease-in-out;
+  margin-left: 30px;
+  text-shadow: 0 0 10px rgba(95, 207, 128, 0.5);
+  transition: all 0.5s ease-in-out;
 }
 
 @keyframes impactTitle {
@@ -392,35 +382,133 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
+/* Nueva animación pulsante para el logo */
+@keyframes pulsateLogo {
+  0%, 100% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 5px rgba(95, 207, 128, 0.3));
+  }
+  50% {
+    transform: scale(1.3);
+    filter: drop-shadow(0 0 15px rgba(136, 15, 184, 0.7));
+  }
+}
+
+/* Animación continua para el título */
+@keyframes dynamicTitle {
+  0% {
+    color: #5fcf80;
+    transform: translateX(0);
+    text-shadow: 0 0 10px rgba(95, 207, 128, 0.3);
+  }
+  20% {
+    color: #4db96e;
+    transform: translateX(-10px);
+    text-shadow: 0 0 15px rgba(95, 207, 128, 0.5);
+  }
+  40% {
+    color: #880fb8e5;
+    transform: translateX(13px);
+    text-shadow: 0 0 20px rgba(136, 15, 184, 0.7);
+  }
+  60% {
+    color: #ff007f;
+    transform: translateX(-15px);
+    text-shadow: 0 0 25px rgba(255, 0, 127, 0.9);
+  }
+  80% {
+    color: #ff8800;
+    transform: translateX(25px);
+    text-shadow: 0 0 30px rgba(255, 136, 0, 1);
+  }
+  100% {
+    color: #5fcf80;
+    transform: translateX(0);
+    text-shadow: 0 0 10px rgba(95, 207, 128, 0.3);
+  }
+}
+
 .logo-img {
-  max-height: 28px; /* Reducimos el tamaño del logo */
-  transition: transform 0.3s ease-in-out, filter 0.3s ease-in-out;
-  filter: drop-shadow(0 0 5px rgba(95, 207, 128, 0.3));
-  margin-left: 20px;
+  max-height: 30px;
+  animation: pulsateLogo 3s infinite ease-in-out;
+  margin-left: 30px;
+  transition: transform 0.8s ease-in-out, filter 0.5s ease-in-out;
 }
 
 .logo-img:hover {
-  transform: scale(1.2); /* Mayor impacto en el hover */
+  transform: scale(1.5); /* Mayor impacto en el hover */
   filter: drop-shadow(0 0 15px rgba(136, 15, 184, 0.6)); /* Más sombra en hover */
 }
 
-/* Botón de tres líneas (hamburguesa) */
+/* Botón de tres líneas (hamburguesa) con animaciones elegantes */
 .toggle-sidebar-btn {
-  font-size: 28px; /* Aumentamos el tamaño del icono */
-  color: #5fcf80;
-  margin-right: 40px; /* Más separación del logo */
-  transition: color 0.3s ease-in-out, transform 0.3s ease-in-out;
+  font-size: 30px; /* Tamaño del icono */
+  color: #5fcf80; /* Color inicial */
+  margin-right: 40px;
   margin-left: 40px;
+  transition: transform 0.6s ease-in-out, filter 0.6s ease-in-out, color 0.6s ease-in-out;
+  animation: subtleRotate 5s infinite linear, colorShift 4s infinite ease-in-out; /* Rotación y cambio de color simultáneo */
+  will-change: transform, filter, color; /* Declaramos qué propiedades cambiarán */
 }
 
+/* Cuando el menú está activo */
+.toggle-sidebar-btn.active {
+  color: #ff6600;
+  transform: rotate(180deg) scale(1.15); /* Rotación suave y escalado leve */
+  filter: drop-shadow(0 0 15px rgba(255, 102, 0, 0.8)); /* Sombra más suave pero aún visible */
+}
+
+/* Animación de rotación sutil y continua */
+@keyframes subtleRotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg); /* Rotación completa lenta */
+  }
+}
+
+/* Animación de cambio de color */
+@keyframes colorShift {
+  0% {
+    color: #5fcf80; /* Color inicial */
+  }
+  50% {
+    color: #ff007f; /* Color en el punto medio de la animación */
+  }
+  100% {
+    color: #5fcf80; /* Volver al color inicial */
+  }
+}
+
+/* Efecto Hover Creativo para el Botón de Hamburguesa */
 .toggle-sidebar-btn:hover {
-  color: #880fb8e5;
-  transform: rotate(90deg); /* Animación de rotación en hover */
+  color: #c108c7; /* Cambiar a un color cálido como naranja */
+  transform: rotate(90deg) scale(1.2); /* Rotar el icono y escalarlo ligeramente */
+  filter: drop-shadow(0 0 10px rgba(188, 11, 204, 0.7)); /* Sombra brillante alrededor */
+  transition: transform 0.4s ease-in-out, color 0.4s ease-in-out, filter 0.4s ease-in-out; /* Suavidad en la animación */
+}
+
+@keyframes subtlePulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Animación para que el botón de hamburguesa pulse suavemente en hover */
+.toggle-sidebar-btn:hover {
+  animation: subtlePulse 1s infinite;
 }
 
 /* Búsqueda */
 .search-bar {
-  flex-grow: 0.2; /* Reducimos el espacio que ocupa el buscador */
+  flex-grow: 0.1; /* Reducimos el espacio que ocupa el buscador */
   padding: 0 10px;
 }
 
@@ -456,33 +544,54 @@ h1, h2, h3, h4, h5, h6 {
   display: flex;
   align-items: center;
   padding: 6px 8px;
-  border-radius: 20px; /* Más redondeado */
-  transition: background-color 0.3s ease-in-out;
-  margin-right: 50px;
+  border-radius: 20px;
+  transition: background-color 0.3s ease-in-out, transform 0.4s ease-in-out;
+  margin-right: 120px;
+  font-weight: bold;
+  font-family: 'Arial', sans-serif;
 }
 
 .nav-profile:hover {
   background-color: rgba(95, 207, 128, 0.15);
+  transform: scale(1.05);
 }
 
+.nav-profile:hover .profile-img {
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+  transform: scale(1.3);
+}
+
+.nav-profile:hover .dropdown-toggle {
+  color: #880fb8e5;
+  text-shadow: 0 0 8px rgba(255, 0, 127, 0.8);
+}
+
+/* Imagen del perfil */
 .profile-img {
-  max-height: 40px; /* Aumentamos el tamaño de la imagen del perfil */
-  width: 40px; /* Hacemos la imagen un poco más ancha */
-  border-radius: 50%; /* Aseguramos que la imagen se vea redonda */
-  transition: box-shadow 0.3s ease-in-out, filter 0.3s ease-in-out;
-  filter: brightness(1.1) contrast(1.1) saturate(1.2);/* Ajuste inicial para brillo y contraste */
+  max-height: 45px;
+  width: 45px;
+  border-radius: 50%;
+  transition: box-shadow 0.4s ease-in-out, filter 0.4s ease-in-out, transform 0.4s ease-in-out;
+  filter: brightness(1.1) contrast(1.1) saturate(1.2);
 }
 
 .profile-img:hover {
-  box-shadow: 0 0 12px rgba(0, 0, 0, 0.3); /* Aumentamos la sombra en hover */
-  filter: brightness(1.2) contrast(1.2) saturate(1.3);  /* Más brillo y contraste en hover */
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+  transform: scale(1.3);
 }
 
 /* Menú desplegable */
 .dropdown-menu {
   border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+}
+
+.dropdown-menu.show .dropdown-toggle {
+  color: #000;
+  text-shadow: none;
 }
 
 .dropdown-menu.show {
@@ -491,28 +600,46 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .dropdown-menu.hide {
-  transform: translateY(-10px);
+  transform: translateY(-20px);
   opacity: 0;
 }
 
+/* Estilo del nombre y rol */
+.nav-profile .dropdown-toggle {
+  font-weight: bold;
+  transition: color 0.3s ease-in-out;
+  font-size: 1rem;
+  color: #5fcf80;
+}
+
+.nav-profile .dropdown-toggle:hover {
+  color: #880fb8e5;
+  text-shadow: 0 0 8px rgba(255, 0, 127, 0.8);
+}
+
+/* Opciones del menú desplegable */
 .profile-menu li {
-  padding: 10px 20px;
-  transition: background-color 0.3s ease-in-out;
+  padding: 10px 18px;
+  transition: all 0.3s ease-in-out; /* Transición más rápida */
+  transform-origin: left center;
 }
 
 .profile-menu li:hover {
-  background-color: rgba(95, 207, 128, 0.2);
-  border-radius: 8px;
+  background-color: rgba(95, 207, 128, 0.1); /* Fondo verde más suave */
+  color: #58b773; /* Un verde un poco más oscuro para mejor contraste */
+  border-radius: 10px; /* Bordes redondeados más pequeños */
+  box-shadow: 0 5px 10px rgba(95, 207, 128, 0.2); /* Sombra más sutil */
+  transform: translateX(5px) scale(1.05); /* Movimiento suave */
 }
 
-/* Nombre del perfil en el navbar */
-.nav-profile .dropdown-toggle {
-  transition: color 0.3s ease-in-out;
+.profile-menu li:hover a, 
+.profile-menu li:hover i {
+  color: #58b773; /* Cambiar el color del enlace e icono a verde oscuro */
 }
 
-/* Efecto hover para cambiar el color */
-.nav-profile .dropdown-toggle:hover {
-  color: #880fb8e5;
+/* Opcional: añadir un efecto de "click" */
+.profile-menu li:active {
+  transform: scale(0.98); /* Efecto al hacer clic */
 }
 
 /* Botón cerrar sesión */
@@ -526,8 +653,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .btn-green:hover,
 .btn-purple:hover {
-  opacity: 0.9;
-  transform: scale(1.02);
+  opacity: 10;
 }
 
 /* Asegurando que los íconos y los perfiles tengan espacio */
@@ -541,10 +667,10 @@ h1, h2, h3, h4, h5, h6 {
   margin-left: 15px; /* Ajustamos para que los elementos no se vean muy pegados */
 }
 
-
 /*--------------------------------------------------------------
 # Sidebar
 --------------------------------------------------------------*/
+
 /* Sidebar General */
 .sidebar {
   background-color: var(--background-color);
@@ -559,6 +685,7 @@ h1, h2, h3, h4, h5, h6 {
   scrollbar-color: var(--accent-color) transparent;
   box-shadow: 0px 0px 15px var(--shadow-color);
   transition: all 0.3s ease-in-out;
+  z-index: 1000; /* Asegúrate de que el sidebar esté por encima del contenido */
 }
 
 .sidebar-nav {

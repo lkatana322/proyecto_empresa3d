@@ -12,7 +12,7 @@
 
     <li class="nav-item">
       <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
-        <i class="bi bi-person"></i><span>Gestión de Usuarios</span><i class="bi bi-chevron-down ms-auto"></i>
+        <i class="bi bi-person"></i><span>Gestión Usuarios</span><i class="bi bi-chevron-down ms-auto"></i>
       </a>
       <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
         <li>
@@ -30,7 +30,7 @@
 
     <li class="nav-item">
       <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
-        <i class="bi bi-briefcase"></i><span>Gestión de Empleados</span><i class="bi bi-chevron-down ms-auto"></i>
+        <i class="bi bi-briefcase"></i><span>Gestión Empleados</span><i class="bi bi-chevron-down ms-auto"></i>
       </a>
       <ul id="forms-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
         <li>
@@ -48,7 +48,7 @@
 
     <li class="nav-item">
       <a class="nav-link collapsed" data-bs-target="#charts-nav" data-bs-toggle="collapse" href="#">
-        <i class="bi bi-people"></i><span>Gestión de Clientes</span><i class="bi bi-chevron-down ms-auto"></i>
+        <i class="bi bi-people"></i><span>Gestión Clientes</span><i class="bi bi-chevron-down ms-auto"></i>
       </a>
       <ul id="charts-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
         <li>
@@ -66,7 +66,7 @@
 
     <li class="nav-item">
       <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
-        <i class="bi bi-cart"></i><span>Gestión de Ventas</span><i class="bi bi-chevron-down ms-auto"></i>
+        <i class="bi bi-cart"></i><span>Gestión Ventas</span><i class="bi bi-chevron-down ms-auto"></i>
       </a>
       <ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
         <li>
@@ -84,7 +84,7 @@
 
     <li class="nav-item">
       <a class="nav-link collapsed" data-bs-target="#icons-nav" data-bs-toggle="collapse" href="#">
-        <i class="bi bi-gem"></i><span>Gestión de Productos</span><i class="bi bi-chevron-down ms-auto"></i>
+        <i class="bi bi-gem"></i><span>Gestión Productos</span><i class="bi bi-chevron-down ms-auto"></i>
       </a>
       <ul id="icons-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
         <li>
@@ -103,7 +103,7 @@
 
     <li class="nav-item">
       <a class="nav-link collapsed" data-bs-target="#categories-nav" data-bs-toggle="collapse" href="#">
-        <i class="bi bi-tags"></i><span>Gestión de Categorías</span><i class="bi bi-chevron-down ms-auto"></i>
+        <i class="bi bi-tags"></i><span>Gestión Categorías</span><i class="bi bi-chevron-down ms-auto"></i>
       </a>
       <ul id="categories-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
         <li>
