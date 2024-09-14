@@ -93,5 +93,11 @@ class Producto_model extends CI_Model {
         return $query->result();
     }
     
+    public function buscar_producto($query)
+    {
+        $this->db->like('nombre', $query);
+        return $this->db->get('producto')->result();
+    }
+
 }
 ?>

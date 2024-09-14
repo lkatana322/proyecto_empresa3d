@@ -175,5 +175,11 @@ class Categorias extends CI_Controller {
         $this->load->view('cliente/categorias', $data);
     }
     
+    public function get_categoria_by_producto($producto_id)
+    {
+        $categoria = $this->Categoria_model->get_categoria_by_producto($producto_id);
+        echo json_encode(['categoria' => $categoria]);
+    }
+
 }
 ?>

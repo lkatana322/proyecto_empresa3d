@@ -668,192 +668,261 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /*--------------------------------------------------------------
-# Sidebar
+# Sidebar General
 --------------------------------------------------------------*/
 
-/* Sidebar General */
+/* Estructura general del sidebar */
 .sidebar {
-  background-color: var(--background-color);
-  position: fixed;
-  top: 60px;
-  left: 0;
-  bottom: 0;
-  width: 300px;
-  padding: 20px;
-  overflow-y: auto;
-  scrollbar-width: thin;
-  scrollbar-color: var(--accent-color) transparent;
-  box-shadow: 0px 0px 15px var(--shadow-color);
-  transition: all 0.3s ease-in-out;
-  z-index: 1000; /* Asegúrate de que el sidebar esté por encima del contenido */
+  background-color: var(--background-color); /* Color de fondo del sidebar */
+  position: fixed; /* Fijo en la pantalla mientras haces scroll */
+  top: 60px; /* Distancia desde la parte superior de la página */
+  left: 0; /* Posicionado a la izquierda de la pantalla */
+  bottom: 0; /* Extiende el sidebar hasta la parte inferior */
+  width: 300px; /* Ancho del sidebar */
+  padding: 20px; /* Relleno interno */
+  overflow-y: auto; /* Habilita scroll si el contenido es largo */
+  scrollbar-width: thin; /* Barra de desplazamiento estrecha */
+  scrollbar-color: var(--accent-color) transparent; /* Colores de la barra de desplazamiento */
+  box-shadow: 0px 0px 15px var(--shadow-color); /* Sombra alrededor del sidebar */
+  transition: all 0.3s ease-in-out; /* Transiciones suaves */
+  z-index: 1000; /* Asegura que el sidebar esté por encima de otros elementos */
 }
 
+/*--------------------------------------------------------------
+# Navegación del Sidebar
+--------------------------------------------------------------*/
+
+/* Contenedor de la navegación dentro del sidebar */
 .sidebar-nav {
-  padding: 0;
-  margin: 0;
-  list-style: none;
+  padding: 0; /* Sin relleno */
+  margin: 0; /* Sin margen */
+  list-style: none; /* Elimina los estilos de lista (puntos) */
 }
 
+/* Espaciado entre los elementos de la lista */
 .sidebar-nav li {
-  margin-bottom: 12px;
+  margin-bottom: 12px; /* Espaciado entre cada ítem de la lista */
 }
 
-/* Títulos del Sidebar */
+/*--------------------------------------------------------------
+# Títulos del Sidebar
+--------------------------------------------------------------*/
+
+/* Títulos que separan las secciones del sidebar */
 .sidebar-nav .nav-heading {
-  font-size: 12px;
-  text-transform: uppercase;
-  color: var(--heading-color);
-  font-weight: 600;
-  margin: 10px 0 15px 15px;
-  border-bottom: 1px solid #dee2e6;
-  padding-bottom: 5px;
+  font-size: 12px; /* Tamaño del texto del título */
+  text-transform: uppercase; /* Convierte el texto a mayúsculas */
+  color: var(--heading-color); /* Color del texto */
+  font-weight: 600; /* Fuente en negrita */
+  margin: 10px 0 15px 15px; /* Margen alrededor del título */
+  border-bottom: 1px solid #dee2e6; /* Línea separadora */
+  padding-bottom: 5px; /* Espaciado inferior */
 }
 
-/* Links del Sidebar */
+/*--------------------------------------------------------------
+# Enlaces del Sidebar
+--------------------------------------------------------------*/
+
+/* Estilo general de los enlaces dentro del sidebar */
 .sidebar-nav .nav-link {
-  display: flex;
-  align-items: center;
-  font-size: 15px;
-  color: var(--text-color);
-  padding: 12px 18px;
-  border-radius: 8px;
-  transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
-  background-color: var(--surface-color);
+  display: flex; /* Alinea los ítems en una fila */
+  align-items: center; /* Centra verticalmente el ícono y el texto */
+  font-size: 15px; /* Tamaño del texto */
+  color: var(--text-color); /* Color del texto */
+  padding: 12px 18px; /* Relleno interno del enlace */
+  border-radius: 8px; /* Bordes redondeados */
+  transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease; /* Transiciones suaves */
+  background-color: var(--surface-color); /* Fondo del enlace */
 }
 
+/* Estilo del ícono dentro del enlace */
 .sidebar-nav .nav-link i {
-  font-size: 18px;
-  margin-right: 12px;
-  color: var(--heading-color);
-  transition: color 0.3s ease, transform 0.3s ease;
+  font-size: 18px; /* Tamaño del ícono */
+  margin-right: 12px; /* Espaciado entre el ícono y el texto */
+  color: var(--heading-color); /* Color del ícono */
+  transition: color 0.3s ease, transform 0.3s ease; /* Transición del ícono */
 }
 
-/* Hover y Activo */
+/*--------------------------------------------------------------
+# Estados Hover y Activo en los Enlaces
+--------------------------------------------------------------*/
+
+/* Efecto hover sobre los enlaces */
 .sidebar-nav .nav-link:hover {
-  background-color: #eafaf1;
-  color: var(--accent-color);
-  box-shadow: 0px 5px 15px rgba(95, 207, 128, 0.1);
+  background-color: #eafaf1; /* Cambia el fondo al pasar el mouse */
+  color: var(--accent-color); /* Cambia el color del texto al pasar el mouse */
+  box-shadow: 0px 5px 15px rgba(95, 207, 128, 0.1); /* Sombra al hacer hover */
 }
 
+/* Efecto hover en el ícono dentro del enlace */
 .sidebar-nav .nav-link:hover i {
-  color: var(--accent-color);
-  transform: scale(1.1);
+  color: var(--accent-color); /* Cambia el color del ícono */
+  transform: scale(1.1); /* Escala el ícono ligeramente */
 }
 
+/* Estado de un enlace activo (no colapsado) */
 .sidebar-nav .nav-link:not(.collapsed) {
-  background-color: var(--accent-color);
-  color: #fff;
+  background-color: var(--accent-color); /* Fondo del enlace activo */
+  color: #fff; /* Texto blanco en estado activo */
 }
 
+/* Estado activo del ícono en el enlace */
 .sidebar-nav .nav-link:not(.collapsed) i {
-  color: #fff;
+  color: #fff; /* Ícono blanco en estado activo */
 }
 
+/* Hover sobre un enlace activo */
 .sidebar-nav .nav-link:not(.collapsed):hover {
-  background-color: #4abd68;
+  background-color: #4abd68; /* Cambia el fondo al pasar el mouse sobre un enlace activo */
+  color: #fff; /* Cambia el color del texto al pasar el mouse sobre un enlace activo */
 }
 
-/* Chevron Animation */
+/*--------------------------------------------------------------
+# Animación de Chevron (Flecha)
+--------------------------------------------------------------*/
+
+/* Chevron (flecha) que se rota en enlaces colapsables */
 .sidebar-nav .nav-link .bi-chevron-down {
-  margin-left: auto;
-  transition: transform 0.3s ease-in-out;
+  margin-left: auto; /* Empuja el chevron al final del enlace */
+  transition: transform 0.3s ease-in-out; /* Animación de rotación */
 }
 
+/* Chevron rotado cuando el enlace no está colapsado */
 .sidebar-nav .nav-link:not(.collapsed) .bi-chevron-down {
-  transform: rotate(180deg);
+  transform: rotate(180deg); /* Gira el chevron hacia arriba */
 }
 
-/* Submenú */
+/*--------------------------------------------------------------
+# Submenú del Sidebar
+--------------------------------------------------------------*/
+
+/* Estilo del enlace y el contenido del submenú */
+.sidebar-nav .nav-link, .sidebar-nav .nav-content a {
+  transition: all 0.3s ease-in-out; /* Transición suave */
+  font-size: 15px; /* Tamaño de texto */
+  font-weight: 600; /* Negrita */
+  color: #4a4a4a; /* Color de texto */
+}
+
+/* Hover sobre enlaces y submenús */
+.sidebar-nav .nav-link:hover, .sidebar-nav .nav-content a:hover {
+  background-color: rgba(95, 207, 128, 0.15); /* Fondo suave al hacer hover */
+  color: #5fcf80; /* Cambia el color del texto */
+  padding-left: 20px; /* Añade un pequeño desplazamiento al hacer hover */
+}
+
+/* Estilo del contenido del submenú */
 .sidebar-nav .nav-content {
-  padding: 0;
-  margin: 0;
-  list-style: none;
+  background-color: #f0f4f8; /* Fondo claro del submenú */
+  border-left: 4px solid #5fcf80; /* Línea indicadora en el lado izquierdo */
+  border-radius: 8px; /* Bordes redondeados */
 }
 
+/* Estilo de los enlaces dentro del submenú */
 .sidebar-nav .nav-content a {
-  display: flex;
-  align-items: center;
-  font-size: 14px;
-  padding: 10px 0 10px 40px;
-  transition: color 0.3s ease, background-color 0.3s ease;
-  color: var(--text-color);
+  display: flex; /* Flexbox para alinear íconos y texto */
+  align-items: center; /* Alineación vertical */
+  font-size: 14px; /* Tamaño del texto */
+  color: var(--text-color); /* Color del texto */
+  padding: 10px 15px; /* Espaciado interno */
+  transition: padding-left 0.3s ease; /* Transición suave */
 }
 
+/* Hover sobre los enlaces del submenú */
 .sidebar-nav .nav-content a:hover {
-  color: var(--accent-color);
-  background-color: #eafaf1;
+  color: var(--accent-color); /* Cambia el color del texto al pasar el mouse */
+  background-color: #eafaf1; /* Cambia el fondo al pasar el mouse */
 }
 
-/* Scrollbar */
+/*--------------------------------------------------------------
+# Scrollbar Personalizada
+--------------------------------------------------------------*/
+
+/* Estilo de la barra de desplazamiento */
 .sidebar::-webkit-scrollbar {
-  width: 6px;
+  width: 6px; /* Ancho de la barra */
 }
 
+/* Estilo del "thumb" de la barra de desplazamiento */
 .sidebar::-webkit-scrollbar-thumb {
-  background-color: var(--accent-color);
-  border-radius: 10px;
+  background-color: var(--accent-color); /* Color del "thumb" */
+  border-radius: 10px; /* Bordes redondeados */
 }
 
-/* Responsive Sidebar */
+/*--------------------------------------------------------------
+# Sidebar Responsive (para diferentes tamaños de pantalla)
+--------------------------------------------------------------*/
+
+/* Estilo para pantallas más pequeñas (menos de 1200px) */
 @media (max-width: 1199px) {
   .sidebar {
-    left: -300px;
+    left: -300px; /* Oculta el sidebar fuera de la vista */
   }
 
   .toggle-sidebar .sidebar {
-    left: 0;
+    left: 0; /* Muestra el sidebar cuando se activa el toggle */
   }
 }
 
+/* Estilo para pantallas grandes (más de 1200px) */
 @media (min-width: 1200px) {
   #main,
   #footer {
-    margin-left: 300px;
+    margin-left: 300px; /* Desplaza el contenido principal cuando el sidebar está visible */
   }
 
   .toggle-sidebar #main,
   .toggle-sidebar #footer {
-    margin-left: 0;
+    margin-left: 0; /* Restablece el margen cuando el sidebar está oculto */
   }
 
   .toggle-sidebar .sidebar {
-    left: -300px;
+    left: -300px; /* Oculta el sidebar */
   }
 }
 
-/* Hover Animations for Icons */
+/*--------------------------------------------------------------
+# Animaciones y Transiciones Adicionales
+--------------------------------------------------------------*/
+
+/* Oculta el ícono circular en submenús */
+.sidebar-nav .nav-content a i {
+  display: none; /* Oculta los íconos en los submenús */
+}
+
+/* Animación de rebote para íconos al hacer hover */
 .sidebar-nav .nav-link:hover i {
   animation: bounceIcon 0.5s ease-in-out;
 }
 
+/* Definición de la animación de rebote */
 @keyframes bounceIcon {
-  0%,
-  100% {
-    transform: translateY(0);
+  0%, 100% {
+    transform: translateY(0); /* Estado inicial y final */
   }
   50% {
-    transform: translateY(-3px);
+    transform: translateY(-3px); /* Rebote hacia arriba */
   }
 }
 
-/* Hover Animations for Links */
+/* Animación de desplazamiento lateral en los enlaces */
 .sidebar-nav .nav-link:hover {
   transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
-  transform: translateX(5px);
+  transform: translateX(5px); /* Desplaza el enlace ligeramente hacia la derecha */
 }
 
-/* Activo y Hover Sutil para Chevron */
+/* Efecto de hover sutil en el chevron */
 .sidebar-nav .nav-link:hover .bi-chevron-down {
-  transform: rotate(90deg);
+  transform: rotate(90deg); /* Gira el chevron 90 grados al hacer hover */
 }
 
-/* Box Shadow y Ligeras Transiciones */
+/* Sombra adicional y transiciones suaves en los enlaces */
 .sidebar-nav .nav-link {
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05); /* Sombra suave */
 }
 
 .sidebar-nav .nav-link:hover {
-  box-shadow: 0 0 15px rgba(95, 207, 128, 0.15);
+  box-shadow: 0 0 15px rgba(95, 207, 128, 0.15); /* Sombra más intensa al hacer hover */
 }
 
 /*--------------------------------------------------------------

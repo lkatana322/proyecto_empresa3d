@@ -103,5 +103,14 @@ class Categoria_model extends CI_Model {
         return $query->result();
     }
     
+    public function get_categoria_by_producto($producto_id)
+    {
+        $this->db->select('categoria.*');
+        $this->db->from('categoria');
+        $this->db->join('producto', 'producto.categoria_id = categoria.id');
+        $this->db->where('producto.id', $producto_id);
+        return $this->db->get()->row();
+    }
+
 }
 ?>

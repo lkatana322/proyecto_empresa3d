@@ -227,7 +227,7 @@ p {
 }
 
 .hero-title {
-    font-size: 3.5rem; /* Tamaño ligeramente mayor */
+    font-size: 3.1rem; /* Tamaño ligeramente mayor */
     font-weight: 900;
     color: #ffffff;
     line-height: 1.2;
@@ -240,7 +240,7 @@ p {
 }
 
 .hero-subtitle {
-    font-size: 1.8rem;
+    font-size: 1.9rem;
     color: #e0e0e0;
     margin-bottom: 2.5rem;
     text-shadow: 2px 4px 12px rgba(0, 0, 0, 0.7); /* Sombra más pronunciada */
@@ -252,8 +252,8 @@ p {
 
 .btn-get-started {
     display: inline-block;
-    padding: 14px 35px;
-    font-size: 1.4rem;
+    padding: 12px 25px;
+    font-size: 1.3rem;
     font-weight: bold;
     color: #ffffff;
     background-color: var(--primary-color);

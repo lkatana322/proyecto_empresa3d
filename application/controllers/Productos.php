@@ -213,6 +213,13 @@ class Productos extends CI_Controller {
         $productos = $this->Producto_model->get_productos_activos_por_categoria($categoria_id);
         echo json_encode($productos);
     }
-    
+
+    public function buscar_producto()
+    {
+        $query = $this->input->get('query');
+        $productos = $this->Producto_model->buscar_producto($query);
+        echo json_encode(['productos' => $productos]);
+    }
+
 }
 ?>

@@ -37,41 +37,25 @@
                   <input type="hidden" name="usuario_id" value="<?= $this->session->userdata('user_id'); ?>"> 
               </div>
 
-
+              <!-- Búsqueda de Producto con autocompletado -->
               <div class="col-md-6">
-                <label for="categoria_id" class="form-label">Categoría</label>
-                <select id="categoria_id" name="categoria_id" class="form-select" required>
-                  <option value="" disabled selected>Seleccione una categoría</option>
-                  <?php foreach($categorias as $categoria): ?>
-                    <option value="<?php echo $categoria->id; ?>"><?php echo $categoria->nombre; ?></option>
-                  <?php endforeach; ?>
-                </select>
-                <div class="invalid-feedback">¡Por favor, seleccione una categoría!</div>
+                <label for="producto_id" class="form-label">Buscar Producto</label>
+                <input type="text" id="producto_id" name="producto_id" class="form-control" placeholder="Buscar Producto...">
+                <input type="hidden" id="producto_hidden_id" name="producto_hidden_id">
+                <div class="invalid-feedback">¡Por favor, seleccione un producto!</div>
               </div>
 
+              <!-- Campo de categoría basado en el producto seleccionado -->
+              <div class="col-md-6">
+                <label for="categoria_id" class="form-label">Categoría</label>
+                <input type="text" id="categoria_id" name="categoria_id" class="form-control" readonly>
+              </div>
+
+              <!-- Productos agregados dinámicamente -->
               <div class="col-12">
                 <label class="form-label">Productos</label>
                 <div id="productos-container">
-                  <div class="row g-3 align-items-center mb-3">
-                    <div class="col-sm-4">
-                      <select name="producto_id[]" class="form-select" required>
-                        <option value="" disabled selected>Seleccione un producto</option>
-                        <!-- Los productos serán cargados aquí mediante AJAX -->
-                      </select>
-                      <div class="invalid-feedback">¡Por favor, seleccione un producto!</div>
-                    </div>
-                    <div class="col-sm-3">
-                      <input type="number" name="cantidad[]" class="form-control" placeholder="Cantidad" required min="1">
-                      <div class="invalid-feedback">¡Por favor, ingrese una cantidad válida!</div>
-                    </div>
-                    <div class="col-sm-3">
-                      <input type="number" name="precio_unitario[]" class="form-control" placeholder="Precio Unitario" required step="0.01" min="0">
-                      <div class="invalid-feedback">¡Por favor, ingrese un precio unitario válido!</div>
-                    </div>
-                    <div class="col-sm-2">
-                      <button type="button" class="btn btn-danger remove-producto"><i class="bi bi-trash"></i></button>
-                    </div>
-                  </div>
+                  <!-- Aquí se irán agregando los productos seleccionados -->
                 </div>
                 <button type="button" class="btn btn-secondary" id="add-producto-btn"><i class="bi bi-plus-circle"></i> Agregar Producto</button>
               </div>
@@ -80,7 +64,7 @@
                 <label for="estado_venta" class="form-label">Estado</label>
                 <select id="estado_venta" name="estado_venta" class="form-select" required>
                   <option value="pendiente">Pendiente</option>
-                  <option value="completada">Completada</option>
+                  <option value="completada" selected>Completada</option> <!-- Establecer Completada como seleccionada -->
                   <option value="cancelada">Cancelada</option>
                 </select>
                 <div class="invalid-feedback">¡Por favor, seleccione un estado para la venta!</div>
@@ -100,82 +84,113 @@
 
             <script>
               document.addEventListener('DOMContentLoaded', function() {
-                const formAgregarVenta = document.getElementById('formAgregarVenta');
-                const btnAgregarVenta = document.getElementById('btnAgregarVenta');
-                const addProductoBtn = document.getElementById('add-producto-btn');
-                const productosContainer = document.getElementById('productos-container');
-                const categoriaSelect = document.getElementById('categoria_id');
+                  const productoInput = document.getElementById('producto_id');
+                  const productoHiddenInput = document.getElementById('producto_hidden_id');
+                  const categoriaInput = document.getElementById('categoria_id');
+                  const addProductoBtn = document.getElementById('add-producto-btn');
+                  const productosContainer = document.getElementById('productos-container');
+                  const formAgregarVenta = document.getElementById('formAgregarVenta');
 
-                // AJAX para cargar productos según la categoría seleccionada
-                categoriaSelect.addEventListener('change', function() {
-                  const categoriaId = this.value;
+                  // Manejo del botón Agregar Producto
+                  addProductoBtn.addEventListener('click', function() {
+                      const productoId = productoHiddenInput.value;
 
-                  if (categoriaId) {
-                    fetch('<?php echo base_url('productos/get_productos_by_categoria/'); ?>' + categoriaId)
-                      .then(response => response.json())
-                      .then(data => {
-                        productosContainer.innerHTML = ''; // Limpiar el contenedor de productos
-                        data.forEach(producto => {
-                          agregarProductoRow(producto);
-                        });
-                      });
+                      if (!productoId) {
+                          Swal.fire({
+                              icon: 'warning',
+                              title: 'Producto no seleccionado',
+                              text: 'Por favor, busque y seleccione un producto primero.',
+                              confirmButtonText: 'Aceptar',
+                              confirmButtonColor: '#3085d6'
+                          });
+                      } else {
+                          agregarProductoRow();
+                      }
+                  });
+
+                  // Función para agregar una fila de producto
+                  function agregarProductoRow() {
+                      const productoNombre = productoInput.value;
+                      const productoId = productoHiddenInput.value;
+                      
+                      // Código para agregar la fila del producto al contenedor
+                      const newProductoRow = `
+                          <div class="row g-3 align-items-center mb-3">
+                              <div class="col-sm-4">
+                                  <input type="text" class="form-control" value="${productoNombre}" readonly>
+                                  <input type="hidden" name="producto_id[]" value="${productoId}">
+                              </div>
+                              <div class="col-sm-3">
+                                  <input type="number" name="cantidad[]" class="form-control" placeholder="Cantidad" required min="1" value="1">
+                              </div>
+                              <div class="col-sm-3">
+                                  <input type="number" name="precio_unitario[]" class="form-control" placeholder="Precio Unitario" required step="0.01" min="0" value="320">
+                              </div>
+                              <div class="col-sm-2">
+                                  <button type="button" class="btn btn-danger remove-producto"><i class="bi bi-trash"></i></button>
+                              </div>
+                          </div>
+                      `;
+
+                      productosContainer.insertAdjacentHTML('beforeend', newProductoRow);
+
+                      // Limpiamos los campos de búsqueda de producto
+                      productoInput.value = '';
+                      productoHiddenInput.value = '';
+                      categoriaInput.value = '';
                   }
-                });
 
-                // Agregar una fila de producto manualmente
-                addProductoBtn.addEventListener('click', function() {
-                  agregarProductoRow();
-                });
+                  // Eliminar una fila de producto
+                  productosContainer.addEventListener('click', function(e) {
+                      if (e.target.classList.contains('remove-producto')) {
+                          e.target.closest('.row').remove();
+                      }
+                  });
 
-                // Función para agregar una fila de producto
-                function agregarProductoRow(producto = {}) {
-                  const newProductoRow = `
-                    <div class="row g-3 align-items-center mb-3">
-                      <div class="col-sm-4">
-                        <select name="producto_id[]" class="form-select" required>
-                          <option value="" disabled ${!producto.id ? 'selected' : ''}>Seleccione un producto</option>
-                          <?php foreach($productos as $producto): ?>
-                            <option value="<?php echo $producto->id; ?>" ${producto.id === '<?php echo $producto->id; ?>' ? 'selected' : ''}"><?php echo $producto->nombre; ?></option>
-                          <?php endforeach; ?>
-                        </select>
-                        <div class="invalid-feedback">¡Por favor, seleccione un producto!</div>
-                      </div>
-                      <div class="col-sm-3">
-                        <input type="number" name="cantidad[]" class="form-control" placeholder="Cantidad" required min="1" value="${producto.cantidad || ''}">
-                        <div class="invalid-feedback">¡Por favor, ingrese una cantidad válida!</div>
-                      </div>
-                      <div class="col-sm-3">
-                        <input type="number" name="precio_unitario[]" class="form-control" placeholder="Precio Unitario" required step="0.01" min="0" value="${producto.precio || ''}">
-                        <div class="invalid-feedback">¡Por favor, ingrese un precio unitario válido!</div>
-                      </div>
-                      <div class="col-sm-2">
-                        <button type="button" class="btn btn-danger remove-producto"><i class="bi bi-trash"></i></button>
-                      </div>
-                    </div>
-                  `;
-                  productosContainer.insertAdjacentHTML('beforeend', newProductoRow);
-                }
+                  // Simulación de búsqueda de productos con AJAX
+                  productoInput.addEventListener('input', function() {
+                      const searchQuery = this.value;
 
-                // Eliminar una fila de producto
-                productosContainer.addEventListener('click', function(e) {
-                  if (e.target.classList.contains('remove-producto')) {
-                    e.target.closest('.row').remove();
-                  }
-                });
+                      if (searchQuery.length > 2) {
+                          fetch('<?php echo base_url('productos/buscar_producto?query='); ?>' + searchQuery)
+                              .then(response => response.json())
+                              .then(data => {
+                                  if (data.productos.length > 0) {
+                                      const producto = data.productos[0]; // Tomamos el primer resultado como ejemplo
+                                      productoInput.value = producto.nombre;
+                                      productoHiddenInput.value = producto.id;
 
-                // Validación del formulario
-                formAgregarVenta.addEventListener('submit', function(event) {
-                  if (!formAgregarVenta.checkValidity()) {
-                    event.preventDefault();
-                    event.stopPropagation();
-                    formAgregarVenta.classList.add('was-validated');
-                  } else {
-                    btnAgregarVenta.disabled = true;
-                    btnAgregarVenta.textContent = 'Guardando...';
-                  }
-                });
+                                      // Obtener la categoría del producto seleccionado
+                                      fetch('<?php echo base_url('categorias/get_categoria_by_producto/'); ?>' + producto.id)
+                                          .then(response => response.json())
+                                          .then(data => {
+                                              categoriaInput.value = data.categoria.nombre;
+                                          });
+                                  } else {
+                                      categoriaInput.value = 'No se encontró categoría';
+                                  }
+                              });
+                      }
+                  });
+
+                  // Validar formulario solo cuando sea necesario
+                  formAgregarVenta.addEventListener('submit', function(e) {
+                      const productoId = productoHiddenInput.value;
+                      if (productoId && productoInput.value) {
+                          // No se está agregando un producto, continuar con el guardado de la venta
+                      } else {
+                          // Verificamos si al menos un producto ha sido añadido
+                          if (productosContainer.children.length === 0) {
+                              e.preventDefault();
+                              Swal.fire({
+                                  icon: 'error',
+                                  title: 'Error',
+                                  text: 'Debe agregar al menos un producto antes de guardar la venta.'
+                              });
+                          }
+                      }
+                  });
               });
-
             </script>
 
           </div>

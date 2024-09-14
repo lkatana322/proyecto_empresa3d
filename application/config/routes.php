@@ -77,3 +77,5 @@ $route['auth/confirmar_action'] = 'auth/confirmar_action';
 $route['producto/detalle/(:num)'] = 'cliente/producto_detalle/$1';
 $route['cliente/productos/categoria/(:num)'] = 'cliente/productos_por_categoria/$1';
 
+$route['productos/buscar_producto'] = 'productos/buscar_producto';
+$route['categorias/get_categoria_by_producto/(:num)'] = 'categorias/get_categoria_by_producto/$1';

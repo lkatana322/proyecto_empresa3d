@@ -57,70 +57,80 @@ class Ventas extends CI_Controller {
     public function guardar() {
         $this->check_permissions();
     
+        // Validación básica
         $this->form_validation->set_rules('cliente_id', 'Cliente', 'required');
         $this->form_validation->set_rules('usuario_id', 'Empleado', 'required');
     
         if ($this->form_validation->run() == FALSE) {
-            $this->agregar();
+            $this->agregar();  // Si la validación falla, muestra el formulario nuevamente
         } else {
+            // Inicia la transacción
             $this->db->trans_begin();
     
             try {
                 $cliente_id = $this->input->post('cliente_id');
                 $data_venta = array(
-                    'cliente_id' => !empty($cliente_id) ? $cliente_id : NULL,
+                    'cliente_id' => !empty($cliente_id) ? $cliente_id : NULL,  // Manejo de cliente opcional
                     'usuario_id' => $this->input->post('usuario_id'),
-                    'total' => 0,
+                    'total' => 0,  // Inicialmente el total será 0, lo actualizamos luego
                     'estado' => $this->input->post('estado_venta'),
                     'usuario_actualizacion_id' => $this->session->userdata('user_id')
                 );
     
+                // Inserta la venta en la base de datos
                 $venta_id = $this->Venta_model->insert_venta($data_venta);
     
-                // Validar y procesar productos
+                // Variables necesarias para calcular el total de la venta
                 $productos = $this->input->post('producto_id');
                 $cantidades = $this->input->post('cantidad');
                 $precios_unitarios = $this->input->post('precio_unitario');
                 $total_venta = 0;
-    
                 $descripcion_detalles = '';
     
+                // Procesar cada producto seleccionado
                 for ($i = 0; $i < count($productos); $i++) {
                     $producto = $this->Producto_model->get_producto_by_id($productos[$i]);
     
-                    // Validar si el producto está activo
+                    // Validación: Verificar si el producto está activo
                     if ($producto->estado != 'activo') {
                         throw new Exception('El producto "' . $producto->nombre . '" no está activo y no se puede vender.');
                     }
     
+                    // Validación: Verificar si hay stock suficiente
                     if ($producto->stock < $cantidades[$i]) {
                         throw new Exception('La cantidad solicitada para el producto "' . $producto->nombre . '" excede el stock disponible.');
                     }
     
+                    // Calcular el subtotal para ese producto
                     $subtotal = $cantidades[$i] * $precios_unitarios[$i];
                     $total_venta += $subtotal;
     
+                    // Insertar los detalles de la venta
                     $detalle_venta = array(
                         'venta_id' => $venta_id,
                         'producto_id' => $productos[$i],
                         'cantidad' => $cantidades[$i],
-                        'precio_unitario' => $precios_unitarios[$i],                       
+                        'precio_unitario' => $precios_unitarios[$i],
                     );
                     $this->Venta_model->insert_detalle_venta($detalle_venta);
     
+                    // Actualizar el stock del producto
                     $nuevo_stock = $producto->stock - $cantidades[$i];
                     $this->Producto_model->update_stock($productos[$i], $nuevo_stock);
     
-                    // Construir la descripción
+                    // Construir la descripción para la actividad
                     $descripcion_detalles .= $producto->nombre . " (" . $cantidades[$i] . " x $" . $precios_unitarios[$i] . ") ";
                 }
     
+                // Actualizar el total de la venta
                 $this->Venta_model->update_venta($venta_id, array('total' => $total_venta));
     
+                // Si la transacción ha fallado, lanzar una excepción
                 if ($this->db->trans_status() === FALSE) {
                     throw new Exception('Error al realizar la transacción.');
                 }
     
+                // Confirmar la transacción
                 $this->db->trans_commit();
     
                 // Registrar la actividad
@@ -131,15 +141,18 @@ class Ventas extends CI_Controller {
                     $descripcion
                 );
     
+                // Mostrar mensaje de éxito y redirigir
                 $this->session->set_flashdata('success', 'Venta agregada con éxito.');
                 redirect('ventas');
             } catch (Exception $e) {
+                // En caso de error, se revierte la transacción
                 $this->db->trans_rollback();
+                // Mostrar el mensaje de error
                 $this->session->set_flashdata('error', $e->getMessage());
                 redirect('ventas/agregar');
             }
         }
-    }    
+    }
     
     public function editar($id) {
         $this->check_permissions();
@@ -161,12 +174,14 @@ class Ventas extends CI_Controller {
         $this->check_permissions();
         $id = $this->input->post('id');
     
+        // Validación básica
         $this->form_validation->set_rules('cliente_id', 'Cliente', 'required');
         $this->form_validation->set_rules('usuario_id', 'Empleado', 'required');
     
         if ($this->form_validation->run() == FALSE) {
             $this->editar($id);
         } else {
+            // Inicia la transacción
             $this->db->trans_begin();
     
             try {
@@ -180,13 +195,14 @@ class Ventas extends CI_Controller {
                     'usuario_actualizacion_id' => $this->session->userdata('user_id')
                 );
     
+                // Actualizar la venta en la base de datos
                 $this->Venta_model->update_venta($id, $data_venta);
     
                 // Restablecer el stock de los productos en la venta original
                 foreach ($venta_actual->detalles as $detalle) {
                     $producto = $this->Producto_model->get_producto_by_id($detalle->producto_id);
                     $nuevo_stock = $producto->stock + $detalle->cantidad;
-                    $this->Producto_model->update_stock($detalle->producto_id, $nuevo_stock);
+                    $this->Producto_model->update_stock($detalle->producto_id, $nuevo_stock); // Devolver el stock
                 }
     
                 // Eliminar los detalles antiguos
@@ -197,17 +213,17 @@ class Ventas extends CI_Controller {
                 $cantidades = $this->input->post('cantidad');
                 $precios_unitarios = $this->input->post('precio_unitario');
                 $total_venta = 0;
-    
                 $descripcion_detalles = '';
     
                 for ($i = 0; $i < count($productos); $i++) {
                     $producto = $this->Producto_model->get_producto_by_id($productos[$i]);
     
                     // Validar si el producto está activo
-                    if ($producto->estado != 'activo') { 
+                    if ($producto->estado != 'activo') {
                         throw new Exception('El producto "' . $producto->nombre . '" no está activo y no se puede vender.');
                     }
     
+                    // Validar si hay suficiente stock
                     if ($producto->stock < $cantidades[$i]) {
                         throw new Exception('La cantidad solicitada para el producto "' . $producto->nombre . '" excede el stock disponible.');
                     }
@@ -215,27 +231,32 @@ class Ventas extends CI_Controller {
                     $subtotal = $cantidades[$i] * $precios_unitarios[$i];
                     $total_venta += $subtotal;
     
+                    // Insertar los nuevos detalles de la venta
                     $detalle_venta = array(
                         'venta_id' => $id,
                         'producto_id' => $productos[$i],
                         'cantidad' => $cantidades[$i],
-                        'precio_unitario' => $precios_unitarios[$i],                      
+                        'precio_unitario' => $precios_unitarios[$i],
                     );
                     $this->Venta_model->insert_detalle_venta($detalle_venta);
     
+                    // Actualizar el stock del producto
                     $nuevo_stock = $producto->stock - $cantidades[$i];
                     $this->Producto_model->update_stock($productos[$i], $nuevo_stock);
     
-                    // Construir la descripción
+                    // Construir la descripción para la actividad
                     $descripcion_detalles .= $producto->nombre . " (" . $cantidades[$i] . " x $" . $precios_unitarios[$i] . ") ";
                 }
     
+                // Actualizar el total de la venta
                 $this->Venta_model->update_venta($id, array('total' => $total_venta));
     
+                // Si la transacción falla, lanzar una excepción
                 if ($this->db->trans_status() === FALSE) {
                     throw new Exception('Error al realizar la transacción.');
                 }
     
+                // Confirmar la transacción
                 $this->db->trans_commit();
     
                 // Registrar la actividad
@@ -246,16 +267,18 @@ class Ventas extends CI_Controller {
                     $descripcion
                 );
     
+                // Mostrar mensaje de éxito y redirigir
                 $this->session->set_flashdata('success', 'Venta actualizada con éxito.');
                 redirect('ventas');
             } catch (Exception $e) {
+                // Revertir la transacción en caso de error
                 $this->db->trans_rollback();
                 $this->session->set_flashdata('error', $e->getMessage());
-                redirect('ventas/editar/'.$id);
+                redirect('ventas/editar/' . $id);
             }
         }
-    }      
-
+    }
+    
     public function eliminar($id) {
         $this->check_permissions();
     
