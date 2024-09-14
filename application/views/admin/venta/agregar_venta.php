@@ -37,12 +37,17 @@
                   <input type="hidden" name="usuario_id" value="<?= $this->session->userdata('user_id'); ?>"> 
               </div>
 
-              <!-- Búsqueda de Producto con autocompletado -->
+              <!-- Búsqueda de Producto con autocompletado con icono de lupa estilizado -->
               <div class="col-md-6">
                 <label for="producto_id" class="form-label">Buscar Producto</label>
-                <input type="text" id="producto_id" name="producto_id" class="form-control" placeholder="Buscar Producto...">
-                <input type="hidden" id="producto_hidden_id" name="producto_hidden_id">
-                <div class="invalid-feedback">¡Por favor, seleccione un producto!</div>
+                <div class="input-group">
+                  <span class="input-group-text" style="background-color: #f0f8ff; border-color: #28a745;">
+                    <i class="bi bi-search" style="color: #28a745; font-size: 1.2em;"></i> <!-- Ícono de lupa con estilo mejorado -->
+                  </span>
+                  <input type="text" id="producto_id" name="producto_id" class="form-control" placeholder="Buscar Producto..." style="border-color: #28a745;">
+                  <input type="hidden" id="producto_hidden_id" name="producto_hidden_id">
+                  <div class="invalid-feedback">¡Por favor, seleccione un producto!</div>
+                </div>
               </div>
 
               <!-- Campo de categoría basado en el producto seleccionado -->

@@ -25,6 +25,11 @@
             <i class="bi bi-circle"></i><span>Agregar Usuario</span>
           </a>
         </li>
+        <li>
+          <a href="<?php echo base_url('usuarios/inactivos'); ?>">
+            <i class="bi bi-circle"></i><span>Usuarios Inactivos</span>
+          </a>
+        </li>
       </ul>
     </li><!-- End Gestión de Usuarios Nav -->
 
@@ -43,6 +48,11 @@
             <i class="bi bi-circle"></i><span>Agregar Empleado</span>
           </a>
         </li>
+        <li>
+          <a href="<?php echo base_url('usuarios/empleados_inactivos'); ?>">
+            <i class="bi bi-circle"></i><span>Empleados Inactivos</span>
+          </a>
+        </li>
       </ul>
     </li><!-- End Gestión de Empleados Nav -->
 
@@ -59,6 +69,11 @@
         <li>
           <a href="<?php echo base_url('usuarios/agregar'); ?>">
             <i class="bi bi-circle"></i><span>Agregar Cliente</span>
+          </a>
+        </li>
+        <li>
+          <a href="<?php echo base_url('usuarios/clientes_inactivos'); ?>">
+            <i class="bi bi-circle"></i><span>Clientes Inactivos</span>
           </a>
         </li>
       </ul>
@@ -95,6 +110,11 @@
         <li>
           <a href="<?php echo base_url('productos/agregar'); ?>">
             <i class="bi bi-circle"></i><span>Agregar Producto</span>
+          </a>
+        </li>
+        <li>
+          <a href="<?php echo base_url('productos/inactivos'); ?>">
+            <i class="bi bi-circle"></i><span>Productos Inactivos</span>
           </a>
         </li>
       </ul>
