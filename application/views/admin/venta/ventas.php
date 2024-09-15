@@ -24,6 +24,10 @@
               <i class="bi bi-hourglass-split"></i> Ver Ventas Pendientes
             </a>
 
+            <a href="<?php echo base_url('ventas/canceladas'); ?>" class="btn btn-danger">
+                <i class="bi bi-x-circle"></i> Ver Ventas Canceladas
+            </a>
+
             <table class="table">
               <thead>
                 <tr>

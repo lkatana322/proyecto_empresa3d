@@ -1,10 +1,11 @@
 <main id="main" class="main">
   <div class="pagetitle">
-    <h1 style="color: #28a745;">Gestión de Ventas Pendientes</h1>
+    <h1>Ventas Canceladas</h1>
     <nav>
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="<?php echo base_url('admin'); ?>">Inicio</a></li>
-        <li class="breadcrumb-item active">Ventas Pendientes</li>
+        <li class="breadcrumb-item"><a href="<?php echo base_url('ventas'); ?>">Gestión de Ventas</a></li>
+        <li class="breadcrumb-item active">Ventas Canceladas</li>
       </ol>
     </nav>
   </div>
@@ -14,14 +15,11 @@
       <div class="col-lg-12">
         <div class="card">
           <div class="card-body">
-            <h5 class="card-title" style="color: var(--default-color);">Ventas Pendientes</h5>
+            <h5 class="card-title">Ventas Canceladas</h5>
 
-            <a href="<?php echo base_url('ventas/agregar'); ?>" class="btn btn-primary">
-                <i class="bi bi-plus-circle"></i> Agregar Venta
-            </a>
-
-            <a href="<?php echo base_url('ventas'); ?>" class="btn btn-secondary">
-              <i class="bi bi-arrow-left"></i> Ver Todas las Ventas
+            <!-- Botón para volver a la vista principal de ventas -->
+            <a href="<?php echo base_url('ventas'); ?>" class="btn btn-primary">
+                <i class="bi bi-arrow-left"></i> Volver a Todas las Ventas
             </a>
 
             <table class="table">
@@ -47,13 +45,15 @@
                       <td><?php echo $venta->total; ?></td>
                       <td><?php echo ucfirst($venta->estado); ?></td>
                       <td>
+                        <!-- Botón Ver detalles -->
                         <button class="btn btn-info view-details" data-id="<?php echo $venta->id; ?>">
                           <i class="bi bi-eye"></i>
                         </button>
-                        
+                        <!-- Botón Editar -->
                         <a href="<?php echo base_url('ventas/editar/'.$venta->id); ?>" class="btn btn-warning">
                             <i class="bi bi-pencil-square"></i>
                         </a>
+                        <!-- Botón Eliminar -->
                         <a href="#" class="btn btn-danger delete-venta" data-id="<?php echo $venta->id; ?>" data-name="<?php echo $venta->cliente_nombre . ' ' . $venta->cliente_apellido; ?>">
                             <i class="bi bi-trash"></i>
                         </a>
@@ -62,7 +62,7 @@
                   <?php endforeach; ?>
                 <?php else : ?>
                   <tr>
-                    <td colspan="6" class="text-center">No hay ventas pendientes.</td>
+                    <td colspan="6" class="text-center">No hay ventas canceladas.</td>
                   </tr>
                 <?php endif; ?>
               </tbody>
@@ -74,7 +74,7 @@
   </section>
 </main>
 
-<!-- Modal -->
+<!-- Modal para ver los detalles de la venta -->
 <div class="modal fade" id="ventaDetailsModal" tabindex="-1" aria-labelledby="ventaDetailsModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
@@ -86,14 +86,15 @@
         <!-- Aquí se mostrarán los detalles de la venta y los productos -->
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary btn-close-purple" data-bs-dismiss="modal" style="background-color: #6f42c1; border-color: #6f42c1; color: #ffffff;">Cerrar</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
       </div>
     </div>
   </div>
 </div>
 
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
+// Funcionalidad para ver detalles de la venta
+document.addEventListener('DOMContentLoaded', function() {
     const viewButtons = document.querySelectorAll('.view-details');
     
     viewButtons.forEach(button => {
@@ -108,7 +109,7 @@
           let detallesHTML = `
             <table class="table">
               <tr><th>Cliente:</th><td>${data.cliente_nombre || data.cliente_apellido ? `${data.cliente_nombre} ${data.cliente_apellido}` : 'Cliente no definido'}</td></tr>
-              <tr><th>Vendedor:</th><td>${data.rol_nombre} - ${data.empleado_nombre} ${data.empleado_apellido}</td></tr>
+              <tr><th>Vendedor:</th><td>${data.empleado_nombre} ${data.empleado_apellido}</td></tr>
               <tr><th>Fecha de Venta:</th><td>${data.fecha_venta}</td></tr>
               <tr><th>Total:</th><td>${data.total}</td></tr>
               <tr><th>Estado:</th><td>${data.estado}</td></tr>
@@ -147,10 +148,14 @@
 
           const modal = new bootstrap.Modal(document.getElementById('ventaDetailsModal'));
           modal.show();
+        })
+        .catch(error => {
+          console.error('Error al obtener los detalles de la venta:', error);
         });
       });
     });
 
+    // Funcionalidad para eliminar venta
     const deleteButtons = document.querySelectorAll('.delete-venta');
     
     deleteButtons.forEach(button => {
@@ -175,5 +180,5 @@
         });
       });
     });
-  });
+});
 </script>

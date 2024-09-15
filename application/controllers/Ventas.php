@@ -30,7 +30,8 @@ class Ventas extends CI_Controller {
 
     public function index() {
         $this->check_permissions();
-        $data['ventas'] = $this->Venta_model->get_all_ventas();
+        // Obtener solo las ventas canceladas
+        $data['ventas'] = $this->Venta_model->get_ventas_by_estado('completada');
         $data['top_selling_products'] = $this->Venta_model->get_top_selling_products(10); // O la cantidad que desees mostrar
         $this->load->view('admin/template/header');
         $this->load->view('admin/template/navbar');
@@ -194,71 +195,38 @@ class Ventas extends CI_Controller {
     
             try {
                 $venta_actual = $this->Venta_model->get_venta_by_id($id);
+                $nuevo_estado = $this->input->post('estado_venta'); // Obtener el nuevo estado de la venta
     
                 $cliente_id = $this->input->post('cliente_id');
                 $data_venta = array(
                     'cliente_id' => !empty($cliente_id) ? $cliente_id : NULL,
                     'usuario_id' => $this->input->post('usuario_id'),
-                    'estado' => $this->input->post('estado_venta'),
+                    'estado' => $nuevo_estado,
                     'usuario_actualizacion_id' => $this->session->userdata('user_id')
                 );
     
                 // Actualizar la venta en la base de datos
                 $this->Venta_model->update_venta($id, $data_venta);
     
-                // Restablecer el stock de los productos en la venta original
-                foreach ($venta_actual->detalles as $detalle) {
-                    $producto = $this->Producto_model->get_producto_by_id($detalle->producto_id);
-                    $nuevo_stock = $producto->stock + $detalle->cantidad;
-                    $this->Producto_model->update_stock($detalle->producto_id, $nuevo_stock); // Devolver el stock
-                }
-    
-                // Eliminar los detalles antiguos
-                $this->Venta_model->delete_detalles_by_venta($id);
-    
-                // Validar y procesar nuevos productos
-                $productos = $this->input->post('producto_id');
-                $cantidades = $this->input->post('cantidad');
-                $precios_unitarios = $this->input->post('precio_unitario');
-                $total_venta = 0;
-                $descripcion_detalles = '';
-    
-                for ($i = 0; $i < count($productos); $i++) {
-                    $producto = $this->Producto_model->get_producto_by_id($productos[$i]);
-    
-                    // Validar si el producto está activo
-                    if ($producto->estado != 'activo') {
-                        throw new Exception('El producto "' . $producto->nombre . '" no está activo y no se puede vender.');
+                // Si la venta pasa a "cancelada" y no estaba previamente cancelada, devolver los productos al stock
+                if ($nuevo_estado == 'cancelada' && $venta_actual->estado != 'cancelada') {
+                    foreach ($venta_actual->detalles as $detalle) {
+                        $producto = $this->Producto_model->get_producto_by_id($detalle->producto_id);
+                        $nuevo_stock = $producto->stock + $detalle->cantidad;
+                        $this->Producto_model->update_stock($detalle->producto_id, $nuevo_stock); // Devolver el stock
                     }
-    
-                    // Validar si hay suficiente stock
-                    if ($producto->stock < $cantidades[$i]) {
-                        throw new Exception('La cantidad solicitada para el producto "' . $producto->nombre . '" excede el stock disponible.');
+                } elseif (($nuevo_estado == 'completada' || $nuevo_estado == 'pendiente') && $venta_actual->estado != 'completada' && $venta_actual->estado != 'pendiente') {
+                    // Si la venta estaba en otro estado y se marca como "completada" o "pendiente", reducir el stock
+                    foreach ($venta_actual->detalles as $detalle) {
+                        $producto = $this->Producto_model->get_producto_by_id($detalle->producto_id);
+                        if ($producto->stock < $detalle->cantidad) {
+                            throw new Exception('La cantidad solicitada para el producto "' . $producto->nombre . '" excede el stock disponible.');
+                        }
+                        $nuevo_stock = $producto->stock - $detalle->cantidad;
+                        $this->Producto_model->update_stock($detalle->producto_id, $nuevo_stock); // Reducir el stock
                     }
-    
-                    $subtotal = $cantidades[$i] * $precios_unitarios[$i];
-                    $total_venta += $subtotal;
-    
-                    // Insertar los nuevos detalles de la venta
-                    $detalle_venta = array(
-                        'venta_id' => $id,
-                        'producto_id' => $productos[$i],
-                        'cantidad' => $cantidades[$i],
-                        'precio_unitario' => $precios_unitarios[$i],
-                    );
-                    $this->Venta_model->insert_detalle_venta($detalle_venta);
-    
-                    // Actualizar el stock del producto
-                    $nuevo_stock = $producto->stock - $cantidades[$i];
-                    $this->Producto_model->update_stock($productos[$i], $nuevo_stock);
-    
-                    // Construir la descripción para la actividad
-                    $descripcion_detalles .= $producto->nombre . " (" . $cantidades[$i] . " x $" . $precios_unitarios[$i] . ") ";
                 }
-    
-                // Actualizar el total de la venta
-                $this->Venta_model->update_venta($id, array('total' => $total_venta));
-    
+
                 // Si la transacción falla, lanzar una excepción
                 if ($this->db->trans_status() === FALSE) {
                     throw new Exception('Error al realizar la transacción.');
@@ -268,7 +236,7 @@ class Ventas extends CI_Controller {
                 $this->db->trans_commit();
     
                 // Registrar la actividad
-                $descripcion = 'Productos: ' . $descripcion_detalles . ' - Total: $' . $total_venta;
+                $descripcion = 'Venta actualizada. Estado: ' . ucfirst($nuevo_estado);
                 $this->Actividad_model->registrar_actividad(
                     $this->session->userdata('user_id'),
                     'actualizar_venta',
@@ -342,6 +310,20 @@ class Ventas extends CI_Controller {
         $this->load->view('admin/template/footer');
     }    
     
+    public function canceladas() {
+        $this->check_permissions();
+    
+        // Obtener solo las ventas canceladas
+        $data['ventas'] = $this->Venta_model->get_ventas_by_estado('cancelada');
+        
+        // Cargar las vistas correspondientes
+        $this->load->view('admin/template/header');
+        $this->load->view('admin/template/navbar');
+        $this->load->view('admin/template/sidebar');
+        $this->load->view('admin/venta/ventas_canceladas', $data);
+        $this->load->view('admin/template/footer');
+    }
+
     public function filtrar_datos() {
         $filterOption = $this->input->post('filterOption');
         $cardType = $this->input->post('cardType');

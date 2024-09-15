@@ -99,6 +99,11 @@
             <i class="bi bi-circle"></i><span>Ventas Pendientes</span>
           </a>
         </li>
+        <li>
+          <a href="<?php echo base_url('ventas/canceladas'); ?>">
+            <i class="bi bi-circle"></i><span>Ventas Canceladas</span>
+          </a>
+        </li>
       </ul>
     </li><!-- End Gestión de Ventas Nav -->
 

@@ -78,7 +78,7 @@
                   <select id="estado_venta" name="estado_venta" class="form-select" required>
                     <option value="pendiente">Pendiente</option>
                     <option value="completada" selected>Completada</option>
-                    <option value="cancelada">Cancelada</option>
+                    <option value="cancelada" disabled>Cancelada</option>
                   </select>
                   <div class="invalid-feedback">¡Por favor, seleccione un estado para la venta!</div>
                 </div>
