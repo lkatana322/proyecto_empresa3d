@@ -99,5 +99,11 @@ class Producto_model extends CI_Model {
         return $this->db->get('producto')->result();
     }
 
+    public function get_producto_by_nombre($nombre) {
+        $this->db->where('nombre', $nombre);
+        $query = $this->db->get('producto');
+        return $query->row(); // Devolverá el producto si existe, null si no
+    }
+    
 }
 ?>

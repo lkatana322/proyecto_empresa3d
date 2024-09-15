@@ -175,18 +175,18 @@ class Categorias extends CI_Controller {
         $this->load->view('cliente/categorias', $data);
     }
     
-    public function get_categoria_by_producto($producto_id)
+    public function get_categoria_by_producto()
     {
+        $producto_id = $this->input->get('producto_id');
         $categoria = $this->Categoria_model->get_categoria_by_producto($producto_id);
-    
-        // Si se encuentra la categoría, devuelve la respuesta JSON
+        
         if ($categoria) {
             echo json_encode(['categoria' => $categoria]);
         } else {
-            // Si no se encuentra, devuelves un mensaje indicando que no hay categoría
-            echo json_encode(['categoria' => null, 'error' => 'Categoría no encontrada']);
+            echo json_encode(['categoria' => null]);
         }
-    }    
-
+    }
+    
+    
 }
 ?>

@@ -104,18 +104,18 @@ class Categoria_model extends CI_Model {
     }
     
     public function get_categoria_by_producto($producto_id) {
-        $this->db->select('c.nombre');
+        $this->db->select('c.nombre');  // Seleccionar solo el nombre de la categoría
         $this->db->from('categoria c');
         $this->db->join('producto p', 'c.id = p.categoria_id');
-        $this->db->where('p.id', $producto_id);
+        $this->db->where('p.id', $producto_id);  // Asegúrate de usar el ID del producto
         $query = $this->db->get();
-
+    
         if ($query->num_rows() > 0) {
-            return $query->row();
+            return $query->row();  // Retornar la categoría asociada
         } else {
-            return null;  // En caso de que no se encuentre la categoría
+            return null;  // Retornar null si no hay coincidencia
         }
-    }
-
+    }    
+    
 }
 ?>

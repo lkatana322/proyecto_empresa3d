@@ -94,6 +94,11 @@
             <i class="bi bi-circle"></i><span>Agregar Venta</span>
           </a>
         </li>
+        <li>
+          <a href="<?php echo base_url('ventas/pendientes'); ?>">
+            <i class="bi bi-circle"></i><span>Ventas Pendientes</span>
+          </a>
+        </li>
       </ul>
     </li><!-- End Gestión de Ventas Nav -->
 
@@ -134,6 +139,11 @@
         <li>
           <a href="<?php echo base_url('categorias/agregar'); ?>">
             <i class="bi bi-circle"></i><span>Agregar Categoría</span>
+          </a>
+        </li>
+        <li>
+          <a href="<?php echo base_url('categorias/inactivas'); ?>">
+            <i class="bi bi-circle"></i><span>Categorías inactivas</span>
           </a>
         </li>
       </ul>

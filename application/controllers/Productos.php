@@ -67,6 +67,17 @@ class Productos extends CI_Controller {
         $this->form_validation->set_rules('categoria_id', 'Categoría', 'required');
         $this->form_validation->set_rules('estado_producto', 'Estado', 'required');
     
+        // Verificar si ya existe un producto con el mismo nombre
+        $nombre_producto = $this->input->post('nombre_producto');
+        $producto_existente = $this->Producto_model->get_producto_by_nombre($nombre_producto);
+
+        if ($producto_existente) {
+            // Si el producto ya existe, mostrar un mensaje de error y redirigir al formulario
+            $this->session->set_flashdata('error', 'Ya existe un producto con este nombre.');
+            redirect('productos/agregar');
+            return;
+        }
+
         if ($this->form_validation->run() == FALSE) {
             $this->agregar();
         } else {
@@ -128,6 +139,17 @@ class Productos extends CI_Controller {
         $this->form_validation->set_rules('stock_producto', 'Stock', 'required|integer');
         $this->form_validation->set_rules('categoria_id', 'Categoría', 'required');
     
+        // Verificar si ya existe otro producto con el mismo nombre (excluyendo el actual)
+        $nombre_producto = $this->input->post('nombre_producto');
+        $producto_existente = $this->Producto_model->get_producto_by_nombre($nombre_producto);
+
+        if ($producto_existente && $producto_existente->id != $id) {
+            // Si ya existe un producto con el mismo nombre (y no es el producto actual), mostrar error
+            $this->session->set_flashdata('error', 'Ya existe otro producto con este nombre.');
+            redirect('productos/editar/' . $id);
+            return;
+        }
+
         if ($this->form_validation->run() == FALSE) {
             $this->editar($id);
         } else {
@@ -220,6 +242,25 @@ class Productos extends CI_Controller {
         $productos = $this->Producto_model->buscar_producto($query);
         echo json_encode(['productos' => $productos]);
     }
+
+    public function buscar_producto_ajax() {
+        $query = $this->input->get('query');  // Obtener el texto escrito por el usuario
+        $productos = $this->Producto_model->buscar_producto($query);  // Buscar productos que coincidan con el texto
+    
+        // Ajustar para incluir la URL de la imagen
+        $result = [];
+        foreach ($productos as $producto) {
+            $result[] = [
+                'id' => $producto->id,
+                'nombre' => $producto->nombre,
+                'categoria_id' => $producto->categoria_id,
+                'imagen' => base_url($producto->imagen)  // Agregamos la imagen completa con su URL
+            ];
+        }
+    
+        echo json_encode($result);  // Devolver los productos en formato JSON
+    }
+    
 
 }
 ?>

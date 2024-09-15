@@ -19,172 +19,204 @@
 
             <!-- Formulario de Editar Venta -->
             <form class="row g-3 needs-validation" novalidate action="<?= base_url('ventas/actualizar') ?>" method="post" id="formEditarVenta">
-              <input type="hidden" name="id" value="<?= $venta->id ?>">
+              <!-- Campo oculto para el ID de la venta -->
+              <input type="hidden" name="id" value="<?= $venta->id; ?>">
 
+              <!-- Selección de Cliente -->
               <div class="col-md-6">
-                <label for="cliente_id" class="form-label">Cliente</label>
-                <select id="cliente_id" name="cliente_id" class="form-select" required>
-                  <option value="" disabled>Seleccione un cliente</option>
-                  <?php foreach($clientes as $cliente): ?>
-                    <option value="<?php echo $cliente->id; ?>" <?php echo ($cliente->id == $venta->cliente_id) ? 'selected' : ''; ?>>
-                      <?php echo $cliente->nombre . ' ' . $cliente->apellido; ?>
-                    </option>
-                  <?php endforeach; ?>
-                </select>
-                <div class="invalid-feedback">¡Por favor, seleccione un cliente!</div>
+                  <label for="cliente_id" class="form-label">Cliente</label>
+                  <select id="cliente_id" name="cliente_id" class="form-select" required>
+                      <option value="" disabled>Seleccione un cliente</option>
+                      <?php foreach($clientes as $cliente): ?>
+                          <option value="<?php echo $cliente->id; ?>" <?= $cliente->id == $venta->cliente_id ? 'selected' : ''; ?>><?php echo $cliente->nombre . ' ' . $cliente->apellido; ?></option>
+                      <?php endforeach; ?>
+                  </select>
+                  <div class="invalid-feedback">¡Por favor, seleccione un cliente!</div>
               </div>
 
+              <!-- Empleado (Usuario que hace la venta) -->
               <div class="col-md-6">
-                  <label for="usuario_id" class="form-label"><?= ucfirst($rol_usuario_logueado); ?></label>
+                  <label for="usuario_id" class="form-label">Empleado</label>
                   <input type="text" class="form-control" value="<?= $usuario_logueado; ?>" disabled>
                   <input type="hidden" name="usuario_id" value="<?= $this->session->userdata('user_id'); ?>"> 
               </div>
 
+              <!-- Búsqueda de Producto con autocompletado -->
               <div class="col-md-6">
-                <label for="categoria_id" class="form-label">Categoría</label>
-                <select id="categoria_id" name="categoria_id" class="form-select" required>
-                  <option value="" disabled>Seleccione una categoría</option>
-                  <?php foreach($categorias as $categoria): ?>
-                    <option value="<?php echo $categoria->id; ?>" <?php echo ($categoria->id == $venta->categoria_id) ? 'selected' : ''; ?>>
-                      <?php echo $categoria->nombre; ?>
-                    </option>
-                  <?php endforeach; ?>
-                </select>
-                <div class="invalid-feedback">¡Por favor, seleccione una categoría!</div>
+                <label for="producto_id" class="form-label">Buscar Producto</label>
+                <div class="input-group">
+                  <span class="input-group-text" style="background-color: #f0f8ff; border-color: #28a745;">
+                    <i class="bi bi-search" style="color: #28a745; font-size: 1.2em;"></i>
+                  </span>
+                  <input type="text" id="producto_id" name="producto_id" class="form-control" placeholder="Buscar Producto..." style="border-color: #28a745;">
+                  <input type="hidden" id="producto_hidden_id" name="producto_hidden_id">
+                  <div class="invalid-feedback">¡Por favor, seleccione un producto!</div>
+                </div>
               </div>
 
+              <!-- Campo de Categoría -->
+              <div class="col-md-6">
+                <label for="categoria_id" class="form-label">Categoría</label>
+                <input type="text" id="categoria_id" name="categoria_id" class="form-control" readonly style="background-color: #e9ecef; cursor: not-allowed;">
+              </div>
+
+              <!-- Productos agregados -->
               <div class="col-12">
                 <label class="form-label">Productos</label>
                 <div id="productos-container">
+                  <!-- Cargar productos previamente agregados en la venta -->
                   <?php foreach ($venta->detalles as $detalle): ?>
-                    <div class="row g-3 align-items-center mb-3">
-                      <div class="col-sm-4">
-                        <select name="producto_id[]" class="form-select" required>
-                          <option value="" disabled>Seleccione un producto</option>
-                          <?php foreach($productos as $producto): ?>
-                            <option value="<?php echo $producto->id; ?>" <?php echo ($producto->id == $detalle->producto_id) ? 'selected' : ''; ?>>
-                              <?php echo $producto->nombre; ?>
-                            </option>
-                          <?php endforeach; ?>
-                        </select>
-                        <div class="invalid-feedback">¡Por favor, seleccione un producto!</div>
-                      </div>
-                      <div class="col-sm-3">
-                        <input type="number" name="cantidad[]" class="form-control" placeholder="Cantidad" required min="1" value="<?= $detalle->cantidad ?>">
-                        <div class="invalid-feedback">¡Por favor, ingrese una cantidad válida!</div>
-                      </div>
-                      <div class="col-sm-3">
-                        <input type="number" name="precio_unitario[]" class="form-control" placeholder="Precio Unitario" required step="0.01" min="0" value="<?= $detalle->precio_unitario ?>">
-                        <div class="invalid-feedback">¡Por favor, ingrese un precio unitario válido!</div>
-                      </div>
-                      <div class="col-sm-2">
-                        <button type="button" class="btn btn-danger remove-producto"><i class="bi bi-trash"></i></button>
-                      </div>
+                    <div class="row g-3 align-items-center producto-item mb-2">
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" value="<?= $detalle->producto_nombre; ?>" readonly>
+                            <input type="hidden" name="producto_id[]" value="<?= $detalle->producto_id; ?>">
+                        </div>
+                        <div class="col-md-2">
+                            <input type="number" class="form-control" name="cantidad[]" value="<?= $detalle->cantidad; ?>" min="1" required>
+                        </div>
+                        <div class="col-md-2">
+                            <input type="number" class="form-control" name="precio_unitario[]" value="<?= $detalle->precio_unitario; ?>" readonly>
+                        </div>
+                        <div class="col-md-2">
+                            <button type="button" class="btn btn-danger btn-sm remove-producto-btn"><i class="bi bi-trash" style="font-size: 1.2rem;"></i></button>
+                        </div>
                     </div>
                   <?php endforeach; ?>
                 </div>
                 <button type="button" class="btn btn-secondary" id="add-producto-btn"><i class="bi bi-plus-circle"></i> Agregar Producto</button>
               </div>
 
+              <!-- Estado de la Venta -->
               <div class="col-md-6">
                 <label for="estado_venta" class="form-label">Estado</label>
                 <select id="estado_venta" name="estado_venta" class="form-select" required>
-                  <option value="pendiente" <?php echo ($venta->estado == 'pendiente') ? 'selected' : ''; ?>>Pendiente</option>
-                  <option value="completada" <?php echo ($venta->estado == 'completada') ? 'selected' : ''; ?>>Completada</option>
-                  <option value="cancelada" <?php echo ($venta->estado == 'cancelada') ? 'selected' : ''; ?>>Cancelada</option>
+                  <option value="pendiente" <?= $venta->estado == 'pendiente' ? 'selected' : ''; ?>>Pendiente</option>
+                  <option value="completada" <?= $venta->estado == 'completada' ? 'selected' : ''; ?>>Completada</option>
+                  <option value="cancelada" <?= $venta->estado == 'cancelada' ? 'selected' : ''; ?>>Cancelada</option>
                 </select>
                 <div class="invalid-feedback">¡Por favor, seleccione un estado para la venta!</div>
               </div>
 
+              <!-- Botones de Guardar/Cancelar -->
               <div class="col-12 mt-4 d-flex justify-content-start">
-                <button class="btn btn-success custom-btn me-2" type="submit" id="btnEditarVenta">
-                    <i class="fas fa-save"></i> Guardar Cambios
-                </button>
-                <a href="<?php echo base_url('ventas'); ?>" class="btn btn-secondary custom-btn">
-                    <i class="fas fa-times"></i> Cancelar
-                </a>
+                  <button class="btn btn-success custom-btn me-2" type="submit">
+                      <i class="fas fa-save"></i> Guardar
+                  </button>
+                  <a href="<?php echo base_url('ventas'); ?>" class="btn btn-secondary custom-btn">
+                      <i class="fas fa-times"></i> Cancelar
+                  </a>
               </div>
 
             </form>
-            <!-- End Formulario de Editar Venta -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script src="<?php echo base_url('assets_admin/jquery/js/jquery-3.7.1.min.js'); ?>"></script>
+
+<link rel="stylesheet" href="<?php echo base_url('assets_admin/jquery/css/jquery-ui.min.css'); ?>">
+<link rel="stylesheet" href="<?php echo base_url('assets_admin/jquery/css/jquery-ui.structure.min.css'); ?>">
+<link rel="stylesheet" href="<?php echo base_url('assets_admin/jquery/css/jquery-ui.theme.min.css'); ?>">
+<script src="<?php echo base_url('assets_admin/jquery/js/jquery-ui.min.js'); ?>"></script>
 
             <script>
-              document.addEventListener('DOMContentLoaded', function() {
-                const formEditarVenta = document.getElementById('formEditarVenta');
-                const btnEditarVenta = document.getElementById('btnEditarVenta');
-                const addProductoBtn = document.getElementById('add-producto-btn');
-                const productosContainer = document.getElementById('productos-container');
-                const categoriaSelect = document.getElementById('categoria_id');
+                $(document).ready(function() {
+                    // Autocompletado del campo de búsqueda de productos
+                    $("#producto_id").autocomplete({
+                        source: function(request, response) {
+                            $.ajax({
+                                url: "<?php echo base_url('productos/buscar_producto_ajax'); ?>",
+                                dataType: "json",
+                                data: {
+                                    query: request.term
+                                },
+                                success: function(data) {
+                                    response($.map(data, function(item) {
+                                        return {
+                                            label: item.nombre,
+                                            value: item.nombre,
+                                            id: item.id,
+                                            categoria_id: item.categoria_id
+                                        };
+                                    }));
+                                }
+                            });
+                        },
+                        select: function(event, ui) {
+                            $("#producto_hidden_id").val(ui.item.id);  // Guardar el ID del producto seleccionado
+                            $("#producto_id").val(ui.item.value);      // Llenar el cuadro con el nombre del producto
+                            obtenerCategoria(ui.item.id);              // Llamar a la función para obtener la categoría
+                            return false;
+                        },
+                        minLength: 2
+                    });
 
-                // AJAX para cargar productos según la categoría seleccionada
-                categoriaSelect.addEventListener('change', function() {
-                  const categoriaId = this.value;
-
-                  if (categoriaId) {
-                    fetch('<?php echo base_url('productos/get_productos_by_categoria/'); ?>' + categoriaId)
-                      .then(response => response.json())
-                      .then(data => {
-                        productosContainer.innerHTML = ''; // Limpiar el contenedor de productos
-                        data.forEach(producto => {
-                          agregarProductoRow(producto);
+                    // Función para obtener la categoría del producto seleccionado
+                    function obtenerCategoria(producto_id) {
+                        $.ajax({
+                            url: "<?php echo base_url('categorias/get_categoria_by_producto'); ?>",
+                            dataType: "json",
+                            data: { producto_id: producto_id },
+                            success: function(data) {
+                                if (data.categoria) {
+                                    $("#categoria_id").val(data.categoria.nombre);
+                                } else {
+                                    $("#categoria_id").val('');
+                                }
+                            }
                         });
-                      });
-                  }
-                });
+                    }
 
-                // Agregar una fila de producto manualmente
-                addProductoBtn.addEventListener('click', function() {
-                  agregarProductoRow();
-                });
+                    // Agregar producto a la lista
+                    $('#add-producto-btn').click(function() {
+                        var productoId = $('#producto_hidden_id').val();
+                        var productoNombre = $('#producto_id').val();
+                        var categoriaNombre = $('#categoria_id').val();
 
-                // Función para agregar una fila de producto
-                function agregarProductoRow(producto = {}) {
-                  const newProductoRow = `
-                    <div class="row g-3 align-items-center mb-3">
-                      <div class="col-sm-4">
-                        <select name="producto_id[]" class="form-select" required>
-                          <option value="" disabled ${!producto.id ? 'selected' : ''}>Seleccione un producto</option>
-                          <?php foreach($productos as $producto): ?>
-                            <option value="<?php echo $producto->id; ?>" ${producto.id === '<?php echo $producto->id; ?>' ? 'selected' : ''}"><?php echo $producto->nombre; ?></option>
-                          <?php endforeach; ?>
-                        </select>
-                        <div class="invalid-feedback">¡Por favor, seleccione un producto!</div>
-                      </div>
-                      <div class="col-sm-3">
-                        <input type="number" name="cantidad[]" class="form-control" placeholder="Cantidad" required min="1" value="${producto.cantidad || ''}">
-                        <div class="invalid-feedback">¡Por favor, ingrese una cantidad válida!</div>
-                      </div>
-                      <div class="col-sm-3">
-                        <input type="number" name="precio_unitario[]" class="form-control" placeholder="Precio Unitario" required step="0.01" min="0" value="${producto.precio || ''}">
-                        <div class="invalid-feedback">¡Por favor, ingrese un precio unitario válido!</div>
-                      </div>
-                      <div class="col-sm-2">
-                        <button type="button" class="btn btn-danger remove-producto"><i class="bi bi-trash"></i></button>
-                      </div>
-                    </div>
-                  `;
-                  productosContainer.insertAdjacentHTML('beforeend', newProductoRow);
-                }
+                        if (!productoId || !productoNombre) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: 'Debe seleccionar un producto antes de agregarlo.',
+                                confirmButtonColor: '#3085d6',
+                                confirmButtonText: 'OK'
+                            });
+                            return false;
+                        }
 
-                // Eliminar una fila de producto
-                productosContainer.addEventListener('click', function(e) {
-                  if (e.target.classList.contains('remove-producto')) {
-                    e.target.closest('.row').remove();
-                  }
-                });
+                        var productoHtml = `
+                            <div class="row g-3 align-items-center producto-item mb-2">
+                                <div class="col-md-4">
+                                    <input type="text" class="form-control" value="${productoNombre}" readonly>
+                                    <input type="hidden" name="producto_id[]" value="${productoId}">
+                                </div>
+                                <div class="col-md-2">
+                                    <input type="number" class="form-control" name="cantidad[]" value="1" min="1" required>
+                                </div>
+                                <div class="col-md-2">
+                                    <input type="number" class="form-control" name="precio_unitario[]" value="320" readonly>
+                                </div>
+                                <div class="col-md-2">
+                                    <button type="button" class="btn btn-danger btn-sm remove-producto-btn"><i class="bi bi-trash" style="font-size: 1.2rem;"></i></button>
+                                </div>
+                            </div>`;
+                        
+                        $('#productos-container').append(productoHtml);
 
-                // Validación del formulario
-                formEditarVenta.addEventListener('submit', function(event) {
-                  if (!formEditarVenta.checkValidity()) {
-                    event.preventDefault();
-                    event.stopPropagation();
-                    formEditarVenta.classList.add('was-validated');
-                  } else {
-                    btnEditarVenta.disabled = true;
-                    btnEditarVenta.textContent = 'Guardando...';
-                  }
+                        // Limpiar campos
+                        $('#producto_id').val('');
+                        $('#producto_hidden_id').val('');
+                        $('#categoria_id').val('');
+                    });
+
+                    // Eliminar producto de la lista
+                    $(document).on('click', '.remove-producto-btn', function() {
+                        $(this).closest('.producto-item').remove();
+                    });
                 });
-              });
             </script>
 
           </div>

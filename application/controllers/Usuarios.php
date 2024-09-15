@@ -6,6 +6,7 @@ class Usuarios extends CI_Controller {
     public function __construct() {
         parent::__construct();
         $this->load->model('Usuario_model');
+        $this->load->model('Venta_model'); // Asegúrate de cargar el modelo de ventas aquí
         $this->check_login();
     }
 
@@ -279,6 +280,15 @@ class Usuarios extends CI_Controller {
         if ($this->session->userdata('rol_id') == 2) {
             $this->session->set_flashdata('error', 'No tienes permiso para realizar esta acción.');
             redirect('usuarios');
+        }
+
+        // Comprobar si el usuario es un cliente y si tiene ventas asociadas
+        $cliente_tiene_ventas = $this->Venta_model->cliente_tiene_ventas($id);
+
+        if ($cliente_tiene_ventas) {
+            $this->session->set_flashdata('error', 'No se puede eliminar este cliente porque tiene ventas asociadas.');
+            redirect('usuarios');
+            return;
         }
 
         // Comienza la transacción

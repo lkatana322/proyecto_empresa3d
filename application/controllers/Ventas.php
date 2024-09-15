@@ -61,6 +61,14 @@ class Ventas extends CI_Controller {
         $this->form_validation->set_rules('cliente_id', 'Cliente', 'required');
         $this->form_validation->set_rules('usuario_id', 'Empleado', 'required');
     
+        // Verificar si se agregó al menos un producto
+        $productos = $this->input->post('producto_id');
+        if (empty($productos)) {
+            $this->session->set_flashdata('error', 'Debe agregar al menos un producto para realizar la venta.');
+            redirect('ventas/agregar');
+            return;
+        }
+
         if ($this->form_validation->run() == FALSE) {
             $this->agregar();  // Si la validación falla, muestra el formulario nuevamente
         } else {

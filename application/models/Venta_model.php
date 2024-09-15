@@ -213,5 +213,13 @@ class Venta_model extends CI_Model {
         $this->db->delete('detalle_venta');
     }
     
+    public function cliente_tiene_ventas($cliente_id) {
+        $this->db->from('venta');
+        $this->db->where('cliente_id', $cliente_id);
+        $query = $this->db->get();
+
+        return $query->num_rows() > 0;
+    }
+    
 }
 ?>
