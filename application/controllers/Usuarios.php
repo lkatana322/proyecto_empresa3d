@@ -371,5 +371,23 @@ class Usuarios extends CI_Controller {
         $this->load->view('admin/usuario/clientes_inactivos', $data);
         $this->load->view('admin/template/footer');
     }
+
+    public function buscar_cliente_ajax() {
+        $this->load->model('Usuario_model');
+        $query = $this->input->get('query'); // Obtener el término de búsqueda
+
+        $clientes = $this->Usuario_model->buscar_clientes($query); // Llamar al método en el modelo
+
+        // Crear un array solo con los nombres y apellidos
+        $resultados = [];
+        foreach ($clientes as $cliente) {
+            $resultados[] = [
+                'label' => $cliente->nombre . ' ' . $cliente->apellido, // Nombre completo para el autocompletado
+                'value' => $cliente->id // ID del cliente para el valor del input
+            ];
+        }
+
+        echo json_encode($resultados); // Retornar los resultados en formato JSON
+    }
 }
 ?>

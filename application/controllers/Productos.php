@@ -243,24 +243,28 @@ class Productos extends CI_Controller {
         echo json_encode(['productos' => $productos]);
     }
 
+    // Método para buscar productos según el término de búsqueda
     public function buscar_producto_ajax() {
-        $query = $this->input->get('query');  // Obtener el texto escrito por el usuario
-        $productos = $this->Producto_model->buscar_producto($query);  // Buscar productos que coincidan con el texto
-    
-        // Ajustar para incluir la URL de la imagen
-        $result = [];
-        foreach ($productos as $producto) {
-            $result[] = [
+        $query = $this->input->get('query'); // Obtener el término de búsqueda
+
+        $this->db->like('nombre', $query);
+        $this->db->limit(10);
+        $resultados = $this->db->get('producto')->result();
+
+        // Preparar el resultado
+        $productos = [];
+        foreach ($resultados as $producto) {
+            $productos[] = [
                 'id' => $producto->id,
                 'nombre' => $producto->nombre,
-                'categoria_id' => $producto->categoria_id,
-                'imagen' => base_url($producto->imagen)  // Agregamos la imagen completa con su URL
+                'precio_unitario' => $producto->precio, // Asegúrate de que este campo esté disponible
+                'imagen' => base_url($producto->imagen), 
+                'categoria_id' => $producto->categoria_id
             ];
         }
-    
-        echo json_encode($result);  // Devolver los productos en formato JSON
+
+        echo json_encode($productos); // Devolver los resultados en formato JSON
     }
-    
 
 }
 ?>

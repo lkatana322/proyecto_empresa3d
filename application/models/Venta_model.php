@@ -42,7 +42,7 @@ class Venta_model extends CI_Model {
         $venta->detalles = array(); // Inicializa la propiedad 'detalles' como un array vacío
     
         // Obtener los detalles de los productos de la venta
-        $this->db->select('dp.*, p.nombre as producto_nombre');
+        $this->db->select('dp.*, p.nombre as producto_nombre, p.imagen as producto_imagen');
         $this->db->from('detalle_venta dp');
         $this->db->join('producto p', 'dp.producto_id = p.id');
         $this->db->where('dp.venta_id', $id);

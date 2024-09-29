@@ -152,6 +152,16 @@ class Usuario_model extends CI_Model {
     
         return round($percentage);
     }
+
+    public function buscar_clientes($query) {
+        // Filtrar solo los usuarios que son clientes
+        $this->db->where('rol', 'cliente');
+        $this->db->like('nombre', $query);
+        $this->db->or_like('apellido', $query);
+        $query = $this->db->get('usuario'); // Consulta a la tabla usuario
+        
+        return $query->result(); // Retornar los resultados
+    }
     
 }
 ?>
