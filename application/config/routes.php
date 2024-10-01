@@ -79,3 +79,6 @@ $route['cliente/productos/categoria/(:num)'] = 'cliente/productos_por_categoria/
 
 $route['productos/buscar_producto'] = 'productos/buscar_producto';
 $route['categorias/get_categoria_by_producto/(:num)'] = 'categorias/get_categoria_by_producto/$1';
+
+$route['reportes/generar_pdf'] = 'reportes/generar_pdf';
+

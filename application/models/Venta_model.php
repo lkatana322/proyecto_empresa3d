@@ -221,5 +221,27 @@ class Venta_model extends CI_Model {
         return $query->num_rows() > 0;
     }
     
+    public function get_ventas_by_fecha($fecha_inicio, $fecha_fin) {
+        $this->db->select('v.*, c.nombre as cliente_nombre, c.apellido as cliente_apellido, u.nombre as usuario_nombre, u.apellido as usuario_apellido');
+        $this->db->from('venta v');
+        $this->db->join('usuario c', 'v.cliente_id = c.id', 'left');
+        $this->db->join('usuario u', 'v.usuario_id = u.id', 'left');
+        $this->db->where('v.fecha_venta >=', $fecha_inicio);
+        $this->db->where('v.fecha_venta <=', $fecha_fin);
+        $ventas = $this->db->get()->result();
+    
+        foreach ($ventas as &$venta) {
+            // Obtener los productos asociados a cada venta
+            $this->db->select('dp.*, p.nombre as producto_nombre');
+            $this->db->from('detalle_venta dp');
+            $this->db->join('producto p', 'dp.producto_id = p.id');
+            $this->db->where('dp.venta_id', $venta->id);
+            $venta->productos = $this->db->get()->result();
+        }
+    
+        return $ventas;
+    }
+    
+    
 }
 ?>

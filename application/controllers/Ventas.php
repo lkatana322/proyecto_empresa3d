@@ -150,9 +150,15 @@ class Ventas extends CI_Controller {
                     $descripcion
                 );
     
-                // Mostrar mensaje de éxito y redirigir
-                $this->session->set_flashdata('success', 'Venta agregada con éxito.');
-                redirect('ventas');
+            // Mostrar mensaje de éxito
+            $this->session->set_flashdata('success', 'Venta agregada con éxito.');
+
+            // Guarda el ID de la venta en la sesión
+            $this->session->set_flashdata('venta_id', $venta_id);
+
+            // Redirige a la página de ventas
+            redirect('ventas');
+
             } catch (Exception $e) {
                 // En caso de error, se revierte la transacción
                 $this->db->trans_rollback();
@@ -441,6 +447,34 @@ class Ventas extends CI_Controller {
     
         return round($percentage);
     }
+    
+    public function ticket_pdf($id) {
+        $this->load->library('pdf');
+        $this->load->model('Venta_model');
+    
+        // Obtén los detalles de la venta
+        $venta = $this->Venta_model->get_venta_by_id($id);
+    
+        if (!$venta) {
+            show_404();
+            return;
+        }
+    
+        // Configura la opción para permitir imágenes remotas
+        $this->pdf->set_option('isRemoteEnabled', true);
+    
+        // Carga una vista que contendrá el HTML del ticket
+        $html = $this->load->view('admin/venta/ticket_view', ['venta' => $venta], true);
+    
+        // Generar el PDF
+        $this->pdf->loadHtml($html);
+        $this->pdf->setPaper('A4', 'portrait');
+        $this->pdf->render();
+    
+        // Salida del PDF generado
+        $this->pdf->stream("ticket_venta_$id.pdf", array("Attachment" => 0));
+    }
+    
     
 }
 ?>

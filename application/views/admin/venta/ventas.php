@@ -28,6 +28,10 @@
                 <i class="bi bi-x-circle"></i> Ver Ventas Canceladas
             </a>
 
+            <a href="<?php echo base_url('reportes'); ?>" class="btn btn-info">
+              <i class="bi bi-file-earmark-text"></i> Generar Reportes
+            </a>
+
             <table class="table">
               <thead>
                 <tr>
@@ -60,6 +64,9 @@
                         <a href="#" class="btn btn-danger delete-venta" data-id="<?php echo $venta->id; ?>" data-name="<?php echo $venta->cliente_nombre . ' ' . $venta->cliente_apellido; ?>">
                             <i class="bi bi-trash"></i>
                         </a>
+                        <a href="<?php echo base_url('ventas/ticket_pdf/'.$venta->id); ?>" class="btn btn-success" target="_blank">
+                            <i class="bi bi-file-earmark-pdf"></i> Ticket
+                        </a>
                       </td>
                     </tr>
                   <?php endforeach; ?>
@@ -76,6 +83,15 @@
     </div>
   </section>
 </main>
+
+<!-- Mostrar el script para abrir el ticket -->
+<?php if ($this->session->flashdata('venta_id')): ?>
+    <script>
+        window.onload = function() {
+            window.open("<?php echo base_url('ventas/ticket_pdf/' . $this->session->flashdata('venta_id')); ?>", "_blank");
+        };
+    </script>
+<?php endif; ?>
 
 <!-- Modal -->
 <div class="modal fade" id="ventaDetailsModal" tabindex="-1" aria-labelledby="ventaDetailsModalLabel" aria-hidden="true">
