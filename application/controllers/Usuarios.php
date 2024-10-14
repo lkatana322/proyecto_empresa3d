@@ -123,7 +123,7 @@ class Usuarios extends CI_Controller {
                 'protocol' => 'smtp',
                 'smtp_host' => 'ssl://smtp.gmail.com',
                 'smtp_user' => 'alvarez.brandon.13353@gmail.com',
-                'smtp_pass' => 'pesi nobu rmrd dhxm',
+                'smtp_pass' => 'zklx pgpn mlwm drgj',
                 'smtp_port' => 465,
                 'mailtype' => 'html',
                 'charset' => 'utf-8',
@@ -235,7 +235,7 @@ class Usuarios extends CI_Controller {
                     'protocol' => 'smtp',
                     'smtp_host' => 'ssl://smtp.gmail.com',
                     'smtp_user' => 'alvarez.brandon.13353@gmail.com',
-                    'smtp_pass' => 'pesi nobu rmrd dhxm',
+                    'smtp_pass' => 'zklx pgpn mlwm drgj',
                     'smtp_port' => 465,
                     'mailtype' => 'html',
                     'charset' => 'utf-8',
@@ -389,5 +389,87 @@ class Usuarios extends CI_Controller {
 
         echo json_encode($resultados); // Retornar los resultados en formato JSON
     }
+
+    public function guardar_cliente_ajax() {
+        $this->form_validation->set_rules('nombre_cliente', 'Nombre', 'required|alpha');
+        $this->form_validation->set_rules('apellido_cliente', 'Apellido', 'required|alpha');
+        $this->form_validation->set_rules('email_cliente', 'Correo Electrónico', 'required|valid_email');
+    
+        if ($this->form_validation->run() == FALSE) {
+            echo json_encode(['success' => false, 'message' => validation_errors()]);
+        } else {
+            // Verificar si el correo ya existe
+            $email = $this->input->post('email_cliente');
+            if ($this->Usuario_model->email_exists($email)) {
+                echo json_encode(['success' => false, 'message' => 'El correo electrónico ya está registrado.']);
+                return;
+            }
+    
+            // Generar contraseña aleatoria
+            $password = $this->generate_random_password();
+    
+            // Preparar datos del cliente
+            $data_cliente = array(
+                'nombre' => strtoupper($this->input->post('nombre_cliente')),
+                'apellido' => strtoupper($this->input->post('apellido_cliente')),
+                'email' => $email,
+                'telefono' => $this->input->post('telefono_cliente') ?: null,
+                'direccion' => $this->input->post('direccion_cliente') ?: null,
+                'rol' => 'cliente',
+                'estado' => 'activo',
+                'contraseña' => password_hash($password, PASSWORD_DEFAULT)
+            );
+    
+            // Comenzar la transacción
+            $this->db->trans_start();
+    
+            // Insertar cliente
+            $cliente_id = $this->Usuario_model->insert_cliente($data_cliente);
+    
+            if ($cliente_id) {
+                // Configuración para enviar correo
+                $config = array(
+                    'protocol' => 'smtp',
+                    'smtp_host' => 'ssl://smtp.gmail.com',
+                    'smtp_user' => 'alvarez.brandon.13353@gmail.com',
+                    'smtp_pass' => 'zklx pgpn mlwm drgj',
+                    'smtp_port' => 465,
+                    'mailtype' => 'html',
+                    'charset' => 'utf-8',
+                    'wordwrap' => TRUE,
+                    'newline' => "\r\n"
+                );
+    
+                $this->load->library('email', $config);
+                $this->email->initialize($config);
+    
+                $this->email->from('alvarez.brandon.13353@gmail.com', '3D Print Shop');
+                $this->email->to($email);
+                $this->email->subject('Tu nueva cuenta en 3D Print Shop');
+                $this->email->message('Tu cuenta ha sido creada. Tu contraseña es: ' . $password);
+    
+                // Intentar enviar el correo
+                if (!$this->email->send()) {
+                    $this->db->trans_rollback();
+                    echo json_encode(['success' => false, 'message' => 'Error al registrar el cliente. El correo no pudo ser enviado.']);
+                    return;
+                }
+    
+                // Completar la transacción
+                $this->db->trans_complete();
+    
+                if ($this->db->trans_status() === FALSE) {
+                    echo json_encode(['success' => false, 'message' => 'Error al insertar el cliente.']);
+                } else {
+                    // Mensaje de éxito en flashdata
+                    $this->session->set_flashdata('success', 'Cliente registrado con éxito y correo enviado.');
+                    echo json_encode(['success' => true, 'redirect' => site_url('usuarios')]); // Redirigir a la lista de usuarios
+                }
+            } else {
+                echo json_encode(['success' => false, 'message' => 'Error al insertar el cliente.']);
+            }
+        }
+    }    
+    
 }
 ?>

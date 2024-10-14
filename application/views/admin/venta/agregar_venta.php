@@ -31,6 +31,10 @@
                                     <input type="hidden" id="cliente_id" name="cliente_id">
                                     <div class="invalid-feedback">¡Por favor, seleccione un cliente!</div>
                                 </div>
+                                <!-- Botón para abrir el modal de agregar cliente -->
+                                <button type="button" class="btn btn-primary mt-2" data-bs-toggle="modal" data-bs-target="#agregarClienteModal">
+                                    <i class="bi bi-plus-circle"></i> Agregar Cliente
+                                </button>
                             </div>
 
                             <div class="col-md-6">
@@ -102,6 +106,44 @@
             </div>
         </div>
     </section>
+
+    <!-- Modal para agregar cliente -->
+    <div class="modal fade" id="agregarClienteModal" tabindex="-1" aria-labelledby="agregarClienteModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="agregarClienteModalLabel">Agregar Cliente</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formAgregarCliente" method="post" action="<?= base_url('usuarios/guardar_cliente_ajax'); ?>">
+                        <div class="mb-3">
+                            <label for="nombre_cliente" class="form-label">Nombre</label>
+                            <input type="text" class="form-control" id="nombre_cliente" name="nombre_cliente" required pattern="[A-Z ]+" title="Solo se permiten letras mayúsculas">
+                        </div>
+                        <div class="mb-3">
+                            <label for="apellido_cliente" class="form-label">Apellido</label>
+                            <input type="text" class="form-control" id="apellido_cliente" name="apellido_cliente" required pattern="[A-Z ]+" title="Solo se permiten letras mayúsculas">
+                        </div>
+                        <div class="mb-3">
+                            <label for="email_cliente" class="form-label">Correo Electrónico</label>
+                            <input type="email" class="form-control" id="email_cliente" name="email_cliente" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="telefono_cliente" class="form-label">Teléfono</label>
+                            <input type="text" class="form-control" id="telefono_cliente" name="telefono_cliente" pattern="\d+" title="Solo se permiten números">
+                        </div>
+                        <div class="mb-3">
+                            <label for="direccion_cliente" class="form-label">Dirección</label>
+                            <input type="text" class="form-control" id="direccion_cliente" name="direccion_cliente">
+                        </div>
+                        <button type="submit" class="btn btn-success">Guardar Cliente</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </main>
 
 <script src="<?php echo base_url('assets_admin/jquery/js/jquery-3.7.1.min.js'); ?>"></script>
@@ -109,6 +151,7 @@
 <script src="<?php echo base_url('assets_admin/jquery/js/jquery-ui.min.js'); ?>"></script>
 
 <script>
+
 $(document).ready(function() {
     // Autocompletado del campo de búsqueda de productos
     $("#producto_id").autocomplete({
@@ -267,6 +310,50 @@ $(document).ready(function() {
         minLength: 2
     });
 });
+
+$('#formAgregarCliente').submit(function(e) {
+    e.preventDefault(); // Evita el envío normal del formulario
+
+    var $btnGuardar = $(this).find('button[type="submit"]'); // Obtén el botón de guardar
+    $btnGuardar.prop('disabled', true); // Desactiva el botón
+
+    $.ajax({
+        type: 'POST',
+        url: $(this).attr('action'),
+        data: $(this).serialize(),
+        dataType: 'json',
+        success: function(response) {
+            if (response.success) {
+                // Aquí puedes agregar lógica para mostrar un mensaje de éxito
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Cliente agregado exitosamente',
+                    confirmButtonText: 'OK'
+                }).then(() => {
+                    $('#agregarClienteModal').modal('hide'); // Cerrar el modal
+                });
+            } else {
+                // Manejar errores aquí
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'No se pudo agregar el cliente. Intente de nuevo.',
+                });
+            }
+        },
+        error: function() {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Ocurrió un error en la conexión. Intente de nuevo más tarde.',
+            });
+        },
+        complete: function() {
+            $btnGuardar.prop('disabled', false); // Reactiva el botón después de completar la solicitud
+        }
+    });
+});
+
 </script>
 
     <style>

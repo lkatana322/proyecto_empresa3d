@@ -18,7 +18,11 @@ class Usuario_model extends CI_Model {
         $this->db->insert('usuario', $data);
         return $this->db->insert_id();
     }
-
+    
+    public function insert_cliente($data) {
+        return $this->db->insert('usuario', $data) ? $this->db->insert_id() : false;
+    }
+    
     public function get_usuario_by_id($id) {
         $this->db->select('u.*, ua.nombre as actualizador_nombre, ua.apellido as actualizador_apellido');
         $this->db->from('usuario u');

@@ -126,7 +126,7 @@ class Perfil extends CI_Controller {
                     'protocol' => 'smtp',
                     'smtp_host' => 'ssl://smtp.gmail.com',
                     'smtp_user' => 'alvarez.brandon.13353@gmail.com',
-                    'smtp_pass' => 'pesi nobu rmrd dhxm',
+                    'smtp_pass' => 'zklx pgpn mlwm drgj',
                     'smtp_port' => 465,
                     'mailtype' => 'html',
                     'charset' => 'utf-8',

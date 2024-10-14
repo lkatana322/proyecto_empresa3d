@@ -110,7 +110,7 @@ class Venta_model extends CI_Model {
         return $query->result();
     }    
     
-    public function get_top_selling_products($limit = 5) {
+    public function get_top_selling_products($limit = 10) {
         $this->db->select('p.nombre as producto_nombre, p.precio, SUM(dv.cantidad) as cantidad_vendida, SUM(dv.cantidad * dv.precio_unitario) as ingresos, p.imagen');
         $this->db->from('detalle_venta dv');
         $this->db->join('producto p', 'dv.producto_id = p.id', 'left');
@@ -242,6 +242,48 @@ class Venta_model extends CI_Model {
         return $ventas;
     }
     
+    public function get_ventas_completadas() {
+        $this->db->select('v.*, c.nombre as cliente_nombre, c.apellido as cliente_apellido, u.nombre as usuario_nombre, u.apellido as usuario_apellido');
+        $this->db->from('venta v');
+        $this->db->join('usuario c', 'v.cliente_id = c.id', 'left');
+        $this->db->join('usuario u', 'v.usuario_id = u.id', 'left');
+        $this->db->where('v.estado', 'completada'); // Filtrar por ventas completadas
+        $ventas = $this->db->get()->result();
+    
+        foreach ($ventas as &$venta) {
+            // Obtener los productos asociados a cada venta
+            $this->db->select('dp.*, p.nombre as producto_nombre');
+            $this->db->from('detalle_venta dp');
+            $this->db->join('producto p', 'dp.producto_id = p.id');
+            $this->db->where('dp.venta_id', $venta->id);
+            $venta->productos = $this->db->get()->result();
+        }
+    
+        return $ventas;
+    }    
+
+    public function get_productos_mas_vendidos() {
+        $this->db->select('p.nombre, p.precio, SUM(dp.cantidad) as cantidad_total, SUM(dp.cantidad * dp.precio_unitario) as ingresos');
+        $this->db->from('detalle_venta dp');
+        $this->db->join('producto p', 'dp.producto_id = p.id');
+        $this->db->group_by('dp.producto_id');
+        $this->db->order_by('cantidad_total', 'DESC');
+        $this->db->limit(10); // Limitar a los 10 productos más vendidos
+        $query = $this->db->get();
+        return $query->result();
+    }    
+    
+    public function get_clientes_mas_fieles($limite = 10) {
+        $this->db->select('u.nombre, u.apellido, COUNT(v.id) as compras_realizadas, SUM(v.total) as total_gastado');
+        $this->db->from('venta v');
+        $this->db->join('usuario u', 'v.cliente_id = u.id');
+        $this->db->where('v.estado', 'completada'); // Solo incluir ventas completadas
+        $this->db->group_by('v.cliente_id');
+        $this->db->order_by('compras_realizadas', 'DESC');
+        $this->db->limit($limite); // Limitar a la cantidad que el usuario elija
+        $query = $this->db->get();
+        return $query->result();
+    }    
     
 }
 ?>

@@ -1467,39 +1467,161 @@ h1, h2, h3, h4, h5, h6 {
   color: #4db96e;
 }
 
+/*--------------------------------------------------------------
+# Custom Styles for Tables
+--------------------------------------------------------------*/
+
+.table-container {
+  margin-top: 30px; /* Increase top space for the table */
+  overflow-x: auto; /* Allow horizontal scrolling */
+}
+
+.table {
+  width: 100%; /* Take up all available width */
+  border-collapse: collapse; /* Collapse borders for a cleaner design */
+  border: 1px solid #e0e0e0; /* Softer border color */
+  border-radius: 0.5rem; /* Rounded corners for the table */
+  overflow: hidden; /* Prevent table overflow */
+  margin-top: 10px; /* Space between buttons and table */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Enhanced shadow for depth */
+  position: relative; /* For pseudo-element */
+  animation: fadeIn 0.5s ease; /* Fade-in animation */
+}
+
+/* Animación de desvanecimiento */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Animación de brillo en las filas */
+@keyframes neonGlow {
+  0% {
+    box-shadow: 0 0 10px rgba(95, 207, 128, 0.3); /* Brillo inicial */
+  }
+  50% {
+    box-shadow: 0 0 45px rgb(95, 207, 129); /* Mayor brillo */
+  }
+  100% {
+    box-shadow: 0 0 10px rgba(95, 207, 128, 0.3); /* Regresa al brillo inicial */
+  }
+}
+
+/* Cell styles */
+.table th, .table td {
+  padding: 12px; /* Maintain padding for cells */
+  text-align: left; /* Align text to the left */
+  border-bottom: 1px solid #e0e0e0; /* Subtle borders for cells */
+  transition: background-color 0.3s ease; /* Transition for background */
+}
+
+/* Encabezados más prominentes */
+.table th {
+  background-color: #f1f1f1; /* Fondo más claro para encabezados */
+  font-weight: bold; /* Negrita en encabezados */
+  font-size: 16px; /* Mayor tamaño para encabezados */
+  color: #333; /* Color de texto más oscuro */
+}
+
+/* Hover effect on rows */
+.table tr:hover {
+  background-color: rgba(95, 207, 128, 0.2); /* Softer background on hover */
+  transform: translateY(-2px); /* Elevate row on hover */
+  transition: transform 0.2s ease; /* Smooth transitions */
+}
+
+/* Brillo neón en filas pares */
+.table tr:nth-child(even) {
+  position: relative; /* Needed for pseudo-element */
+  animation: neonGlow 2s ease-in-out infinite alternate; /* Animación de brillo para filas pares */
+}
+
+/* Brillo neón en filas impares */
+.table tr:nth-child(odd) {
+  position: relative; /* Needed for pseudo-element */
+  animation: neonGlow 2s ease-in-out infinite alternate; /* Animación de brillo para filas impares */
+  animation-delay: 1s; /* Retraso para iniciar el brillo después de las filas pares */
+}
+
+/* Alternar row styling */
+.table tr:nth-child(even) {
+  background-color: #fafafa; /* Alternar fondo para filas pares */
+}
+
+/* Responsive styles */
 @media (max-width: 768px) {
-  .table-responsive {
-    overflow-x: auto;
+  .table {
+    display: block; /* Change table to block for scrolling */
+    overflow-x: auto; /* Enable horizontal scrolling */
+    white-space: nowrap; /* Prevent line breaks in the table */
+    margin-bottom: 20px; /* Space between the table and buttons */
+  }
+  
+  .table th, .table td {
+    display: block; /* Convert cells to block */
+    text-align: left; /* Align text to the left */
+    padding: 12px 10px; /* Maintain padding for better spacing */
+    margin-bottom: 10px; /* Add bottom margin for better separation */
+    border: none; /* Remove border on small screens */
+    position: relative; /* Necessary for pseudo-element */
   }
 
-  .table th, .table td {
-    white-space: nowrap;
-    padding: 0.5rem;
+  .table th::before, .table td::before {
+    position: absolute; /* Position labels */
+    left: 10px; /* Space from the left */
+    width: calc(100% - 20px); /* Label width with some left/right space */
+    white-space: nowrap; /* Prevent line breaks */
+    text-align: left; /* Align text to the left */
+    font-weight: bold; /* Make labels more prominent */
+    color: #495057; /* Label color */
+  }
+
+  .table th::before {
+    content: attr(data-label); /* Get content from data-label attribute */
+  }
+  
+  .table td::before {
+    content: attr(data-label); /* Get content from data-label attribute */
   }
 
   .btn {
-    padding: 0.375rem 0.75rem;
-    font-size: 12px; /* Ajusta el tamaño de fuente de los botones */
+    padding: 0.5rem 1rem; /* Maintain button size */
+    font-size: 14px; /* Adjust button font size */
+    margin-left: 5px; /* Space to the left on small screens */
+    margin-bottom: 10px; /* Bottom space between buttons and table */
+    display: inline-block; /* Make buttons inline-block */
+    white-space: nowrap; /* Prevent button text from breaking */
+    border-radius: 0.3rem; /* Rounded corners for buttons */
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transitions */
+  }
+
+  .btn:hover {
+    transform: scale(1.05); /* Zoom effect on hover */
   }
 
   .breadcrumb-item a {
-    font-size: 14px;
+    font-size: 14px; /* Font size for breadcrumb links */
+    text-decoration: none; /* Remove underline */
+  }
+
+  .breadcrumb-item a:hover {
+    text-decoration: underline; /* Underline on hover */
   }
 
   .breadcrumb-item.active {
-    font-size: 14px;
+    font-size: 14px; /* Font size for active breadcrumb item */
+    color: #495057; /* Color for active item */
   }
 
   .card-title {
-    font-size: 18px;
-  }
-
-  .table th {
-    min-width: 80px; /* Ajusta el ancho mínimo de las cabeceras de tabla */
-  }
-
-  .table td {
-    min-width: 100px; /* Ajusta el ancho mínimo de las celdas de tabla */
+    font-size: 18px; /* Font size for card title */
+    margin-bottom: 10px; /* Space below title */
   }
 }
 
